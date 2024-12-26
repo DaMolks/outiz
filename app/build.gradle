@@ -33,11 +33,23 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_21
         targetCompatibility JavaVersion.VERSION_21
+        isCoreLibraryDesugaringEnabled true
     }
     
     kotlinOptions {
         jvmTarget = '21'
-        freeCompilerArgs += ["-Xjvm-default=all"]
+        freeCompilerArgs += [
+            '-Xjvm-default=all',
+            '--add-modules', 'jdk.compiler',
+            '-Xallow-jvm-ir-dependencies'
+        ]
+    }
+}
+
+kapt {
+    javacOptions {
+        option("-source", "21")
+        option("-target", "21")
     }
 }
 

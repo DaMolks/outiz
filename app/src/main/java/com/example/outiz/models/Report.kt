@@ -1,8 +1,6 @@
 package com.example.outiz.models
 
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import androidx.room.*
 import java.util.Date
 
 @Entity(
@@ -14,6 +12,9 @@ import java.util.Date
             childColumns = ["siteId"],
             onDelete = ForeignKey.CASCADE
         )
+    ],
+    indices = [
+        Index(value = ["siteId"])
     ]
 )
 data class Report(
@@ -23,8 +24,9 @@ data class Report(
     val caller: String,
     val siteId: String,
     val actions: List<String>,
-    val photos: List<String>?,
+    val photosPaths: List<String>?,
     val hasSignature: Boolean = false,
+    val signaturePath: String? = null,
     val signatureDate: Date? = null,
     val isTimeTrackingEnabled: Boolean = true,
     val isPhotosEnabled: Boolean = true
@@ -45,6 +47,10 @@ data class Report(
             childColumns = ["technicianId"],
             onDelete = ForeignKey.CASCADE
         )
+    ],
+    indices = [
+        Index(value = ["reportId"]),
+        Index(value = ["technicianId"])
     ]
 )
 data class TimeEntry(
@@ -53,4 +59,18 @@ data class TimeEntry(
     val technicianId: String,
     val date: Date,
     val duration: Long // Durée en minutes
+)
+
+data class ReportWithDetails(
+    @Embedded val report: Report,
+    @Relation(
+        parentColumn = "siteId",
+        entityColumn = "id"
+    )
+    val site: Site,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "reportId"
+    )
+    val timeEntries: List<TimeEntry>
 )

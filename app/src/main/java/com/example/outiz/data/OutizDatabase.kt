@@ -1,0 +1,45 @@
+package com.example.outiz.data
+
+import android.content.Context
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import com.example.outiz.data.dao.ReportDao
+import com.example.outiz.data.dao.SiteDao
+import com.example.outiz.data.dao.TechnicianDao
+import com.example.outiz.models.*
+
+@Database(
+    entities = [
+        Technician::class,
+        Site::class,
+        Report::class,
+        TimeEntry::class
+    ],
+    version = 1,
+    exportSchema = false
+)
+@TypeConverters(Converters::class)
+abstract class OutizDatabase : RoomDatabase() {
+    abstract fun technicianDao(): TechnicianDao
+    abstract fun siteDao(): SiteDao
+    abstract fun reportDao(): ReportDao
+
+    companion object {
+        @Volatile
+        private var INSTANCE: OutizDatabase? = null
+
+        fun getDatabase(context: Context): OutizDatabase {
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    OutizDatabase::class.java,
+                    "outiz_database"
+                ).build()
+                INSTANCE = instance
+                instance
+            }
+        }
+    }
+}

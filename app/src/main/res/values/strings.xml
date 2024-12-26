@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Outiz</string>
-    
+
     <!-- Profile Technician -->
     <string name="welcome_title">Bienvenue dans Outiz !</string>
     <string name="welcome_subtitle">Pour commencer, veuillez créer votre profil technicien</string>
@@ -11,7 +11,21 @@
     <string name="identifier">Identifiant</string>
     <string name="supervisor">Chef</string>
     <string name="create_profile">Créer mon profil</string>
-    
+
+    <!-- Home -->
+    <string name="settings">Paramètres</string>
+    <string name="module_icon">Icône du module</string>
+
+    <!-- Reports -->
+    <string name="add_report">Ajouter un rapport</string>
+    <string name="reports">Rapports</string>
+    <string name="no_reports">Aucun rapport</string>
+
+    <!-- Sites -->
+    <string name="add_site">Ajouter un site</string>
+    <string name="sites">Sites</string>
+    <string name="no_sites">Aucun site</string>
+
     <!-- Validation Messages -->
     <string name="error_field_required">Ce champ est requis</string>
     <string name="profile_created_success">Profil créé avec succès</string>

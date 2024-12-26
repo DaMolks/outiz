@@ -1,1 +1,37 @@
-PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHJlc291cmNlcz4KICAgIDxzdHJpbmcgbmFtZT0iYXBwX25hbWUiPk91dGl6PC9zdHJpbmc+CgogICAgPCEtLSBQcm9maWxlIFRlY2huaWNpZW4gLS0+CiAgICA8c3RyaW5nIG5hbWU9IndlbGNvbWVfdGl0bGUiPkJpZW52ZW51ZSBkYW5zIE91dGl6ICE8L3N0cmluZz4KICAgIDxzdHJpbmcgbmFtZT0id2VsY29tZV9zdWJ0aXRsZSI+UG91ciBjb21tZW5jZXIsIHZldWlsbGV6IGNyw6llciB2b3RyZSBwcm9maWwgdGVjaG5pY2llbjwvc3RyaW5nPgogICAgPHN0cmluZyBuYW1lPSJmaXJzdF9uYW1lIj5Quw6xbm9tPC9zdHJpbmc+CiAgICA8c3RyaW5nIG5hbWU9Imxhc3RfbmFtZSI+Tm9tPC9zdHJpbmc+CiAgICA8c3RyaW5nIG5hbWU9InNlY3RvciI+U2VjdGV1cjwvc3RyaW5nPgogICAgPHN0cmluZyBuYW1lPSJpZGVudGlmaWVyIj5JZGVudGlmaWFudDwvc3RyaW5nPgogICAgPHN0cmluZyBuYW1lPSJzdXBlcnZpc29yIj5DaGVmPC9zdHJpbmc+CiAgICA8c3RyaW5nIG5hbWU9ImNyZWF0ZV9wcm9maWxlIj5DcsOpZXIgbW9uIHByb2ZpbDwvc3RyaW5nPgoKICAgIDwhLS0gSG9tZSAtLT4KICAgIDxzdHJpbmcgbmFtZT0ic2V0dGluZ3MiPlBhcmFtw6h0cmVzPC9zdHJpbmc+CiAgICA8c3RyaW5nIG5hbWU9Im1vZHVsZV9pY29uIj5JY8O0bmUgZHUgbW9kdWxlPC9zdHJpbmc+CgogICAgPCEtLSBSZXBvcnRzIC0tPgogICAgPHN0cmluZyBuYW1lPSJhZGRfcmVwb3J0Ij5Bam91dGVyIHVuIHJhcHBvcnQ8L3N0cmluZz4KICAgIDxzdHJpbmcgbmFtZT0icmVwb3J0cyI+UmFwcG9ydHM8L3N0cmluZz4KICAgIDxzdHJpbmcgbmFtZT0ibm9fcmVwb3J0cyI+QXVjdW4gcmFwcG9ydDwvc3RyaW5nPgoKICAgIDwhLS0gU2l0ZXMgLS0+CiAgICA8c3RyaW5nIG5hbWU9ImFkZF9zaXRlIj5Bam91dGVyIHVuIHNpdGU8L3N0cmluZz4KICAgIDxzdHJpbmcgbmFtZT0ic2l0ZXMiPlNpdGVzPC9zdHJpbmc+CiAgICA8c3RyaW5nIG5hbWU9Im5vX3NpdGVzIj5BdWN1biBzaXRlPC9zdHJpbmc+CgogICAgPCEtLSBWYWxpZGF0aW9uIE1lc3NhZ2VzIC0tPgogICAgPHN0cmluZyBuYW1lPSJlcnJvcl9maWVsZF9yZXF1aXJlZCI+Q2UgY2hhbXAgZXN0IHJlcXVpczwvc3RyaW5nPgogICAgPHN0cmluZyBuYW1lPSJwcm9maWxlX2NyZWF0ZWRfc3VjY2VzcyI+UHJvZmlsIGNyw6nDqSBhdmVjIHN1Y2PDqHM8L3N0cmluZz4KICAgIDxzdHJpbmcgbmFtZT0icHJvZmlsZV9jcmVhdGVkX2Vycm9yIj5FcnJldXIgbG9ycyBkZSBsYSBjcsOpYXRpb24gZHUgcHJvZmlsPC9zdHJpbmc+CgogICAgPCEtLSBBam91dCBkZXMgcmVzc291cmNlcyBtYW5xdWFudGVzIC0tPgogICAgPHN0cmluZyBuYW1lPSJzaWduZWQiPlNpZ27DqTwvc3RyaW5nPgogICAgPHN0cmluZyBuYW1lPSJzZWFyY2giPlJlY2hlcmNoZXI8L3N0cmluZz4KPC9yZXNvdXJjZXM+
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Outiz</string>
+
+    <!-- Profile Technician -->
+    <string name="welcome_title">Bienvenue dans Outiz !</string>
+    <string name="welcome_subtitle">Pour commencer, veuillez créer votre profil technicien</string>
+    <string name="first_name">Prénom</string>
+    <string name="last_name">Nom</string>
+    <string name="sector">Secteur</string>
+    <string name="identifier">Identifiant</string>
+    <string name="supervisor">Chef</string>
+    <string name="create_profile">Créer mon profil</string>
+
+    <!-- Home -->
+    <string name="settings">Paramètres</string>
+    <string name="module_icon">Icône du module</string>
+
+    <!-- Reports -->
+    <string name="add_report">Ajouter un rapport</string>
+    <string name="reports">Rapports</string>
+    <string name="no_reports">Aucun rapport</string>
+
+    <!-- Sites -->
+    <string name="add_site">Ajouter un site</string>
+    <string name="sites">Sites</string>
+    <string name="no_sites">Aucun site</string>
+
+    <!-- Validation Messages -->
+    <string name="error_field_required">Ce champ est requis</string>
+    <string name="profile_created_success">Profil créé avec succès</string>
+    <string name="profile_created_error">Erreur lors de la création du profil</string>
+
+    <!-- Ajout des ressources manquantes -->
+    <string name="signed">Signé</string>
+    <string name="search">Rechercher</string>
+</resources>

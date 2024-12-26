@@ -30,4 +30,8 @@
     <string name="error_field_required">Ce champ est requis</string>
     <string name="profile_created_success">Profil créé avec succès</string>
     <string name="profile_created_error">Erreur lors de la création du profil</string>
+
+    <!-- Ajout des ressources manquantes -->
+    <string name="signed">Signé</string>
+    <string name="search">Rechercher</string>
 </resources>

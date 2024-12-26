@@ -32,6 +32,33 @@
     <string name="profile_created_error">Erreur lors de la création du profil</string>
 
     <!-- Ajout des ressources manquantes -->
+    <string name="save_report">Enregistrer le rapport</string>
+    <string name="site_name">Nom du site</string>
+    <string name="site_code">Code du site</string>
+    <string name="site_address">Adresse du site</string>
+    <string name="client_name">Nom du client</string>
+    <string name="save">Enregistrer</string>
+    <string name="site">Site</string>
+    <string name="call_date">Date d\'appel</string>
+    <string name="call_reason">Raison d\'appel</string>
+    <string name="caller">Appelant</string>
+    <string name="enable_time_tracking">Activer le suivi du temps</string>
+    <string name="enable_photos">Activer les photos</string>
+    <string name="no_photos">Aucune photo</string>
+    <string name="take_picture">Prendre une photo</string>
+    <string name="choose_picture">Choisir une photo</string>
+    <string name="no_time_entries">Aucune entrée de temps</string>
+    <string name="add_time_entry">Ajouter une entrée de temps</string>
+    <string name="all">Tout</string>
+    <string name="this_week">Cette semaine</string>
+    <string name="this_month">Ce mois-ci</string>
     <string name="signed">Signé</string>
     <string name="search">Rechercher</string>
+
+    <!-- Ajout des ressources manquantes -->
+    <string name="photo">Photo</string>
+    <string name="delete">Supprimer</string>
+    <string name="more_options">Plus d'options</string>
+    <string name="edit">Modifier</string>
+
 </resources>

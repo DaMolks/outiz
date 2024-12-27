@@ -11,7 +11,7 @@ import java.time.LocalDateTime
 data class TimeEntry(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
-    val reportId: Long,
+    val reportId: String,
     val startTime: LocalDateTime,
     val endTime: LocalDateTime,
     val description: String,

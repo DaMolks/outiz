@@ -2,7 +2,65 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/sitesFragment">
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.example.outiz.ui.splash.SplashFragment"
+        android:label="Splash">
+        <action
+            android:id="@+id/action_splashFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_splashFragment_to_technicianProfileFragment"
+            app:destination="@id/technicianProfileFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.outiz.ui.home.HomeFragment"
+        android:label="Accueil">
+        <action
+            android:id="@+id/action_homeFragment_to_reportsFragment"
+            app:destination="@id/reportsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_sitesFragment"
+            app:destination="@id/sitesFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/technicianProfileFragment"
+        android:name="com.example.outiz.ui.profile.TechnicianProfileFragment"
+        android:label="Profil">
+        <action
+            android:id="@+id/action_technicianProfileFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/reportsFragment"
+        android:name="com.example.outiz.ui.reports.ReportsFragment"
+        android:label="Rapports">
+        <action
+            android:id="@+id/action_reportsFragment_to_reportDetailsFragment"
+            app:destination="@id/reportDetailsFragment" />
+        <action
+            android:id="@+id/action_reportsFragment_to_editReportFragment"
+            app:destination="@id/editReportFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/reportDetailsFragment"
+        android:name="com.example.outiz.ui.reports.ReportDetailsFragment"
+        android:label="Détails du rapport" />
+
+    <fragment
+        android:id="@+id/editReportFragment"
+        android:name="com.example.outiz.ui.reports.EditReportFragment"
+        android:label="Édition rapport" />
 
     <fragment
         android:id="@+id/sitesFragment"
@@ -17,4 +75,9 @@
         android:id="@+id/editSiteFragment"
         android:name="com.example.outiz.ui.sites.EditSiteFragment"
         android:label="Édition site" />
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.outiz.ui.settings.SettingsFragment"
+        android:label="Paramètres" />
 </navigation>

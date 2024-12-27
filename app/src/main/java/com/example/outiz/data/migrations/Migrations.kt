@@ -7,12 +7,12 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 object Migrations {
     // Migration de la version 3 à 2 : Transformation de la structure de time_entries
     val MIGRATION_3_2 = object : Migration(3, 2) {
-        override fun migrate(database: SupportSQLiteDatabase) {
+        override fun migrate(db: SupportSQLiteDatabase) {
             // Récupérer toutes les données existantes
-            val cursor = database.query("SELECT * FROM time_entries")
+            val cursor = db.query("SELECT * FROM time_entries")
             
             // Créer une nouvelle table avec la structure exacte
-            database.execSQL("""
+            db.execSQL("""
                 CREATE TABLE time_entries_new (
                     `date` INTEGER NOT NULL,
                     `duration` INTEGER NOT NULL,
@@ -39,7 +39,7 @@ object Migrations {
                                       cursor.getString(columns.indexOf("technicianLastName"))
 
                     // Insérer dans la nouvelle table
-                    database.execSQL("""
+                    db.execSQL("""
                         INSERT INTO time_entries_new (
                             `date`, `duration`, `taskType`, `reportId`, `description`, 
                             `startTime`, `endTime`
@@ -54,13 +54,13 @@ object Migrations {
             cursor.close()
 
             // Supprimer l'ancienne table
-            database.execSQL("DROP TABLE time_entries")
+            db.execSQL("DROP TABLE time_entries")
 
             // Renommer la nouvelle table
-            database.execSQL("ALTER TABLE time_entries_new RENAME TO time_entries")
+            db.execSQL("ALTER TABLE time_entries_new RENAME TO time_entries")
 
             // Recréer l'index
-            database.execSQL("CREATE INDEX IF NOT EXISTS `index_time_entries_reportId` ON `time_entries` (`reportId`)")
+            db.execSQL("CREATE INDEX IF NOT EXISTS `index_time_entries_reportId` ON `time_entries` (`reportId`)")
         }
     }
 }

@@ -1,37 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Outiz</string>
-    <string name="add_time">Ajouter du temps</string>
-    <string name="save_report">Sauvegarder le rapport</string>
-    <string name="site_name">Nom du site</string>
-    <string name="site_code">Code du site</string>
-    <string name="site_address">Adresse du site</string>
-    <string name="client_name">Nom du client</string>
-    <string name="save">Sauvegarder</string>
-    <string name="settings">Paramètres</string>
-    <string name="site">Site</string>
-    <string name="call_date">Date d\'appel</string>
-    <string name="call_reason">Motif d\'appel</string>
-    <string name="caller">Appelant</string>
-    <string name="enable_time_tracking">Activer le suivi du temps</string>
-    <string name="enable_photos">Activer les photos</string>
-    <string name="no_photos">Aucune photo</string>
-    <string name="take_picture">Prendre une photo</string>
-    <string name="choose_picture">Choisir une photo</string>
-    <string name="all">Tous</string>
-    <string name="this_week">Cette semaine</string>
-    <string name="this_month">Ce mois</string>
-    <string name="no_reports">Aucun rapport</string>
-    <string name="add_report">Ajouter un rapport</string>
-    <string name="add_site">Ajouter un site</string>
-    <string name="module_icon">Icône du module</string>
-    <string name="photo">Photo</string>
-    <string name="delete">Supprimer</string>
-    <string name="more_options">Plus d\'options</string>
-    <string name="signed">Signé</string>
-    <string name="edit">Modifier</string>
-    <string name="search">Rechercher</string>
-    <string name="caller_format">Appelant : %s</string>
-    <string name="time_format">Temps total : %s</string>
-    <string name="photos_count">Photos : %d</string>
+    <string name="date">Date</string>
+    <string name="start_time">Heure de début</string>
+    <string name="end_time">Heure de fin</string>
+    <string name="duration">Durée</string>
+    <string name="task_type">Type de tâche</string>
+    <string name="description">Description</string>
+    <string name="technicians">Techniciens</string>
+    <string name="add_technician">Ajouter technicien</string>
+    <string name="add_time_entry">Ajouter du temps</string>
 </resources>

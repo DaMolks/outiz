@@ -1,6 +1,5 @@
 package com.example.outiz.ui.reports.tabs
 
-import android.app.DateTimePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +10,9 @@ import androidx.fragment.app.viewModels
 import com.example.outiz.databinding.FragmentReportInfoBinding
 import com.example.outiz.models.Site
 import com.example.outiz.ui.reports.EditReportViewModel
+import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -60,7 +62,6 @@ class ReportInfoFragment : Fragment() {
             )
             binding.siteInput.setAdapter(adapter)
 
-            // Mettre à jour la référence au site sélectionné
             selectedSite?.let { selected ->
                 selectedSite = sites.find { it.id == selected.id }
             }
@@ -96,23 +97,28 @@ class ReportInfoFragment : Fragment() {
             time = selectedDate
         }
 
-        DateTimePickerDialog(
-            requireContext(),
-            { _, year, month, dayOfMonth, hourOfDay, minute ->
-                calendar.set(Calendar.YEAR, year)
-                calendar.set(Calendar.MONTH, month)
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
-                calendar.set(Calendar.MINUTE, minute)
+        val datePicker = MaterialDatePicker.Builder.datePicker()
+            .setSelection(calendar.timeInMillis)
+            .build()
+
+        val timePicker = MaterialTimePicker.Builder()
+            .setTimeFormat(TimeFormat.CLOCK_24H)
+            .setHour(calendar.get(Calendar.HOUR_OF_DAY))
+            .setMinute(calendar.get(Calendar.MINUTE))
+            .build()
+
+        datePicker.addOnPositiveButtonClickListener { selectedDateInMillis ->
+            timePicker.show(childFragmentManager, "TimePicker")
+            timePicker.addOnPositiveButtonClickListener {
+                calendar.timeInMillis = selectedDateInMillis
+                calendar.set(Calendar.HOUR_OF_DAY, timePicker.hour)
+                calendar.set(Calendar.MINUTE, timePicker.minute)
                 selectedDate = calendar.time
                 binding.callDateInput.setText(dateFormat.format(selectedDate))
-            },
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH),
-            calendar.get(Calendar.HOUR_OF_DAY),
-            calendar.get(Calendar.MINUTE)
-        ).show()
+            }
+        }
+
+        datePicker.show(childFragmentManager, "DatePicker")
     }
 
     fun validateAndCollectData(): ReportInfoData? {

@@ -9,7 +9,7 @@ import com.example.outiz.models.TimeEntry
 import com.example.outiz.ui.reports.ReportViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.time.LocalDateTime
-import java.util.*
+import java.util.Date
 
 class AddTimeEntryDialog : DialogFragment() {
     private var binding: DialogAddTimeEntryBinding? = null
@@ -21,7 +21,7 @@ class AddTimeEntryDialog : DialogFragment() {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(requireActivity())[ReportViewModel::class.java]
         reportId = arguments?.getString(REPORT_ID_KEY) ?: ""
-        timeEntry = arguments?.getParcelable(TIME_ENTRY_KEY)
+        timeEntry = arguments?.getParcelable<TimeEntry>(TIME_ENTRY_KEY)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

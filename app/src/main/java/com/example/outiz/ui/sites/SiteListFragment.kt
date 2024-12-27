@@ -35,7 +35,7 @@ class SiteListFragment : Fragment() {
             onEditClick = { site ->
                 // Navigation vers l'écran d'édition avec l'ID du site
                 findNavController().navigate(
-                    R.id.action_siteListFragment_to_editSiteFragment,
+                    R.id.action_sitesFragment_to_editSiteFragment,
                     Bundle().apply {
                         putString("siteId", site.id)
                     }

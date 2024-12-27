@@ -3,41 +3,33 @@
 ## [Unreleased]
 
 ### Added
-- Resources for time tracking and date formatting
-- String resources for various adapters and fragments
-- Localized strings for delete confirmations and error messages
-
-### Changed
-- Replaced `DateTimePickerDialog` with Material Design Date and Time Pickers in `ReportInfoFragment`
-- Updated `strings.xml` with comprehensive localization resources
+- Ressources de couleurs Material Design Light
+- Configuration de thème sans barre d'action par défaut
+- Toolbar personnalisé dans le layout principal
 
 ### Fixed
-- Resolved unresolved reference errors in multiple fragments and adapters
-- Corrected navigation and string formatting issues
+- Résolution des erreurs de compilation liées aux ressources de couleurs
+- Correction de la configuration de la barre d'action dans MainActivity
+
+### Changed
+- Mise à jour de la configuration du thème pour utiliser un Toolbar personnalisé
+- Ajustement de la structure du layout principal
 
 ## Modification Log
 
-### 2024-01-07 16:45 UTC
-- Added `time_format_detailed` resource for TimeEntriesAdapter
-- Resource: `%1$d h %2$d min (%3$s)`
+### 2024-01-07 18:30 UTC
+- Ajout du fichier `colors.xml` avec les ressources de couleurs Material Design
+  - `md_theme_light_primary`
+  - `md_theme_light_primaryContainer`
+  - `md_theme_light_onPrimary`
 
-### 2024-01-07 16:50 UTC
-- Added `site_code_format` and `site_client_format` for SitesAdapter
-- Resources: 
-  - `Code : %1$s`
-  - `Client : %1$s`
-
-### 2024-01-07 17:00 UTC
-- Updated `ReportInfoFragment` to use Material Date and Time Pickers
-- Replaced Android's `DateTimePickerDialog` with `MaterialDatePicker` and `MaterialTimePicker`
-
-### 2024-01-07 17:15 UTC
-- Added resources for SitesFragment and SitesAdapter
-- Included delete confirmation and empty view strings
-- Added navigation-related string resources
+### 2024-01-07 18:35 UTC
+- Modification de `themes.xml` pour utiliser un thème sans action bar
+- Ajout d'un Toolbar personnalisé dans `activity_main.xml`
+- Mise à jour de `MainActivity.kt` pour configurer le Toolbar
 
 ## Contributing
-When adding to this changelog, please follow these guidelines:
-- Use [Semantic Versioning](https://semver.org/)
-- Group changes into categories: Added, Changed, Deprecated, Removed, Fixed, Security
-- Include precise datetime and brief, clear descriptions
+Lors de l'ajout de modifications au changelog, veuillez suivre ces directives :
+- Utilisez [Semantic Versioning](https://semver.org/)
+- Regroupez les modifications par catégories : Added, Changed, Deprecated, Removed, Fixed, Security
+- Incluez la date et l'heure précises, ainsi qu'une description claire

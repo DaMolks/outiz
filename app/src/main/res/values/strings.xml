@@ -71,4 +71,9 @@
     <string name="time_format">%1$d h %2$d min</string>
     <string name="photos_count">%1$d photo(s)</string>
 
+    <!-- Ressources pour ReportsFragment -->
+    <string name="delete_report">Supprimer le rapport</string>
+    <string name="delete_report_confirmation">Êtes-vous sûr de vouloir supprimer ce rapport ?</string>
+    <string name="cancel">Annuler</string>
+
 </resources>

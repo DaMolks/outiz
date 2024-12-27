@@ -13,7 +13,7 @@ object Migrations {
                 CREATE TABLE time_entries_new (
                     `date` INTEGER NOT NULL,
                     `duration` INTEGER NOT NULL,
-                    `taskType` TEXT NOT NULL,
+                    `taskType` TEXT NOT NULL DEFAULT 'STANDARD',
                     `reportId` TEXT NOT NULL,
                     `description` TEXT NOT NULL,
                     `startTime` TEXT NOT NULL,
@@ -22,16 +22,33 @@ object Migrations {
                 )
             """)
 
+            // Vérifier si la colonne taskType existe
+            val cursor = db.query("SELECT * FROM time_entries LIMIT 1")
+            val hasTaskType = cursor.getColumnIndex("taskType") != -1
+            cursor.close()
+
             // Copier les données en respectant l'ordre exact
-            db.execSQL("""
-                INSERT INTO time_entries_new (
-                    `date`, `duration`, `taskType`, `reportId`, 
-                    `description`, `startTime`, `id`, `endTime`
-                ) SELECT 
-                    `date`, `duration`, `taskType`, `reportId`, 
-                    `description`, `startTime`, `id`, `endTime` 
-                FROM time_entries
-            """)
+            if (hasTaskType) {
+                db.execSQL("""
+                    INSERT INTO time_entries_new (
+                        `date`, `duration`, `taskType`, `reportId`, 
+                        `description`, `startTime`, `id`, `endTime`
+                    ) SELECT 
+                        `date`, `duration`, `taskType`, `reportId`, 
+                        `description`, `startTime`, `id`, `endTime` 
+                    FROM time_entries
+                """)
+            } else {
+                db.execSQL("""
+                    INSERT INTO time_entries_new (
+                        `date`, `duration`, `reportId`, 
+                        `description`, `startTime`, `id`, `endTime`
+                    ) SELECT 
+                        `date`, `duration`, `reportId`, 
+                        `description`, `startTime`, `id`, `endTime` 
+                    FROM time_entries
+                """)
+            }
 
             // Supprimer l'ancienne table
             db.execSQL("DROP TABLE time_entries")

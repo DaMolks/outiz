@@ -20,7 +20,7 @@ import com.example.outiz.models.*
         Report::class,
         TimeEntry::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -34,10 +34,12 @@ abstract class OutizDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: OutizDatabase? = null
 
-        private val MIGRATION_1_2 = object : Migration(1, 2) {
+        private val MIGRATION_2_3 = object : Migration(2, 3) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                // Recréer la table time_entries avec la nouvelle structure
-                database.execSQL("DROP TABLE IF EXISTS time_entries")
+                // Renommer l'ancienne table
+                database.execSQL("ALTER TABLE time_entries RENAME TO time_entries_old")
+
+                // Créer la nouvelle table avec la structure actuelle
                 database.execSQL("""
                     CREATE TABLE time_entries (
                         id TEXT PRIMARY KEY NOT NULL,
@@ -51,12 +53,28 @@ abstract class OutizDatabase : RoomDatabase() {
                         departureTime INTEGER,
                         interventionDuration INTEGER,
                         travelDuration INTEGER,
-                        FOREIGN KEY(reportId) REFERENCES reports(id) ON DELETE CASCADE,
-                        FOREIGN KEY(technicianId) REFERENCES technicians(id) ON DELETE CASCADE
+                        FOREIGN KEY(reportId) REFERENCES reports(id) ON DELETE CASCADE
                     )
                 """)
+
+                // Copier les données existantes
+                database.execSQL("""
+                    INSERT INTO time_entries (
+                        id, reportId, technicianId, date, duration,
+                        technicianFirstName, technicianLastName,
+                        arrivalTime, departureTime,
+                        interventionDuration, travelDuration
+                    )
+                    SELECT id, reportId, technicianId, date, duration,
+                           NULL, NULL, NULL, NULL, NULL, NULL
+                    FROM time_entries_old
+                """)
+
+                // Supprimer l'ancienne table
+                database.execSQL("DROP TABLE time_entries_old")
+
+                // Créer les index
                 database.execSQL("CREATE INDEX index_time_entries_reportId ON time_entries(reportId)")
-                database.execSQL("CREATE INDEX index_time_entries_technicianId ON time_entries(technicianId)")
             }
         }
 
@@ -66,8 +84,8 @@ abstract class OutizDatabase : RoomDatabase() {
                     context.applicationContext,
                     OutizDatabase::class.java,
                     "outiz_database"
-                ).addMigrations(MIGRATION_1_2)
-                 .fallbackToDestructiveMigration() // Optionnel : réinitialise la base si la migration échoue
+                ).addMigrations(MIGRATION_2_3)
+                 .fallbackToDestructiveMigration() // En cas de problème
                 .build()
                 INSTANCE = instance
                 instance

@@ -49,14 +49,14 @@ class ReportTimeFragment : Fragment() {
             onDeleteClick = { timeEntry -> deleteTimeEntry(timeEntry) }
         )
 
-        binding.timeEntriesList.apply {
+        binding.root.findViewById<androidx.recyclerview.widget.RecyclerView>(com.example.outiz.R.id.timeEntriesList).apply {
             layoutManager = LinearLayoutManager(requireContext())
             this.adapter = this@ReportTimeFragment.adapter
         }
     }
 
     private fun setupAddButton() {
-        binding.addTimeEntryButton.setOnClickListener {
+        binding.root.findViewById<View>(com.example.outiz.R.id.addTimeEntryButton).setOnClickListener {
             val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
             val technicianId = prefs.getString("technician_id", null)
             if (technicianId != null && reportId != null) {
@@ -92,7 +92,7 @@ class ReportTimeFragment : Fragment() {
         reportId?.let { viewModel.loadTimeEntries(it) }
         viewModel.timeEntries.observe(viewLifecycleOwner) { entries ->
             adapter.updateEntries(entries)
-            binding.emptyStateText.visibility = if (entries.isEmpty()) View.VISIBLE else View.GONE
+            binding.root.findViewById<View>(com.example.outiz.R.id.emptyStateText).visibility = if (entries.isEmpty()) View.VISIBLE else View.GONE
         }
     }
 

@@ -19,12 +19,12 @@ class TimeTrackingFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var viewModel: ReportViewModel
     private lateinit var adapter: TimeEntryAdapter
-    private var reportId: Long = 0
+    private var reportId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(requireActivity())[ReportViewModel::class.java]
-        reportId = arguments?.getLong(REPORT_ID_KEY) ?: 0
+        reportId = arguments?.getString(REPORT_ID_KEY) ?: ""
     }
 
     override fun onCreateView(
@@ -93,7 +93,7 @@ class TimeTrackingFragment : Fragment() {
         private const val REPORT_ID_KEY = "reportId"
         private const val TIME_ENTRY_KEY = "timeEntry"
 
-        fun newInstance(reportId: Long) = TimeTrackingFragment().apply {
+        fun newInstance(reportId: String) = TimeTrackingFragment().apply {
             arguments = bundleOf(REPORT_ID_KEY to reportId)
         }
     }

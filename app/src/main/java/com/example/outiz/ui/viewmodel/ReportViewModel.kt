@@ -19,7 +19,7 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
     private val _timeEntries = MutableLiveData<List<TimeEntry>>()
     val timeEntries: LiveData<List<TimeEntry>> = _timeEntries
 
-    fun loadTimeEntries(reportId: Long) {
+    fun loadTimeEntries(reportId: String) {
         viewModelScope.launch {
             _timeEntries.value = timeEntryDao.getEntriesForReport(reportId)
         }

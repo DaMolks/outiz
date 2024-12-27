@@ -2,44 +2,23 @@
 
 ## [Unreleased]
 
-### Fixed
-- Ajout de l'annotation @Index sur TimeEntry pour le champ reportId
-- Correction de la déclaration des indices Room
-
 ### Added
-- Ressources de couleurs Material Design Light
-- Configuration de thème sans barre d'action par défaut
-- Toolbar personnalisé dans le layout principal
-- Ajout des fichiers d'icône launcher foreground pour les densités HDPI et MDPI
+- TimePickerDialog pour la sélection des heures de début et fin
+- Calcul automatique de la durée
+- Champ pour ajouter plusieurs techniciens (avec ChipGroup)
+- Icône horloge pour les sélecteurs de temps
+- TypeConverters pour la gestion des listes de techniciens
 
 ### Changed
-- Mise à jour de la configuration du thème pour utiliser un Toolbar personnalisé
-- Ajustement de la structure du layout principal
+- Mise à jour de la structure de la base de données pour inclure les techniciens
+- Amélioration de l'interface utilisateur pour la saisie du temps
 
 ## Modification Log
 
-### 2024-12-28 00:15 UTC
-- Ajout de l'annotation @Index sur l'entité TimeEntry
-- Mise à jour du CHANGELOG
-
-### 2024-12-27 18:30 UTC
-- Ajout du fichier `colors.xml` avec les ressources de couleurs Material Design
-  - `md_theme_light_primary`
-  - `md_theme_light_primaryContainer`
-  - `md_theme_light_onPrimary`
-
-### 2024-01-07 18:35 UTC
-- Modification de `themes.xml` pour utiliser un thème sans action bar
-- Ajout d'un Toolbar personnalisé dans `activity_main.xml`
-- Mise à jour de `MainActivity.kt` pour configurer le Toolbar
-
-### 2024-01-07 18:45 UTC
-- Correction des fichiers de configuration de l'icône launcher
-- Ajout d'une ressource de couleur spécifique pour l'arrière-plan de l'icône
-
-### 2024-01-07 19:00 UTC
-- Ajout des fichiers d'icône launcher foreground
-- Génération de fichiers PNG pour les densités HDPI et MDPI
+### 2024-12-28 00:25 UTC
+- Implémentation du TimePickerDialog et gestion des techniciens
+- Mise à jour des migrations et convertisseurs
+- Ajout des nouvelles ressources et strings
 
 ## Contributing
 Lors de l'ajout de modifications au changelog, veuillez suivre ces directives :

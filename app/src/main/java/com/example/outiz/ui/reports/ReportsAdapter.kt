@@ -49,9 +49,8 @@ class ReportsAdapter(
                 if (report.report.isTimeTrackingEnabled) {
                     timeChip.visibility = View.VISIBLE
                     val totalMinutes = report.timeEntries.sumOf { it.duration.toLong() }
-                    val hours = TimeUnit.MINUTES.toHours(totalMinutes)
-                    val minutes = totalMinutes - TimeUnit.HOURS.toMinutes(hours)
-                    timeChip.text = root.context.getString(R.string.time_format, hours, minutes)
+                    val totalTime = formatTotalTime(totalMinutes)
+                    timeChip.text = root.context.getString(R.string.time_format, totalTime)
                 } else {
                     timeChip.visibility = View.GONE
                 }
@@ -68,6 +67,16 @@ class ReportsAdapter(
 
                 root.setOnClickListener { onReportClick(report) }
                 moreButton.setOnClickListener { showPopupMenu(it, report) }
+            }
+        }
+
+        private fun formatTotalTime(totalMinutes: Long): String {
+            val hours = TimeUnit.MINUTES.toHours(totalMinutes)
+            val minutes = totalMinutes - TimeUnit.HOURS.toMinutes(hours)
+            return when {
+                hours > 0 && minutes > 0 -> "${hours}h ${minutes}min"
+                hours > 0 -> "${hours}h"
+                else -> "${minutes}min"
             }
         }
 

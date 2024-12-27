@@ -66,17 +66,17 @@ class AddTimeEntryDialog : DialogFragment() {
     private fun populateFields(entry: TimeEntry) {
         binding?.apply {
             durationInput.setText(formatDuration(entry.duration))
-            // La date sera déjà remplie avec la date du jour
         }
     }
 
     private fun saveTimeEntry() {
         val duration = parseDuration(binding?.durationInput?.text.toString())
-
+        val currentTechnicianId = viewModel.getCurrentTechnicianId()
+        
         val entry = TimeEntry(
             id = timeEntry?.id ?: UUID.randomUUID().toString(),
             reportId = reportId,
-            technicianId = viewModel.getCurrentTechnicianId(),
+            technicianId = currentTechnicianId,
             date = Date(),
             duration = duration
         )

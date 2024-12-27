@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.outiz.R
 import com.example.outiz.databinding.FragmentReportsBinding
 import com.example.outiz.ui.adapter.ReportsAdapter
+import com.example.outiz.ui.viewmodel.ReportViewModel
 
 class ReportsFragment : Fragment() {
     private var _binding: FragmentReportsBinding? = null

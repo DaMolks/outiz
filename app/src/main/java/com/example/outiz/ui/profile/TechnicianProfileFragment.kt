@@ -5,17 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.outiz.R
 import com.example.outiz.databinding.FragmentTechnicianProfileBinding
 import com.google.android.material.snackbar.Snackbar
 
 class TechnicianProfileFragment : Fragment() {
-
     private var _binding: FragmentTechnicianProfileBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: TechnicianProfileViewModel by viewModels()
+    private lateinit var viewModel: TechnicianProfileViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,42 +26,65 @@ class TechnicianProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this)[TechnicianProfileViewModel::class.java]
 
-        setupObservers()
-        setupListeners()
+        setupSaveButton()
+        observeViewModel()
     }
 
-    private fun setupObservers() {
-        viewModel.profileCreated.observe(viewLifecycleOwner) { isCreated ->
-            if (isCreated) {
-                findNavController().navigate(R.id.action_technicianProfileFragment_to_homeFragment)
-            }
-        }
+    private fun setupSaveButton() {
+        binding.saveButton.setOnClickListener {
+            val firstName = binding.firstNameInput.text.toString()
+            val lastName = binding.lastNameInput.text.toString()
+            val sector = binding.sectorInput.text.toString()
 
-        viewModel.error.observe(viewLifecycleOwner) { error ->
-            error?.let {
-                Snackbar.make(binding.root, it, Snackbar.LENGTH_LONG).show()
-                viewModel.clearError()
+            if (validateInputs(firstName, lastName, sector)) {
+                viewModel.saveTechnician(firstName, lastName, sector)
             }
         }
     }
 
-    private fun setupListeners() {
-        binding.createProfileButton.setOnClickListener {
-            val firstName = binding.firstNameEditText.text.toString()
-            val lastName = binding.lastNameEditText.text.toString()
-            val sector = binding.sectorEditText.text.toString()
-            val identifier = binding.identifierEditText.text.toString()
-            val supervisor = binding.supervisorEditText.text.toString()
-
-            viewModel.createProfile(
-                firstName = firstName,
-                lastName = lastName,
-                sector = sector,
-                identifier = identifier,
-                supervisor = supervisor
-            )
+    private fun observeViewModel() {
+        viewModel.saveSuccess.observe(viewLifecycleOwner) { success ->
+            if (success) {
+                findNavController().navigate(
+                    TechnicianProfileFragmentDirections.actionTechnicianProfileFragmentToHomeFragment()
+                )
+            } else {
+                Snackbar.make(
+                    binding.root,
+                    "Erreur lors de la création du profil",
+                    Snackbar.LENGTH_LONG
+                ).show()
+            }
         }
+    }
+
+    private fun validateInputs(firstName: String, lastName: String, sector: String): Boolean {
+        var isValid = true
+
+        if (firstName.isBlank()) {
+            binding.firstNameLayout.error = "Le prénom est requis"
+            isValid = false
+        } else {
+            binding.firstNameLayout.error = null
+        }
+
+        if (lastName.isBlank()) {
+            binding.lastNameLayout.error = "Le nom est requis"
+            isValid = false
+        } else {
+            binding.lastNameLayout.error = null
+        }
+
+        if (sector.isBlank()) {
+            binding.sectorLayout.error = "Le secteur est requis"
+            isValid = false
+        } else {
+            binding.sectorLayout.error = null
+        }
+
+        return isValid
     }
 
     override fun onDestroyView() {

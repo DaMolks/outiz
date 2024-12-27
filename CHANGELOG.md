@@ -3,12 +3,9 @@
 ## [Unreleased]
 
 ### Fixed
-- Amélioration majeure de la migration de base de données pour gérer toutes les colonnes manquantes
-- Ajout de valeurs par défaut pour toutes les colonnes
-- Construction dynamique des requêtes de migration
-- Correction de la migration de la base de données pour gérer le taskType manquant
-- Ajout d'une valeur par défaut 'STANDARD' pour la colonne taskType
-- Amélioration de la robustesse de la migration 3_2
+- Refonte de la migration pour correspondre exactement à l'entité TimeEntry
+- Gestion plus robuste des erreurs pendant la migration
+- Amélioration de la préservation des données
 
 ### Added
 - Ressources de couleurs Material Design Light
@@ -16,25 +13,15 @@
 - Toolbar personnalisé dans le layout principal
 - Ajout des fichiers d'icône launcher foreground pour les densités HDPI et MDPI
 
-### Fixed
-- Résolution des erreurs de compilation liées aux ressources de couleurs
-- Correction de la configuration de la barre d'action dans MainActivity
-- Correction des ressources pour l'icône launcher
-
 ### Changed
 - Mise à jour de la configuration du thème pour utiliser un Toolbar personnalisé
 - Ajustement de la structure du layout principal
 
 ## Modification Log
 
-### 2024-12-27 23:52 UTC
-- Refonte complète de la migration pour plus de robustesse
-- Ajout de la construction dynamique des requêtes de migration
-- Ajout de valeurs par défaut pour toutes les colonnes
-
-### 2024-12-27 23:45 UTC
-- Correction de la migration de la base de données
-- Ajout d'une gestion flexible de la colonne taskType
+### 2024-12-27 23:58 UTC
+- Refonte de la migration basée sur l'entité TimeEntry
+- Amélioration de la gestion des erreurs pendant la migration
 - Mise à jour du CHANGELOG
 
 ### 2024-01-07 18:30 UTC

@@ -45,8 +45,6 @@ Exemple :
 ## Fichiers clés à consulter
 - 📋 PROJECT_OVERVIEW.md
 - 📜 CHANGELOG.md
-- 📊 PROJECT_STATUS.md
-- 📌 CLAUDE_NEXT_STEPS.md
 
 ## Points d'attention
 - 🚫 Pas de modification sans analyse complète

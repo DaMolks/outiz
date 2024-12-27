@@ -12,7 +12,8 @@ import com.example.outiz.databinding.FragmentSiteListBinding
 class SiteListFragment : Fragment() {
     private var _binding: FragmentSiteListBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: SiteListViewModel by viewModels()
+    private val sitesAdapter = SitesAdapter()
+    private val viewModel: SitesViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,18 +26,13 @@ class SiteListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
         binding.recyclerViewSites.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = SiteListAdapter()
-        }
-
-        binding.fabAddSite.setOnClickListener {
-            // Navigation vers le fragment d'ajout de site
+            adapter = sitesAdapter
         }
 
         viewModel.sites.observe(viewLifecycleOwner) { sites ->
-            (binding.recyclerViewSites.adapter as SiteListAdapter).submitList(sites)
+            sitesAdapter.submitList(sites)
         }
     }
 

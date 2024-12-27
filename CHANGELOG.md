@@ -6,6 +6,7 @@
 - Ressources de couleurs Material Design Light
 - Configuration de thème sans barre d'action par défaut
 - Toolbar personnalisé dans le layout principal
+- Ajout des fichiers d'icône launcher foreground pour les densités HDPI et MDPI
 
 ### Fixed
 - Résolution des erreurs de compilation liées aux ressources de couleurs
@@ -32,6 +33,10 @@
 ### 2024-01-07 18:45 UTC
 - Correction des fichiers de configuration de l'icône launcher
 - Ajout d'une ressource de couleur spécifique pour l'arrière-plan de l'icône
+
+### 2024-01-07 19:00 UTC
+- Ajout des fichiers d'icône launcher foreground
+- Génération de fichiers PNG pour les densités HDPI et MDPI
 
 ## Contributing
 Lors de l'ajout de modifications au changelog, veuillez suivre ces directives :

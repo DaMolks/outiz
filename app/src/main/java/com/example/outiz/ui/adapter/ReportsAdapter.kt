@@ -35,8 +35,8 @@ class ReportsAdapter(
             val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
 
             binding.apply {
-                siteName.text = report.client
-                callDate.text = dateFormat.format(report.date)
+                siteName.text = report.caller
+                callDate.text = dateFormat.format(report.callDate)
                 callReason.text = report.callReason
 
                 root.setOnClickListener { onReportClick(report) }

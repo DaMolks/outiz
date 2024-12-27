@@ -14,7 +14,7 @@ import com.example.outiz.databinding.FragmentSitesBinding
 class SitesFragment : Fragment() {
     private var _binding: FragmentSitesBinding? = null
     private val binding get() = _binding!!
-    private val sitesAdapter = SitesAdapter()
+    private lateinit var sitesAdapter: SitesAdapter
     private val viewModel: SitesViewModel by viewModels()
 
     override fun onCreateView(
@@ -34,6 +34,20 @@ class SitesFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
+        sitesAdapter = SitesAdapter(
+            onEditClick = { site ->
+                findNavController().navigate(
+                    R.id.action_sitesFragment_to_editSiteFragment,
+                    Bundle().apply {
+                        putString("siteId", site.id)
+                    }
+                )
+            },
+            onDeleteClick = { site ->
+                viewModel.deleteSite(site)
+            }
+        )
+
         binding.recyclerViewSites.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = sitesAdapter

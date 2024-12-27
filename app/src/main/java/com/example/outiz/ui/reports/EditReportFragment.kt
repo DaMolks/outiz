@@ -32,6 +32,7 @@ class EditReportFragment : Fragment() {
     private fun setupViewPager() {
         val pagerAdapter = EditReportPagerAdapter(this)
         binding.viewPager.adapter = pagerAdapter
+        binding.viewPager.isUserInputEnabled = true
 
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             tab.text = when (position) {
@@ -40,14 +41,16 @@ class EditReportFragment : Fragment() {
                 2 -> "Photos"
                 else -> ""
             }
-
-            // Mise à jour de la visibilité des tabs
-            if (position == 1 && !viewModel.hasTimeTracking) {
-                tab.view.visibility = View.GONE
-            } else if (position == 2 && !viewModel.hasPhotos) {
-                tab.view.visibility = View.GONE
-            }
         }.attach()
+
+        // Activer/désactiver les onglets en fonction des options
+        binding.tabLayout.getTabAt(0)?.view?.isEnabled = true
+        binding.tabLayout.getTabAt(1)?.view?.isEnabled = viewModel.hasTimeTracking
+        binding.tabLayout.getTabAt(2)?.view?.isEnabled = viewModel.hasPhotos
+
+        // Masquer les onglets désactivés
+        binding.tabLayout.getTabAt(1)?.view?.visibility = if (viewModel.hasTimeTracking) View.VISIBLE else View.GONE
+        binding.tabLayout.getTabAt(2)?.view?.visibility = if (viewModel.hasPhotos) View.VISIBLE else View.GONE
     }
 
     private fun setupListeners() {

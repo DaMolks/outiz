@@ -27,14 +27,10 @@ class TechnicianProfileViewModel(application: Application) : AndroidViewModel(ap
                 lastName = lastName,
                 sector = sector
             )
-            val insertedId = technicianDao.insert(technician)
-            if (insertedId > 0) {
-                // Stocker l'ID du technicien dans les préférences
-                prefs.edit().putString("technician_id", technician.id).apply()
-                _saveSuccess.value = true
-            } else {
-                _saveSuccess.value = false
-            }
+            technicianDao.insertTechnician(technician)
+            // Stocker l'ID du technicien dans les préférences
+            prefs.edit().putString("technician_id", technician.id).apply()
+            _saveSuccess.value = true
         }
     }
 }

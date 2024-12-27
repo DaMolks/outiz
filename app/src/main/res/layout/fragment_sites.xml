@@ -12,6 +12,15 @@
         android:padding="8dp"
         android:clipToPadding="false" />
 
+    <TextView
+        android:id="@+id/emptyView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/no_sites_available"
+        android:textSize="18sp"
+        android:visibility="gone" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addSiteFab"
         android:layout_width="wrap_content"

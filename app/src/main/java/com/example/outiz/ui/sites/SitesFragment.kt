@@ -1,27 +1,22 @@
 package com.example.outiz.ui.sites
 
 import android.os.Bundle
-import android.view.*
-import androidx.appcompat.widget.SearchView
-import androidx.core.view.MenuProvider
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.outiz.R
 import com.example.outiz.databinding.FragmentSitesBinding
-import com.example.outiz.models.Site
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
+import com.example.outiz.ui.adapter.SitesAdapter
 
 class SitesFragment : Fragment() {
-
     private var _binding: FragmentSitesBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: SitesViewModel by viewModels()
-
-    private lateinit var sitesAdapter: SitesAdapter
+    private lateinit var viewModel: SitesViewModel
+    private lateinit var adapter: SitesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,90 +29,43 @@ class SitesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this)[SitesViewModel::class.java]
 
         setupRecyclerView()
-        setupObservers()
-        setupMenu()
-        setupListeners()
+        setupAddSiteButton()
+        observeSites()
     }
 
     private fun setupRecyclerView() {
-        sitesAdapter = SitesAdapter(
-            onSiteClick = { site -> navigateToReports(site) },
-            onSiteEdit = { site -> navigateToEdit(site) },
-            onSiteDelete = { site -> showDeleteConfirmation(site) }
+        adapter = SitesAdapter(
+            onEditClick = { site -> navigateToEditSite(site.id) },
+            onReportsClick = { site -> navigateToReports(site.id) }
         )
+        binding.sitesRecyclerView.layoutManager = LinearLayoutManager(context)
+        binding.sitesRecyclerView.adapter = adapter
+    }
 
-        binding.sitesRecyclerView.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = sitesAdapter
+    private fun navigateToEditSite(siteId: String?) {
+        val args = Bundle().apply { putString("siteId", siteId) }
+        findNavController().navigate(R.id.editSiteFragment, args)
+    }
+
+    private fun navigateToReports(siteId: String?) {
+        val args = Bundle().apply { putString("siteId", siteId) }
+        findNavController().navigate(R.id.reportsFragment, args)
+    }
+
+    private fun setupAddSiteButton() {
+        binding.addSiteButton.setOnClickListener {
+            findNavController().navigate(R.id.editSiteFragment)
         }
     }
 
-    private fun setupObservers() {
+    private fun observeSites() {
         viewModel.sites.observe(viewLifecycleOwner) { sites ->
-            sitesAdapter.submitList(sites)
-            binding.emptyView.visibility = if (sites.isEmpty()) View.VISIBLE else View.GONE
+            adapter.submitList(sites)
+            binding.emptySitesText.visibility = if (sites.isEmpty()) View.VISIBLE else View.GONE
         }
-
-        viewModel.error.observe(viewLifecycleOwner) { error ->
-            error?.let {
-                Snackbar.make(binding.root, it, Snackbar.LENGTH_LONG).show()
-                viewModel.clearError()
-            }
-        }
-    }
-
-    private fun setupMenu() {
-        requireActivity().addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_sites, menu)
-
-                val searchItem = menu.findItem(R.id.action_search)
-                val searchView = searchItem.actionView as SearchView
-
-                searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                    override fun onQueryTextSubmit(query: String?): Boolean {
-                        query?.let { viewModel.searchSites(it) }
-                        return true
-                    }
-
-                    override fun onQueryTextChange(newText: String?): Boolean {
-                        newText?.let { viewModel.searchSites(it) }
-                        return true
-                    }
-                })
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                return true
-            }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
-    }
-
-    private fun setupListeners() {
-        binding.addSiteFab.setOnClickListener {
-            navigateToEdit(null)
-        }
-    }
-
-    private fun navigateToReports(site: Site) {
-        val action = SitesFragmentDirections.actionSitesFragmentToReportsFragment(site.id)
-        findNavController().navigate(action)
-    }
-
-    private fun navigateToEdit(site: Site?) {
-        val action = SitesFragmentDirections.actionSitesFragmentToEditSiteFragment(site?.id)
-        findNavController().navigate(action)
-    }
-
-    private fun showDeleteConfirmation(site: Site) {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(R.string.delete_site)
-            .setMessage(getString(R.string.delete_site_confirmation, site.name))
-            .setPositiveButton(R.string.delete) { _, _ -> viewModel.deleteSite(site) }
-            .setNegativeButton(R.string.cancel, null)
-            .show()
     }
 
     override fun onDestroyView() {

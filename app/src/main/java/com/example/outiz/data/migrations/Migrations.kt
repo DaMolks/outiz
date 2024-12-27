@@ -8,7 +8,10 @@ object Migrations {
     // Migration de la version 3 à 2 : Transformation de la structure de time_entries
     val MIGRATION_3_2 = object : Migration(3, 2) {
         override fun migrate(database: SupportSQLiteDatabase) {
-            // Créer une nouvelle table temporaire avec la nouvelle structure
+            // Récupérer toutes les données existantes
+            val cursor = database.query("SELECT * FROM time_entries")
+            
+            // Créer une nouvelle table avec la structure exacte
             database.execSQL("""
                 CREATE TABLE time_entries_new (
                     `date` INTEGER NOT NULL,
@@ -22,23 +25,33 @@ object Migrations {
                 )
             """)
 
-            // Copier les données en convertissant si nécessaire
-            database.execSQL("""
-                INSERT INTO time_entries_new (
-                    `date`, `duration`, `taskType`, `reportId`, 
-                    `description`, `startTime`, `id`, `endTime`
-                ) 
-                SELECT 
-                    `date`, 
-                    IFNULL(`interventionDuration`, 0) AS `duration`,
-                    'Intervention' AS `taskType`,
-                    `reportId`, 
-                    IFNULL(`technicianFirstName` || ' ' || IFNULL(`technicianLastName`, ''), '') AS `description`,
-                    datetime(`arrivalTime` / 1000, 'unixepoch') AS `startTime`,
-                    IFNULL(id, (ABS(RANDOM()) % 1000000)) AS `id`,
-                    datetime(`departureTime` / 1000, 'unixepoch') AS `endTime`
-                FROM time_entries
-            """)
+            // Parcourir et insérer les données
+            if (cursor.moveToFirst()) {
+                val columns = cursor.columnNames
+                while (!cursor.isAfterLast) {
+                    // Extraire les valeurs des colonnes
+                    val date = cursor.getLong(columns.indexOf("date"))
+                    val duration = cursor.getInt(columns.indexOf("interventionDuration"))
+                    val reportId = cursor.getString(columns.indexOf("reportId"))
+                    val startTime = cursor.getString(columns.indexOf("arrivalTime"))
+                    val endTime = cursor.getString(columns.indexOf("departureTime"))
+                    val description = cursor.getString(columns.indexOf("technicianFirstName")) + " " + 
+                                      cursor.getString(columns.indexOf("technicianLastName"))
+
+                    // Insérer dans la nouvelle table
+                    database.execSQL("""
+                        INSERT INTO time_entries_new (
+                            `date`, `duration`, `taskType`, `reportId`, `description`, 
+                            `startTime`, `endTime`
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?)
+                    """, arrayOf(date, duration, "Intervention", reportId, description, startTime, endTime))
+
+                    cursor.moveToNext()
+                }
+            }
+
+            // Fermer le curseur
+            cursor.close()
 
             // Supprimer l'ancienne table
             database.execSQL("DROP TABLE time_entries")

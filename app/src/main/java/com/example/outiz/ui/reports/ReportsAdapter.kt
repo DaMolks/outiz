@@ -48,7 +48,7 @@ class ReportsAdapter(
                 // Configuration des chips
                 if (report.report.isTimeTrackingEnabled) {
                     timeChip.visibility = View.VISIBLE
-                    val totalMinutes = report.timeEntries.sumOf { it.duration }
+                    val totalMinutes = report.timeEntries.sumOf { it.duration.toLong() }
                     val hours = TimeUnit.MINUTES.toHours(totalMinutes)
                     val minutes = totalMinutes - TimeUnit.HOURS.toMinutes(hours)
                     timeChip.text = root.context.getString(R.string.time_format, hours, minutes)

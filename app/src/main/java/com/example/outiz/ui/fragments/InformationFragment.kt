@@ -10,11 +10,11 @@ import com.example.outiz.databinding.FragmentInformationBinding
 class InformationFragment : Fragment() {
     private var _binding: FragmentInformationBinding? = null
     private val binding get() = _binding!!
-    private var reportId: Long = 0
+    private var reportId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        reportId = arguments?.getLong(REPORT_ID_KEY) ?: 0
+        reportId = arguments?.getString(REPORT_ID_KEY) ?: ""
     }
 
     override fun onCreateView(
@@ -34,9 +34,9 @@ class InformationFragment : Fragment() {
     companion object {
         private const val REPORT_ID_KEY = "reportId"
 
-        fun newInstance(reportId: Long) = InformationFragment().apply {
+        fun newInstance(reportId: String) = InformationFragment().apply {
             arguments = Bundle().apply {
-                putLong(REPORT_ID_KEY, reportId)
+                putString(REPORT_ID_KEY, reportId)
             }
         }
     }

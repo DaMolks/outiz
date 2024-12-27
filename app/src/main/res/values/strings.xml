@@ -15,8 +15,8 @@
     
     <!-- Rapports -->
     <string name="save_report">Enregistrer le rapport</string>
-    <string name="call_date">Date d'appel</string>
-    <string name="call_reason">Motif d'appel</string>
+    <string name="call_date">Date d\u0027appel</string>
+    <string name="call_reason">Motif d\u0027appel</string>
     <string name="caller">Appelant</string>
     <string name="enable_time_tracking">Activer le suivi du temps</string>
     <string name="enable_photos">Activer les photos</string>

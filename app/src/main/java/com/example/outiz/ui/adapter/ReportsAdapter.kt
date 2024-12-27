@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.outiz.databinding.ItemReportBinding
 import com.example.outiz.models.Report
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ReportsAdapter(
     private val onReportClick: (Report) -> Unit = {},
@@ -30,13 +32,18 @@ class ReportsAdapter(
         private val onReportDelete: (Report) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(report: Report) {
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+
             binding.apply {
-                reportTitleText.text = report.title
-                reportDateText.text = report.date.toString()
+                siteName.text = report.client
+                callDate.text = dateFormat.format(report.date)
+                callReason.text = report.callReason
 
                 root.setOnClickListener { onReportClick(report) }
-                editButton.setOnClickListener { onReportEdit(report) }
-                deleteButton.setOnClickListener { onReportDelete(report) }
+                moreButton.setOnClickListener { 
+                    onReportEdit(report) 
+                    onReportDelete(report)
+                }
             }
         }
     }

@@ -14,11 +14,21 @@ import kotlinx.coroutines.launch
 
 class ReportViewModel(application: Application) : AndroidViewModel(application) {
     private val database = OutizDatabase.getDatabase(application)
+    private val reportDao = database.reportDao()
     private val timeEntryDao = database.timeEntryDao()
     private val technicianDao = database.technicianDao()
 
+    private val _reports = MutableLiveData<List<Report>>()
+    val reports: LiveData<List<Report>> = _reports
+
     private val _timeEntries = MutableLiveData<List<TimeEntry>>()
     val timeEntries: LiveData<List<TimeEntry>> = _timeEntries
+
+    fun loadReports() {
+        viewModelScope.launch {
+            _reports.value = reportDao.getAllReports()
+        }
+    }
 
     fun loadTimeEntries(reportId: String) {
         viewModelScope.launch {
@@ -52,5 +62,5 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
         return prefs.getString("technician_id", "1") ?: "1"
     }
 
-    fun getTechnicianInfo(): LiveData<Technician> = technicianDao.getCurrentTechnician()
+    fun getCurrentTechnician(): LiveData<Technician> = technicianDao.getCurrentTechnician()
 }

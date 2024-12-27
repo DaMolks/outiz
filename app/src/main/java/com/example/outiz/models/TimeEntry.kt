@@ -1,9 +1,7 @@
 package com.example.outiz.models
 
 import android.os.Parcelable
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import androidx.room.*
 import kotlinx.parcelize.Parcelize
 import java.util.Date
 
@@ -16,19 +14,23 @@ import java.util.Date
             parentColumns = ["id"],
             childColumns = ["reportId"],
             onDelete = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = Technician::class,
+            parentColumns = ["id"],
+            childColumns = ["technicianId"],
+            onDelete = ForeignKey.CASCADE
         )
     ],
-    indices = [androidx.room.Index("reportId")]
+    indices = [
+        Index(value = ["reportId"]),
+        Index(value = ["technicianId"])
+    ]
 )
 data class TimeEntry(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
-    val reportId: Long,
-    val technicianFirstName: String,
-    val technicianLastName: String,
-    val isOwner: Boolean,
-    val arrivalTime: Date,
-    val departureTime: Date,
-    val interventionDuration: Int,
-    val travelDuration: Int
+    @PrimaryKey val id: String,
+    val reportId: String,
+    val technicianId: String,
+    val date: Date,
+    val duration: Long // Durée en minutes
 ) : Parcelable

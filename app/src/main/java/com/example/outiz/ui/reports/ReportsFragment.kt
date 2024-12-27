@@ -15,8 +15,8 @@ import com.example.outiz.ui.adapter.ReportsAdapter
 class ReportsFragment : Fragment() {
     private var _binding: FragmentReportsBinding? = null
     private val binding get() = _binding!!
+    private lateinit var reportsAdapter: ReportsAdapter
     private lateinit var viewModel: ReportViewModel
-    private lateinit var adapter: ReportsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,6 +29,7 @@ class ReportsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         viewModel = ViewModelProvider(this)[ReportViewModel::class.java]
 
         setupRecyclerView()
@@ -37,22 +38,34 @@ class ReportsFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        adapter = ReportsAdapter(
-            onEditClick = { report -> navigateToEditReport(report.id) },
-            onDetailsClick = { report -> navigateToReportDetails(report.id) }
+        reportsAdapter = ReportsAdapter(
+            onReportClick = { report -> navigateToReportDetails(report.id) },
+            onReportEdit = { report -> navigateToEditReport(report.id) },
+            onReportDelete = { report -> deleteReport(report) }
         )
-        binding.reportsRecyclerView.layoutManager = LinearLayoutManager(context)
-        binding.reportsRecyclerView.adapter = adapter
-    }
 
-    private fun navigateToEditReport(reportId: String?) {
-        val args = Bundle().apply { putString("reportId", reportId) }
-        findNavController().navigate(R.id.editReportFragment, args)
+        binding.reportsRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = reportsAdapter
+        }
     }
 
     private fun navigateToReportDetails(reportId: String?) {
-        val args = Bundle().apply { putString("reportId", reportId) }
-        findNavController().navigate(R.id.reportDetailsFragment, args)
+        reportId?.let {
+            val args = Bundle().apply { putString("reportId", it) }
+            findNavController().navigate(R.id.reportDetailsFragment, args)
+        }
+    }
+
+    private fun navigateToEditReport(reportId: String?) {
+        reportId?.let {
+            val args = Bundle().apply { putString("reportId", it) }
+            findNavController().navigate(R.id.editReportFragment, args)
+        }
+    }
+
+    private fun deleteReport(report: com.example.outiz.models.Report) {
+        viewModel.deleteReport(report)
     }
 
     private fun setupAddReportButton() {
@@ -64,7 +77,7 @@ class ReportsFragment : Fragment() {
     private fun observeReports() {
         viewModel.loadReports()
         viewModel.reports.observe(viewLifecycleOwner) { reports ->
-            adapter.submitList(reports)
+            reportsAdapter.submitList(reports)
             binding.emptyStateText.visibility = if (reports.isEmpty()) View.VISIBLE else View.GONE
         }
     }

@@ -31,4 +31,7 @@
     <string name="signed">Signé</string>
     <string name="edit">Modifier</string>
     <string name="search">Rechercher</string>
+    <string name="caller_format">Appelant : %s</string>
+    <string name="time_format">Temps total : %s</string>
+    <string name="photos_count">Photos : %d</string>
 </resources>

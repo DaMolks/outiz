@@ -10,6 +10,7 @@
 ### Fixed
 - Résolution des erreurs de compilation liées aux ressources de couleurs
 - Correction de la configuration de la barre d'action dans MainActivity
+- Correction des ressources pour l'icône launcher
 
 ### Changed
 - Mise à jour de la configuration du thème pour utiliser un Toolbar personnalisé
@@ -27,6 +28,10 @@
 - Modification de `themes.xml` pour utiliser un thème sans action bar
 - Ajout d'un Toolbar personnalisé dans `activity_main.xml`
 - Mise à jour de `MainActivity.kt` pour configurer le Toolbar
+
+### 2024-01-07 18:45 UTC
+- Correction des fichiers de configuration de l'icône launcher
+- Ajout d'une ressource de couleur spécifique pour l'arrière-plan de l'icône
 
 ## Contributing
 Lors de l'ajout de modifications au changelog, veuillez suivre ces directives :

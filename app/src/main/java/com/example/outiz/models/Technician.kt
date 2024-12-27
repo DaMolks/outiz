@@ -5,10 +5,11 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "technicians")
 data class Technician(
-    @PrimaryKey val id: String,
+    @PrimaryKey
+    val id: String,
     val firstName: String,
     val lastName: String,
     val sector: String,
-    val identifier: String,
-    val supervisor: String
+    val identifier: String = "",
+    val supervisor: String = ""
 )

@@ -35,4 +35,13 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
             timeEntries.postValue(updatedEntries)
         }
     }
+
+    fun loadTimeEntriesForCurrentReport() {
+        currentReport.value?.let { report ->
+            viewModelScope.launch {
+                val entries = timeEntryDao.getTimeEntriesForReport(report.id)
+                timeEntries.postValue(entries)
+            }
+        }
+    }
 }

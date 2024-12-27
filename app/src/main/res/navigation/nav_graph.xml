@@ -7,105 +7,61 @@
     <fragment
         android:id="@+id/splashFragment"
         android:name="com.example.outiz.ui.splash.SplashFragment"
-        android:label="Outiz" >
+        android:label="SplashFragment">
         <action
             android:id="@+id/action_splashFragment_to_technicianProfileFragment"
-            app:destination="@id/technicianProfileFragment"
-            app:popUpTo="@id/splashFragment"
-            app:popUpToInclusive="true" />
+            app:destination="@id/technicianProfileFragment" />
         <action
-            android:id="@+id/action_splashFragment_to_homeFragment"
-            app:destination="@id/homeFragment"
-            app:popUpTo="@id/splashFragment"
-            app:popUpToInclusive="true" />
+            android:id="@+id/action_splashFragment_to_reportsFragment"
+            app:destination="@id/reportsFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/technicianProfileFragment"
         android:name="com.example.outiz.ui.profile.TechnicianProfileFragment"
-        android:label="Création du profil" >
+        android:label="TechnicianProfileFragment">
         <action
-            android:id="@+id/action_technicianProfileFragment_to_homeFragment"
-            app:destination="@id/homeFragment"
-            app:popUpTo="@id/nav_graph"
-            app:popUpToInclusive="true" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.example.outiz.ui.home.HomeFragment"
-        android:label="Outiz">
-        <action
-            android:id="@+id/action_homeFragment_to_reportsFragment"
+            android:id="@+id/action_technicianProfileFragment_to_reportsFragment"
             app:destination="@id/reportsFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_sitesFragment"
-            app:destination="@id/sitesFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/reportsFragment"
         android:name="com.example.outiz.ui.reports.ReportsFragment"
-        android:label="Rapports" >
+        android:label="ReportsFragment">
+        <action
+            android:id="@+id/action_reportsFragment_to_reportFragment"
+            app:destination="@id/reportFragment">
+            <argument
+                android:name="reportId"
+                app:argType="string" />
+        </action>
+        <action
+            android:id="@+id/action_reportsFragment_to_sitesFragment"
+            app:destination="@id/sitesFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/reportFragment"
+        android:name="com.example.outiz.ui.fragments.ReportFragment"
+        android:label="ReportFragment">
         <argument
-            android:name="siteId"
-            app:argType="string"
-            app:nullable="true" />
-        <action
-            android:id="@+id/action_reportsFragment_to_reportDetailsFragment"
-            app:destination="@id/reportDetailsFragment" />
-        <action
-            android:id="@+id/action_reportsFragment_to_editReportFragment"
-            app:destination="@id/editReportFragment" />
+            android:name="reportId"
+            app:argType="string" />
     </fragment>
 
     <fragment
         android:id="@+id/sitesFragment"
         android:name="com.example.outiz.ui.sites.SitesFragment"
-        android:label="Sites" >
+        android:label="SitesFragment">
         <action
-            android:id="@+id/action_sitesFragment_to_editSiteFragment"
-            app:destination="@id/editSiteFragment" />
-        <action
-            android:id="@+id/action_sitesFragment_to_reportsFragment"
-            app:destination="@id/reportsFragment" />
+            android:id="@+id/action_sitesFragment_to_siteDetailsFragment"
+            app:destination="@id/siteDetailsFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/settingsFragment"
-        android:name="com.example.outiz.ui.settings.SettingsFragment"
-        android:label="Paramètres" />
-
-    <fragment
-        android:id="@+id/editSiteFragment"
-        android:name="com.example.outiz.ui.sites.EditSiteFragment"
-        android:label="Modifier un site">
-        <argument
-            android:name="siteId"
-            app:argType="string"
-            app:nullable="true" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/editReportFragment"
-        android:name="com.example.outiz.ui.reports.EditReportFragment"
-        android:label="Modifier un rapport">
-        <argument
-            android:name="reportId"
-            app:argType="string"
-            app:nullable="true" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/reportDetailsFragment"
-        android:name="com.example.outiz.ui.reports.ReportDetailsFragment"
-        android:label="Détails du rapport">
-        <argument
-            android:name="reportId"
-            app:argType="string" />
-    </fragment>
+        android:id="@+id/siteDetailsFragment"
+        android:name="com.example.outiz.ui.sites.SiteDetailsFragment"
+        android:label="SiteDetailsFragment" />
 
 </navigation>

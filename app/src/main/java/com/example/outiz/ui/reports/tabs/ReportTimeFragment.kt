@@ -5,14 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.outiz.databinding.FragmentReportTimeBinding
 import com.example.outiz.models.TimeEntry
+import com.example.outiz.ui.dialog.AddTimeEntryDialog
+import com.example.outiz.ui.viewmodel.ReportViewModel
 
 class ReportTimeFragment : Fragment() {
-    private var _binding: FragmentReportTimeBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentReportTimeBinding
+    private lateinit var viewModel: ReportViewModel
     private lateinit var adapter: TimeEntriesAdapter
     private var reportId: String? = null
 
@@ -26,20 +29,23 @@ class ReportTimeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentReportTimeBinding.inflate(inflater, container, false)
+        binding = FragmentReportTimeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(requireActivity())[ReportViewModel::class.java]
+
         setupRecyclerView()
         setupAddButton()
+        observeTimeEntries()
     }
 
     private fun setupRecyclerView() {
         adapter = TimeEntriesAdapter(
             onEditClick = { timeEntry -> showEditDialog(timeEntry) },
-            onDeleteClick = { timeEntry -> showDeleteDialog(timeEntry) }
+            onDeleteClick = { timeEntry -> deleteTimeEntry(timeEntry) }
         )
 
         binding.timeEntriesList.apply {
@@ -50,7 +56,6 @@ class ReportTimeFragment : Fragment() {
 
     private fun setupAddButton() {
         binding.addTimeEntryButton.setOnClickListener {
-            // Récupérer l'ID du technicien depuis les préférences
             val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
             val technicianId = prefs.getString("technician_id", null)
             if (technicianId != null && reportId != null) {
@@ -60,20 +65,34 @@ class ReportTimeFragment : Fragment() {
     }
 
     private fun showAddDialog() {
-        // TODO: Implémenter l'ajout d'une entrée de temps
+        val dialog = AddTimeEntryDialog().apply {
+            arguments = Bundle().apply { 
+                putString("reportId", reportId) 
+            }
+        }
+        dialog.show(parentFragmentManager, "add_time_entry")
     }
 
     private fun showEditDialog(timeEntry: TimeEntry) {
-        // TODO: Implémenter la modification d'une entrée de temps
+        val dialog = AddTimeEntryDialog().apply {
+            arguments = Bundle().apply { 
+                putString("reportId", reportId)
+                putParcelable("timeEntry", timeEntry)
+            }
+        }
+        dialog.show(parentFragmentManager, "edit_time_entry")
     }
 
-    private fun showDeleteDialog(timeEntry: TimeEntry) {
-        // TODO: Implémenter la suppression d'une entrée de temps
+    private fun deleteTimeEntry(timeEntry: TimeEntry) {
+        viewModel.deleteTimeEntry(timeEntry)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun observeTimeEntries() {
+        reportId?.let { viewModel.loadTimeEntries(it) }
+        viewModel.timeEntries.observe(viewLifecycleOwner) { entries ->
+            adapter.updateEntries(entries)
+            binding.emptyStateText.visibility = if (entries.isEmpty()) View.VISIBLE else View.GONE
+        }
     }
 
     companion object {

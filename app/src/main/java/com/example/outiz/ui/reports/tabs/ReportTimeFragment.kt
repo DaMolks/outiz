@@ -86,7 +86,7 @@ class ReportTimeFragment : Fragment() {
             val taskType = taskTypeSpinner.selectedItem.toString()
 
             val timeEntry = TimeEntry(
-                reportId = viewModel.currentReport.value?.id ?: 0,
+                reportId = viewModel.currentReport.value?.id ?: "",
                 startTime = startTime,
                 endTime = endTime,
                 description = description,

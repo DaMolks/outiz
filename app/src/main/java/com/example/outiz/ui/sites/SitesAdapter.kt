@@ -3,7 +3,6 @@ package com.example.outiz.ui.sites
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.PopupMenu
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.outiz.R
@@ -66,15 +65,5 @@ class SitesAdapter(
                 }
             }
         }
-    }
-}
-
-class SiteDiffCallback : DiffUtil.ItemCallback<Site>() {
-    override fun areItemsTheSame(oldItem: Site, newItem: Site): Boolean {
-        return oldItem.id == newItem.id
-    }
-
-    override fun areContentsTheSame(oldItem: Site, newItem: Site): Boolean {
-        return oldItem == newItem
     }
 }

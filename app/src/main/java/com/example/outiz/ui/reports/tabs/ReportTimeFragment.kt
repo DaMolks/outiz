@@ -50,7 +50,7 @@ class ReportTimeFragment : Fragment() {
 
         binding.timeEntriesList.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = this@ReportTimeFragment.adapter
+            this.adapter = this@ReportTimeFragment.adapter
         }
     }
 

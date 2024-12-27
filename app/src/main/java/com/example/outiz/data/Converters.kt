@@ -29,22 +29,12 @@ class Converters {
     }
 
     @TypeConverter
-    fun convertActionsList(actions: List<String>?): String? {
-        return actions?.joinToString("|")
+    fun fromListToString(list: List<String>?): String? {
+        return list?.joinToString("|")
     }
 
     @TypeConverter
-    fun parseActionsList(actionsString: String?): List<String>? {
-        return actionsString?.split("|")
-    }
-
-    @TypeConverter
-    fun convertPhotosPaths(paths: List<String>?): String? {
-        return paths?.joinToString("|")
-    }
-
-    @TypeConverter
-    fun parsePhotosPaths(pathsString: String?): List<String>? {
-        return pathsString?.split("|")
+    fun fromStringToList(value: String?): List<String>? {
+        return value?.split("|")
     }
 }

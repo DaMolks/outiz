@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.preference.PreferenceManager
 import com.example.outiz.data.OutizDatabase
 import com.example.outiz.models.Report
 import com.example.outiz.models.TimeEntry
@@ -44,6 +45,11 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
             timeEntryDao.delete(timeEntry)
             loadTimeEntries(timeEntry.reportId)
         }
+    }
+
+    fun getCurrentTechnicianId(): String {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(getApplication())
+        return prefs.getString("technician_id", "1") ?: "1"
     }
 
     fun getTechnicianInfo(): LiveData<Technician> = technicianDao.getCurrentTechnician()

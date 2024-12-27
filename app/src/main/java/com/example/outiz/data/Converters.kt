@@ -30,11 +30,11 @@ class Converters {
 
     @TypeConverter
     fun fromListToString(list: List<String>?): String? {
-        return list?.joinToString("|")
+        return list?.joinToString(",")
     }
 
     @TypeConverter
     fun fromStringToList(value: String?): List<String>? {
-        return value?.split("|")
+        return value?.split(",")?.filter { it.isNotBlank() }
     }
 }

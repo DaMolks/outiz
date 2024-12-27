@@ -38,10 +38,7 @@ abstract class OutizDatabase : RoomDatabase() {
                     OutizDatabase::class.java,
                     "outiz_database"
                 )
-                .addMigrations(
-                    Migrations.MIGRATION_3_2,
-                    Migrations.MIGRATION_2_1
-                )
+                .addMigrations(Migrations.MIGRATION_3_2)
                 .build()
                 INSTANCE = instance
                 instance

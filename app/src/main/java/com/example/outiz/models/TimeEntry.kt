@@ -24,5 +24,6 @@ data class TimeEntry(
     val startTime: LocalDateTime,
     val endTime: LocalDateTime,
     val description: String,
-    val taskType: String
+    val taskType: String,
+    val technicians: List<String> = listOf()
 ) : Parcelable

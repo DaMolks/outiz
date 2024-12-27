@@ -36,8 +36,27 @@ abstract class OutizDatabase : RoomDatabase() {
 
         private val MIGRATION_1_2 = object : Migration(1, 2) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                // Ajouter ici les migrations de schéma si nécessaire
-                // Par exemple : database.execSQL("ALTER TABLE report ADD COLUMN new_column INTEGER DEFAULT 0")
+                // Recréer la table time_entries avec la nouvelle structure
+                database.execSQL("DROP TABLE IF EXISTS time_entries")
+                database.execSQL("""
+                    CREATE TABLE time_entries (
+                        id TEXT PRIMARY KEY NOT NULL,
+                        reportId TEXT NOT NULL,
+                        technicianId TEXT NOT NULL,
+                        date INTEGER NOT NULL,
+                        duration INTEGER NOT NULL,
+                        technicianFirstName TEXT,
+                        technicianLastName TEXT,
+                        arrivalTime INTEGER,
+                        departureTime INTEGER,
+                        interventionDuration INTEGER,
+                        travelDuration INTEGER,
+                        FOREIGN KEY(reportId) REFERENCES reports(id) ON DELETE CASCADE,
+                        FOREIGN KEY(technicianId) REFERENCES technicians(id) ON DELETE CASCADE
+                    )
+                """)
+                database.execSQL("CREATE INDEX index_time_entries_reportId ON time_entries(reportId)")
+                database.execSQL("CREATE INDEX index_time_entries_technicianId ON time_entries(technicianId)")
             }
         }
 

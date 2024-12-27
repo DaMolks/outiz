@@ -16,6 +16,12 @@ antml:parameter name="repo">outiz</parameter
 antml:parameter name="files">[{"path": "...", "content": "..."}]
 ```
 
+## Gestion des erreurs
+- OBLIGATOIRE : Résoudre TOUTES les erreurs d'un log avant de terminer
+- NE PAS attendre de confirmation intermédiaire
+- Vérifier systématiquement si d'autres erreurs pourraient apparaître
+- Indiquer clairement quand toutes les erreurs sont résolues
+
 ## Vérifications systématiques
 1. Impact des modifications sur les autres composants
 2. Cohérence avec l'architecture MVVM
@@ -33,3 +39,8 @@ antml:parameter name="files">[{"path": "...", "content": "..."}]
 - Vérifier les dépendances entre composants
 - Maintenir la cohérence de l'architecture
 - Documenter toutes les modifications
+
+## Économie des messages
+- Un seul message pour résoudre toutes les erreurs
+- Ne pas attendre de confirmation sauf demande explicite
+- Traiter tous les problèmes liés dans une même réponse

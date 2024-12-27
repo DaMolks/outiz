@@ -15,21 +15,20 @@ import java.util.*
 class AddTimeEntryDialog : DialogFragment() {
     private var binding: DialogAddTimeEntryBinding? = null
     private lateinit var viewModel: ReportViewModel
-    private var reportId: Long = 0
+    private var reportId: String = ""
     private var timeEntry: TimeEntry? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(requireActivity())[ReportViewModel::class.java]
-        reportId = arguments?.getLong("reportId") ?: 0
-        timeEntry = arguments?.getParcelable("timeEntry")
+        reportId = arguments?.getString(REPORT_ID_KEY) ?: ""
+        timeEntry = arguments?.getParcelable(TIME_ENTRY_KEY)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = DialogAddTimeEntryBinding.inflate(layoutInflater)
         
-        setupTimePickers()
-        setupOwnerSwitch()
+        setupTimePicker()
         timeEntry?.let { populateFields(it) }
 
         return MaterialAlertDialogBuilder(requireContext())
@@ -42,80 +41,44 @@ class AddTimeEntryDialog : DialogFragment() {
             .create()
     }
 
-    private fun setupTimePickers() {
-        binding?.arrivalTimePicker?.setOnClickListener {
-            showTimePickerDialog { time ->
-                binding?.arrivalTimePicker?.setText(time)
+    private fun setupTimePicker() {
+        binding?.durationInput?.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            if (timeEntry != null) {
+                val duration = timeEntry!!.duration
+                calendar.set(Calendar.HOUR_OF_DAY, (duration / 60).toInt())
+                calendar.set(Calendar.MINUTE, (duration % 60).toInt())
             }
-        }
-
-        binding?.departureTimePicker?.setOnClickListener {
-            showTimePickerDialog { time ->
-                binding?.departureTimePicker?.setText(time)
-            }
-        }
-    }
-
-    private fun setupOwnerSwitch() {
-        binding?.ownerSwitch?.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                viewModel.getTechnicianInfo().observe(this) { technician ->
-                    binding?.firstNameInput?.setText(technician.firstName)
-                    binding?.lastNameInput?.setText(technician.lastName)
-                }
-                binding?.technicianNameGroup?.isEnabled = false
-            } else {
-                binding?.firstNameInput?.text?.clear()
-                binding?.lastNameInput?.text?.clear()
-                binding?.technicianNameGroup?.isEnabled = true
-            }
+            
+            TimePickerDialog(
+                requireContext(),
+                { _, hour, minute ->
+                    val durationMinutes = hour * 60L + minute
+                    binding?.durationInput?.setText(formatDuration(durationMinutes))
+                },
+                calendar.get(Calendar.HOUR_OF_DAY),
+                calendar.get(Calendar.MINUTE),
+                true
+            ).show()
         }
     }
 
     private fun populateFields(entry: TimeEntry) {
         binding?.apply {
-            ownerSwitch.isChecked = entry.isOwner
-            firstNameInput.setText(entry.technicianFirstName)
-            lastNameInput.setText(entry.technicianLastName)
-            arrivalTimePicker.setText(formatTime(entry.arrivalTime))
-            departureTimePicker.setText(formatTime(entry.departureTime))
-            interventionDurationInput.setText(entry.interventionDuration.toString())
-            travelDurationInput.setText(entry.travelDuration.toString())
+            durationInput.setText(formatDuration(entry.duration))
+            // La date sera déjà remplie avec la date du jour
         }
     }
 
-    private fun showTimePickerDialog(onTimeSet: (String) -> Unit) {
-        val calendar = Calendar.getInstance()
-        TimePickerDialog(
-            requireContext(),
-            { _, hour, minute ->
-                onTimeSet(String.format("%02d:%02d", hour, minute))
-            },
-            calendar.get(Calendar.HOUR_OF_DAY),
-            calendar.get(Calendar.MINUTE),
-            true
-        ).show()
-    }
-
     private fun saveTimeEntry() {
-        val firstName = binding?.firstNameInput?.text.toString()
-        val lastName = binding?.lastNameInput?.text.toString()
-        val isOwner = binding?.ownerSwitch?.isChecked ?: false
-        val arrivalTime = binding?.arrivalTimePicker?.text.toString()
-        val departureTime = binding?.departureTimePicker?.text.toString()
-        val interventionDuration = binding?.interventionDurationInput?.text.toString().toIntOrNull() ?: 0
-        val travelDuration = binding?.travelDurationInput?.text.toString().toIntOrNull() ?: 0
+        val duration = parseDuration(binding?.durationInput?.text.toString())
 
         val entry = TimeEntry(
-            id = timeEntry?.id ?: 0,
+            id = timeEntry?.id ?: UUID.randomUUID().toString(),
             reportId = reportId,
-            technicianFirstName = firstName,
-            technicianLastName = lastName,
-            isOwner = isOwner,
-            arrivalTime = parseTime(arrivalTime),
-            departureTime = parseTime(departureTime),
-            interventionDuration = interventionDuration,
-            travelDuration = travelDuration
+            technicianId = viewModel.getCurrentTechnicianId(),
+            date = Date(),
+            duration = duration
         )
 
         if (timeEntry == null) {
@@ -125,13 +88,21 @@ class AddTimeEntryDialog : DialogFragment() {
         }
     }
 
-    private fun parseTime(timeString: String): Date {
-        val format = SimpleDateFormat("HH:mm", Locale.getDefault())
-        return format.parse(timeString) ?: Date()
+    private fun formatDuration(minutes: Long): String {
+        return String.format("%02d:%02d", minutes / 60, minutes % 60)
     }
 
-    private fun formatTime(date: Date): String {
-        val format = SimpleDateFormat("HH:mm", Locale.getDefault())
-        return format.format(date)
+    private fun parseDuration(durationStr: String): Long {
+        val parts = durationStr.split(":")
+        return if (parts.size == 2) {
+            parts[0].toLong() * 60 + parts[1].toLong()
+        } else {
+            0
+        }
+    }
+
+    companion object {
+        private const val REPORT_ID_KEY = "reportId"
+        private const val TIME_ENTRY_KEY = "timeEntry"
     }
 }

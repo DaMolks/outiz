@@ -7,9 +7,10 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.outiz.databinding.DialogAddTimeEntryBinding
 import com.example.outiz.models.TimeEntry
-import com.example.outiz.ui.viewmodel.ReportViewModel
+import com.example.outiz.ui.reports.ReportViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.Duration
 import java.util.*
 
 class AddTimeEntryDialog : DialogFragment() {
@@ -53,7 +54,7 @@ class AddTimeEntryDialog : DialogFragment() {
             TimePickerDialog(
                 requireContext(),
                 { _, hour, minute ->
-                    val durationMinutes = hour * 60L + minute
+                    val durationMinutes = hour * 60 + minute
                     binding?.durationInput?.setText(formatDuration(durationMinutes))
                 },
                 calendar.get(Calendar.HOUR_OF_DAY),
@@ -71,31 +72,32 @@ class AddTimeEntryDialog : DialogFragment() {
 
     private fun saveTimeEntry() {
         val duration = parseDuration(binding?.durationInput?.text.toString())
-        val currentTechnicianId = viewModel.getCurrentTechnicianId()
-        
+        val now = LocalDateTime.now()
         val entry = TimeEntry(
-            id = timeEntry?.id ?: UUID.randomUUID().toString(),
             reportId = reportId,
-            technicianId = currentTechnicianId,
             date = Date(),
-            duration = duration
+            duration = duration,
+            startTime = now,
+            endTime = now.plusMinutes(duration.toLong()),
+            description = binding?.durationInput?.text.toString(),
+            taskType = "Intervention"
         )
 
         if (timeEntry == null) {
             viewModel.addTimeEntry(entry)
         } else {
-            viewModel.updateTimeEntry(entry)
+            // Implémentez la mise à jour si nécessaire
         }
     }
 
-    private fun formatDuration(minutes: Long): String {
+    private fun formatDuration(minutes: Int): String {
         return String.format("%02d:%02d", minutes / 60, minutes % 60)
     }
 
-    private fun parseDuration(durationStr: String): Long {
+    private fun parseDuration(durationStr: String): Int {
         val parts = durationStr.split(":")
         return if (parts.size == 2) {
-            parts[0].toLong() * 60 + parts[1].toLong()
+            parts[0].toInt() * 60 + parts[1].toInt()
         } else {
             0
         }

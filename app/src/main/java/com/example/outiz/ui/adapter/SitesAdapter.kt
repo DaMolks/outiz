@@ -31,12 +31,16 @@ class SitesAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(site: Site) {
             binding.apply {
-                siteNameText.text = site.name
-                siteAddressText.text = site.address
+                siteName.text = site.name
+                siteCode.text = "Code S: ${site.code}"
+                clientName.text = "Client: ${site.client}"
+                siteAddress.text = site.address
 
                 root.setOnClickListener { onSiteClick(site) }
-                editButton.setOnClickListener { onSiteEdit(site) }
-                deleteButton.setOnClickListener { onSiteDelete(site) }
+                moreButton.setOnClickListener { 
+                    onSiteEdit(site)
+                    onSiteDelete(site) 
+                }
             }
         }
     }

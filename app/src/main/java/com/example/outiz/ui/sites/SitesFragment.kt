@@ -38,11 +38,14 @@ class SitesFragment : Fragment() {
 
     private fun setupRecyclerView() {
         adapter = SitesAdapter(
-            onEditClick = { site -> navigateToEditSite(site.id) },
-            onReportsClick = { site -> navigateToReports(site.id) }
+            onSiteClick = { site -> navigateToReports(site.id) },
+            onSiteEdit = { site -> navigateToEditSite(site.id) },
+            onSiteDelete = { site -> deleteSite(site) }
         )
-        binding.sitesRecyclerView.layoutManager = LinearLayoutManager(context)
-        binding.sitesRecyclerView.adapter = adapter
+        binding.sitesRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            this.adapter = this@SitesFragment.adapter
+        }
     }
 
     private fun navigateToEditSite(siteId: String?) {
@@ -53,6 +56,10 @@ class SitesFragment : Fragment() {
     private fun navigateToReports(siteId: String?) {
         val args = Bundle().apply { putString("siteId", siteId) }
         findNavController().navigate(R.id.reportsFragment, args)
+    }
+
+    private fun deleteSite(site: com.example.outiz.models.Site) {
+        viewModel.deleteSite(site)
     }
 
     private fun setupAddSiteButton() {

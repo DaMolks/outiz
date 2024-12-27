@@ -32,35 +32,6 @@ data class Report(
     val isPhotosEnabled: Boolean = true
 )
 
-@Entity(
-    tableName = "time_entries",
-    foreignKeys = [
-        ForeignKey(
-            entity = Report::class,
-            parentColumns = ["id"],
-            childColumns = ["reportId"],
-            onDelete = ForeignKey.CASCADE
-        ),
-        ForeignKey(
-            entity = Technician::class,
-            parentColumns = ["id"],
-            childColumns = ["technicianId"],
-            onDelete = ForeignKey.CASCADE
-        )
-    ],
-    indices = [
-        Index(value = ["reportId"]),
-        Index(value = ["technicianId"])
-    ]
-)
-data class TimeEntry(
-    @PrimaryKey val id: String,
-    val reportId: String,
-    val technicianId: String,
-    val date: Date,
-    val duration: Long // Durée en minutes
-)
-
 data class ReportWithDetails(
     @Embedded val report: Report,
     @Relation(

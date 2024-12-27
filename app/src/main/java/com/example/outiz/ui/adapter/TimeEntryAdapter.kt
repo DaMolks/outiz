@@ -30,8 +30,9 @@ class TimeEntryAdapter(
         val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
 
         holder.binding.apply {
-            dateText.text = dateFormat.format(timeEntry.date)
-            durationText.text = formatDuration(timeEntry.duration)
+            technicianNameText.text = "${timeEntry.technicianFirstName} ${timeEntry.technicianLastName}"
+            timeInfoText.text = "${dateFormat.format(timeEntry.arrivalTime)} - ${dateFormat.format(timeEntry.departureTime)}"
+            durationText.text = "Intervention: ${timeEntry.interventionDuration}min - Déplacement: ${timeEntry.travelDuration}min"
 
             editButton.setOnClickListener { onEditClick(timeEntry) }
             deleteButton.setOnClickListener { onDeleteClick(timeEntry) }
@@ -43,15 +44,5 @@ class TimeEntryAdapter(
     fun updateEntries(newEntries: List<TimeEntry>) {
         timeEntries = newEntries
         notifyDataSetChanged()
-    }
-
-    private fun formatDuration(minutes: Long): String {
-        val hours = minutes / 60
-        val mins = minutes % 60
-        return if (hours > 0) {
-            String.format("%dh%02d", hours, mins)
-        } else {
-            String.format("%d min", mins)
-        }
     }
 }

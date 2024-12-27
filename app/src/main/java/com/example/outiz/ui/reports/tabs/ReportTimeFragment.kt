@@ -5,22 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.outiz.databinding.FragmentReportTimeBinding
 import com.example.outiz.models.TimeEntry
-import com.example.outiz.ui.reports.EditReportViewModel
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import java.util.Date
 
 class ReportTimeFragment : Fragment() {
-
     private var _binding: FragmentReportTimeBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: EditReportViewModel by viewModels({ requireParentFragment() })
+    private lateinit var adapter: TimeEntriesAdapter
+    private var reportId: String? = null
 
-    private lateinit var timeEntriesAdapter: TimeEntriesAdapter
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        reportId = arguments?.getString(ARG_REPORT_ID)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,50 +32,57 @@ class ReportTimeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupRecyclerView()
-        setupObservers()
-        setupListeners()
+        setupAddButton()
     }
 
     private fun setupRecyclerView() {
-        timeEntriesAdapter = TimeEntriesAdapter { entry ->
-            viewModel.removeTimeEntry(entry)
-        }
-
-        binding.timeEntriesRecyclerView.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = timeEntriesAdapter
-        }
-    }
-
-    private fun setupObservers() {
-        viewModel.timeEntries.observe(viewLifecycleOwner) { entries ->
-            timeEntriesAdapter.submitList(entries)
-            binding.emptyView.visibility = if (entries.isEmpty()) View.VISIBLE else View.GONE
-        }
-    }
-
-    private fun setupListeners() {
-        binding.addTimeButton.setOnClickListener {
-            showAddTimeDialog()
-        }
-    }
-
-    private fun showAddTimeDialog() {
-        // TODO: Implémenter le dialog pour ajouter le temps
-        val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        val technicianId = prefs.getString("technician_id", null) ?: return
-
-        viewModel.addTimeEntry(
-            technicianId = technicianId,
-            date = Date(),
-            duration = 60 // 1 heure par défaut
+        adapter = TimeEntriesAdapter(
+            onEditClick = { timeEntry -> showEditDialog(timeEntry) },
+            onDeleteClick = { timeEntry -> showDeleteDialog(timeEntry) }
         )
+
+        binding.timeEntriesList.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = this@ReportTimeFragment.adapter
+        }
+    }
+
+    private fun setupAddButton() {
+        binding.addTimeEntryButton.setOnClickListener {
+            // Récupérer l'ID du technicien depuis les préférences
+            val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
+            val technicianId = prefs.getString("technician_id", null)
+            if (technicianId != null && reportId != null) {
+                showAddDialog()
+            }
+        }
+    }
+
+    private fun showAddDialog() {
+        // TODO: Implémenter l'ajout d'une entrée de temps
+    }
+
+    private fun showEditDialog(timeEntry: TimeEntry) {
+        // TODO: Implémenter la modification d'une entrée de temps
+    }
+
+    private fun showDeleteDialog(timeEntry: TimeEntry) {
+        // TODO: Implémenter la suppression d'une entrée de temps
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        private const val ARG_REPORT_ID = "reportId"
+
+        fun newInstance(reportId: String) = ReportTimeFragment().apply {
+            arguments = Bundle().apply {
+                putString(ARG_REPORT_ID, reportId)
+            }
+        }
     }
 }

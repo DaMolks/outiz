@@ -1,10 +1,13 @@
 package com.example.outiz.models
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parcelize
 import java.util.Date
 
+@Parcelize
 @Entity(
     tableName = "time_entries",
     foreignKeys = [
@@ -22,9 +25,9 @@ data class TimeEntry(
     val reportId: Long,
     val technicianFirstName: String,
     val technicianLastName: String,
-    val isOwner: Boolean, // Pour identifier si c'est le propriétaire du téléphone
+    val isOwner: Boolean,
     val arrivalTime: Date,
     val departureTime: Date,
-    val interventionDuration: Int, // En minutes
-    val travelDuration: Int // En minutes
-)
+    val interventionDuration: Int,
+    val travelDuration: Int
+) : Parcelable

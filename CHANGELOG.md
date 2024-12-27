@@ -3,12 +3,8 @@
 ## [Unreleased]
 
 ### Fixed
-- Refonte majeure de la migration de base de données :
-  - Gestion complète des conversions de types Date et LocalDateTime
-  - Vérification approfondie de l'intégrité des données
-  - Fallback automatique en cas d'erreur
-  - Validation post-migration
-- Utilisation correcte des valeurs par défaut pour toutes les colonnes
+- Ajout de l'annotation @Index sur TimeEntry pour le champ reportId
+- Correction de la déclaration des indices Room
 
 ### Added
 - Ressources de couleurs Material Design Light
@@ -22,13 +18,11 @@
 
 ## Modification Log
 
-### 2024-12-28 00:10 UTC
-- Refonte majeure de la migration pour gérer correctement les types de données
-- Amélioration de la robustesse de la migration
-- Ajout de vérifications d'intégrité
+### 2024-12-28 00:15 UTC
+- Ajout de l'annotation @Index sur l'entité TimeEntry
 - Mise à jour du CHANGELOG
 
-### 2024-01-07 18:30 UTC
+### 2024-12-27 18:30 UTC
 - Ajout du fichier `colors.xml` avec les ressources de couleurs Material Design
   - `md_theme_light_primary`
   - `md_theme_light_primaryContainer`

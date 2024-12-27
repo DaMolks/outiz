@@ -6,13 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.outiz.databinding.FragmentReportDetailsBinding
+import com.example.outiz.ui.reports.tabs.TimeEntriesAdapter
 
 class ReportDetailsFragment : Fragment() {
     private var _binding: FragmentReportDetailsBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: EditReportViewModel by viewModels()
+    private lateinit var timeEntriesAdapter: TimeEntriesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,6 +28,13 @@ class ReportDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Configuration du RecyclerView pour les entrées de temps
+        timeEntriesAdapter = TimeEntriesAdapter()
+        binding.recyclerViewTimeEntries.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = timeEntriesAdapter
+        }
 
         // Récupérer l'ID du rapport depuis les arguments
         val reportId = arguments?.getString("reportId") ?: return
@@ -44,13 +54,19 @@ class ReportDetailsFragment : Fragment() {
                 // Afficher les entrées de temps
                 if (report.report.isTimeTrackingEnabled) {
                     val timeEntries = report.timeEntries
-                    // TODO: Implémenter l'affichage des entrées de temps
+                    timeEntriesAdapter.submitList(timeEntries)
+                    binding.cardViewTimeEntries.visibility = if (timeEntries.isNotEmpty()) View.VISIBLE else View.GONE
+                } else {
+                    binding.cardViewTimeEntries.visibility = View.GONE
                 }
 
                 // Afficher les photos
                 if (report.report.isPhotosEnabled) {
                     val photos = report.report.photosPaths ?: emptyList()
-                    // TODO: Implémenter l'affichage des photos
+                    // TODO: Implémenter l'affichage des photos avec un adaptateur
+                    binding.cardViewPhotos.visibility = if (photos.isNotEmpty()) View.VISIBLE else View.GONE
+                } else {
+                    binding.cardViewPhotos.visibility = View.GONE
                 }
             }
         }

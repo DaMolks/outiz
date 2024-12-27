@@ -8,42 +8,30 @@ object Migrations {
     // Migration de la version 3 à 2 : Transformation de la structure de time_entries
     val MIGRATION_3_2 = object : Migration(3, 2) {
         override fun migrate(db: SupportSQLiteDatabase) {
-            // Vérifier les colonnes existantes
-            val cursor = db.query("PRAGMA table_info(time_entries)")
-            val existingColumns = mutableSetOf<String>()
-
-            if (cursor.moveToFirst()) {
-                val nameIndex = cursor.getColumnIndex("name")
-                while (!cursor.isAfterLast) {
-                    existingColumns.add(cursor.getString(nameIndex))
-                    cursor.moveToNext()
-                }
-            }
-            cursor.close()
-
-            // Créer une table temporaire
+            // Créer une nouvelle table avec la structure exacte
             db.execSQL("""
                 CREATE TABLE time_entries_new (
-                    `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                    `reportId` TEXT NOT NULL,
                     `date` INTEGER NOT NULL,
                     `duration` INTEGER NOT NULL,
-                    `startTime` TEXT NOT NULL,
-                    `endTime` TEXT NOT NULL,
+                    `taskType` TEXT NOT NULL,
+                    `reportId` TEXT NOT NULL,
                     `description` TEXT NOT NULL,
-                    `taskType` TEXT NOT NULL
+                    `startTime` TEXT NOT NULL,
+                    `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                    `endTime` TEXT NOT NULL
                 )
             """)
 
-            // Copier les données en convertissant si nécessaire
-            val copyColumns = listOf(
-                "id", "reportId", "date", "duration", 
-                "startTime", "endTime", "description", "taskType"
-            ).filter { existingColumns.contains(it) }
-
-            val copyQuery = "INSERT INTO time_entries_new (${copyColumns.joinToString(", ")}) " +
-                           "SELECT ${copyColumns.joinToString(", ")} FROM time_entries"
-            db.execSQL(copyQuery)
+            // Copier les données en respectant l'ordre exact
+            db.execSQL("""
+                INSERT INTO time_entries_new (
+                    `date`, `duration`, `taskType`, `reportId`, 
+                    `description`, `startTime`, `id`, `endTime`
+                ) SELECT 
+                    `date`, `duration`, `taskType`, `reportId`, 
+                    `description`, `startTime`, `id`, `endTime` 
+                FROM time_entries
+            """)
 
             // Supprimer l'ancienne table
             db.execSQL("DROP TABLE time_entries")

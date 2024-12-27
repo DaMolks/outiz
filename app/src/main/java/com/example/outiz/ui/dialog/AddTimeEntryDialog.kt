@@ -21,7 +21,14 @@ class AddTimeEntryDialog : DialogFragment() {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(requireActivity())[ReportViewModel::class.java]
         reportId = arguments?.getString(REPORT_ID_KEY) ?: ""
-        timeEntry = arguments?.getParcelable<TimeEntry>(TIME_ENTRY_KEY)
+        timeEntry = arguments?.let { 
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                it.getParcelable(TIME_ENTRY_KEY, TimeEntry::class.java)
+            } else {
+                @Suppress("DEPRECATION")
+                it.getParcelable(TIME_ENTRY_KEY)
+            }
+        }
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

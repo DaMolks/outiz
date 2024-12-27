@@ -13,8 +13,8 @@ interface TimeEntryDao {
     suspend fun delete(timeEntry: TimeEntry)
 
     @Query("SELECT * FROM time_entries WHERE reportId = :reportId")
-    suspend fun getTimeEntriesForReport(reportId: Long): List<TimeEntry>
+    suspend fun getTimeEntriesForReport(reportId: String): List<TimeEntry>
 
     @Query("SELECT * FROM time_entries WHERE reportId = :reportId")
-    fun getTimeEntriesForReportFlow(reportId: Long): Flow<List<TimeEntry>>
+    fun getTimeEntriesForReportFlow(reportId: String): Flow<List<TimeEntry>>
 }

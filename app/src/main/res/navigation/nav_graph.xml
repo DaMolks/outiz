@@ -49,16 +49,63 @@
     <fragment
         android:id="@+id/reportsFragment"
         android:name="com.example.outiz.ui.reports.ReportsFragment"
-        android:label="Rapports" />
+        android:label="Rapports" >
+        <argument
+            android:name="siteId"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_reportsFragment_to_reportDetailsFragment"
+            app:destination="@id/reportDetailsFragment" />
+        <action
+            android:id="@+id/action_reportsFragment_to_editReportFragment"
+            app:destination="@id/editReportFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/sitesFragment"
         android:name="com.example.outiz.ui.sites.SitesFragment"
-        android:label="Sites" />
+        android:label="Sites" >
+        <action
+            android:id="@+id/action_sitesFragment_to_editSiteFragment"
+            app:destination="@id/editSiteFragment" />
+        <action
+            android:id="@+id/action_sitesFragment_to_reportsFragment"
+            app:destination="@id/reportsFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.outiz.ui.settings.SettingsFragment"
         android:label="Paramètres" />
+
+    <fragment
+        android:id="@+id/editSiteFragment"
+        android:name="com.example.outiz.ui.sites.EditSiteFragment"
+        android:label="Modifier un site">
+        <argument
+            android:name="siteId"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editReportFragment"
+        android:name="com.example.outiz.ui.reports.EditReportFragment"
+        android:label="Modifier un rapport">
+        <argument
+            android:name="reportId"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/reportDetailsFragment"
+        android:name="com.example.outiz.ui.reports.ReportDetailsFragment"
+        android:label="Détails du rapport">
+        <argument
+            android:name="reportId"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

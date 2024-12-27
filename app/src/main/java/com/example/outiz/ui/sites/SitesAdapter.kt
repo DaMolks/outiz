@@ -44,7 +44,8 @@ class SitesAdapter(
                 textViewClientName.text = site.clientName
                 textViewSiteAddress.text = site.address
 
-                moreButton.setOnClickListener { view ->
+                // Ajout d'un menu contextuel
+                itemView.setOnClickListener { view ->
                     PopupMenu(view.context, view).apply {
                         inflate(R.menu.menu_site_item)
                         setOnMenuItemClickListener { menuItem ->

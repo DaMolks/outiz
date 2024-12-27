@@ -70,7 +70,7 @@ class ReportsFragment : Fragment() {
     }
 
     private fun setupAddReportButton() {
-        binding.root.findViewById<View>(R.id.addReportButton).setOnClickListener {
+        binding.addReportButton.setOnClickListener {
             findNavController().navigate(R.id.editReportFragment)
         }
     }
@@ -79,7 +79,7 @@ class ReportsFragment : Fragment() {
         viewModel.loadReports()
         viewModel.reports.observe(viewLifecycleOwner) { reports ->
             reportsAdapter.submitList(reports)
-            binding.root.findViewById<View>(R.id.emptyStateText).visibility = if (reports.isEmpty()) View.VISIBLE else View.GONE
+            binding.emptyStateText.visibility = if (reports.isEmpty()) View.VISIBLE else View.GONE
         }
     }
 

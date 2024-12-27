@@ -63,7 +63,7 @@ class SitesFragment : Fragment() {
     }
 
     private fun setupAddSiteButton() {
-        binding.root.findViewById<View>(R.id.addSiteButton).setOnClickListener {
+        binding.addSiteButton.setOnClickListener {
             findNavController().navigate(R.id.editSiteFragment)
         }
     }
@@ -71,7 +71,7 @@ class SitesFragment : Fragment() {
     private fun observeSites() {
         viewModel.sites.observe(viewLifecycleOwner) { sites ->
             adapter.submitList(sites)
-            binding.root.findViewById<View>(R.id.emptySitesText).visibility = if (sites.isEmpty()) View.VISIBLE else View.GONE
+            binding.emptySitesText.visibility = if (sites.isEmpty()) View.VISIBLE else View.GONE
         }
     }
 

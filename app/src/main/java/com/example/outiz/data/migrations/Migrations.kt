@@ -8,45 +8,38 @@ object Migrations {
     // Migration de la version 3 à 2 : Transformation de la structure de time_entries
     val MIGRATION_3_2 = object : Migration(3, 2) {
         override fun migrate(db: SupportSQLiteDatabase) {
-            // Créer une nouvelle table avec la structure exacte
+            // Vérifier la structure actuelle de la table
+            val cursor = db.query("SELECT * FROM time_entries LIMIT 1")
+            val columns = cursor.columnNames.toList()
+            cursor.close()
+
+            // Créer une nouvelle table avec tous les champs requis
             db.execSQL("""
                 CREATE TABLE time_entries_new (
-                    `date` INTEGER NOT NULL,
-                    `duration` INTEGER NOT NULL,
-                    `taskType` TEXT NOT NULL DEFAULT 'STANDARD',
-                    `reportId` TEXT NOT NULL,
-                    `description` TEXT NOT NULL,
-                    `startTime` TEXT NOT NULL,
                     `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                    `endTime` TEXT NOT NULL
+                    `date` INTEGER NOT NULL DEFAULT 0,
+                    `startTime` TEXT NOT NULL DEFAULT '',
+                    `endTime` TEXT NOT NULL DEFAULT '',
+                    `duration` INTEGER NOT NULL DEFAULT 0,
+                    `description` TEXT NOT NULL DEFAULT '',
+                    `taskType` TEXT NOT NULL DEFAULT 'STANDARD',
+                    `reportId` TEXT NOT NULL DEFAULT ''
                 )
             """)
 
-            // Vérifier si la colonne taskType existe
-            val cursor = db.query("SELECT * FROM time_entries LIMIT 1")
-            val hasTaskType = cursor.getColumnIndex("taskType") != -1
-            cursor.close()
-
-            // Copier les données en respectant l'ordre exact
-            if (hasTaskType) {
+            // Construire dynamiquement la requête INSERT en fonction des colonnes existantes
+            val existingColumns = columns.filter { it != "id" }.joinToString(", ") { "`$it`" }
+            
+            // Si aucune colonne existante, insérer juste l'ID
+            if (existingColumns.isEmpty()) {
                 db.execSQL("""
-                    INSERT INTO time_entries_new (
-                        `date`, `duration`, `taskType`, `reportId`, 
-                        `description`, `startTime`, `id`, `endTime`
-                    ) SELECT 
-                        `date`, `duration`, `taskType`, `reportId`, 
-                        `description`, `startTime`, `id`, `endTime` 
-                    FROM time_entries
+                    INSERT INTO time_entries_new (`id`)
+                    SELECT `id` FROM time_entries
                 """)
             } else {
                 db.execSQL("""
-                    INSERT INTO time_entries_new (
-                        `date`, `duration`, `reportId`, 
-                        `description`, `startTime`, `id`, `endTime`
-                    ) SELECT 
-                        `date`, `duration`, `reportId`, 
-                        `description`, `startTime`, `id`, `endTime` 
-                    FROM time_entries
+                    INSERT INTO time_entries_new (`id`, $existingColumns)
+                    SELECT `id`, $existingColumns FROM time_entries
                 """)
             }
 

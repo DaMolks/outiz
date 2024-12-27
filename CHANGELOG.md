@@ -3,6 +3,9 @@
 ## [Unreleased]
 
 ### Fixed
+- Amélioration majeure de la migration de base de données pour gérer toutes les colonnes manquantes
+- Ajout de valeurs par défaut pour toutes les colonnes
+- Construction dynamique des requêtes de migration
 - Correction de la migration de la base de données pour gérer le taskType manquant
 - Ajout d'une valeur par défaut 'STANDARD' pour la colonne taskType
 - Amélioration de la robustesse de la migration 3_2
@@ -23,6 +26,11 @@
 - Ajustement de la structure du layout principal
 
 ## Modification Log
+
+### 2024-12-27 23:52 UTC
+- Refonte complète de la migration pour plus de robustesse
+- Ajout de la construction dynamique des requêtes de migration
+- Ajout de valeurs par défaut pour toutes les colonnes
 
 ### 2024-12-27 23:45 UTC
 - Correction de la migration de la base de données

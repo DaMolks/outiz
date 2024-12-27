@@ -1,4 +1,5 @@
 # Directives Claude
+## Repo du projet: https://github.com/DaMolks/outiz
 
 ## Initialisation requise
 1. 📚 Lire TOUS les fichiers du repo au lancement du chat

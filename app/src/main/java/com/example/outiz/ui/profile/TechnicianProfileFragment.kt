@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.outiz.databinding.FragmentTechnicianProfileBinding
+import com.example.outiz.R
 import com.google.android.material.snackbar.Snackbar
 
 class TechnicianProfileFragment : Fragment() {
@@ -47,9 +48,7 @@ class TechnicianProfileFragment : Fragment() {
     private fun observeViewModel() {
         viewModel.saveSuccess.observe(viewLifecycleOwner) { success ->
             if (success) {
-                findNavController().navigate(
-                    TechnicianProfileFragmentDirections.actionTechnicianProfileFragmentToHomeFragment()
-                )
+                findNavController().navigate(R.id.homeFragment)
             } else {
                 Snackbar.make(
                     binding.root,

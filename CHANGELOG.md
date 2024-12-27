@@ -3,9 +3,12 @@
 ## [Unreleased]
 
 ### Fixed
-- Refonte de la migration pour correspondre exactement à l'entité TimeEntry
-- Gestion plus robuste des erreurs pendant la migration
-- Amélioration de la préservation des données
+- Refonte majeure de la migration de base de données :
+  - Gestion complète des conversions de types Date et LocalDateTime
+  - Vérification approfondie de l'intégrité des données
+  - Fallback automatique en cas d'erreur
+  - Validation post-migration
+- Utilisation correcte des valeurs par défaut pour toutes les colonnes
 
 ### Added
 - Ressources de couleurs Material Design Light
@@ -19,9 +22,10 @@
 
 ## Modification Log
 
-### 2024-12-27 23:58 UTC
-- Refonte de la migration basée sur l'entité TimeEntry
-- Amélioration de la gestion des erreurs pendant la migration
+### 2024-12-28 00:10 UTC
+- Refonte majeure de la migration pour gérer correctement les types de données
+- Amélioration de la robustesse de la migration
+- Ajout de vérifications d'intégrité
 - Mise à jour du CHANGELOG
 
 ### 2024-01-07 18:30 UTC

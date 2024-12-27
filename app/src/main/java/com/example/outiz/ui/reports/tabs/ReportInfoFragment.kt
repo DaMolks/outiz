@@ -62,6 +62,7 @@ class ReportInfoFragment : Fragment() {
             )
             binding.siteInput.setAdapter(adapter)
 
+            // Mettre à jour la référence au site sélectionné
             selectedSite?.let { selected ->
                 selectedSite = sites.find { it.id == selected.id }
             }

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.outiz.databinding.ItemTimeEntryBinding
 import com.example.outiz.models.TimeEntry
 import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 class TimeEntriesAdapter(
@@ -28,11 +29,15 @@ class TimeEntriesAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val entry = getItem(position)
-        val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+        val dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
+        val dateTimeFormatter = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
 
         holder.binding.apply {
-            timeInfoText.text = dateFormat.format(entry.date)
-            durationText.text = String.format("%d min", entry.duration)
+            textViewTaskType.text = entry.taskType
+            textViewDescription.text = entry.description
+            textViewStartTime.text = entry.startTime.format(dateFormat)
+            textViewEndTime.text = entry.endTime.format(dateFormat)
+            textViewDuration.text = String.format("%d min", entry.duration)
 
             editButton.setOnClickListener { onEditClick(entry) }
             deleteButton.setOnClickListener { onDeleteClick(entry) }

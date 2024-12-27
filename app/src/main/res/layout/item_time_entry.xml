@@ -5,53 +5,60 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp"
+    android:layout_margin="8dp"
     app:cardElevation="2dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp">
+        android:orientation="vertical"
+        android:padding="16dp">
 
         <TextView
             android:id="@+id/technicianName"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?attr/textAppearanceSubtitle1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/deleteButton"
-            tools:text="John Doe" />
+            android:textStyle="bold"
+            android:textSize="16sp"
+            tools:text="Jean Dupont" />
 
         <TextView
-            android:id="@+id/interventionDate"
-            android:layout_width="wrap_content"
+            android:id="@+id/timeInfo"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?attr/textAppearanceCaption"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/technicianName"
-            tools:text="25/12/2024" />
+            android:layout_marginTop="4dp"
+            tools:text="08:00 - 12:00" />
 
         <TextView
-            android:id="@+id/duration"
-            android:layout_width="wrap_content"
+            android:id="@+id/durations"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?attr/textAppearanceBody2"
-            app:layout_constraintEnd_toStartOf="@id/deleteButton"
-            app:layout_constraintTop_toBottomOf="@id/technicianName"
-            tools:text="2h30" />
+            android:layout_marginTop="4dp"
+            tools:text="Intervention: 180min - Déplacement: 30min" />
 
-        <ImageButton
-            android:id="@+id/deleteButton"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/delete"
-            android:padding="8dp"
-            android:src="@drawable/ic_delete"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:gravity="end">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/editButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="Modifier"
+                style="@style/Widget.MaterialComponents.Button.TextButton" />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/deleteButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Supprimer"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                app:strokeColor="@color/error"
+                android:textColor="@color/error" />
+        </LinearLayout>
+    </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

@@ -14,7 +14,8 @@ import com.example.outiz.ui.dialog.AddTimeEntryDialog
 import com.example.outiz.ui.viewmodel.ReportViewModel
 
 class ReportTimeFragment : Fragment() {
-    private lateinit var binding: FragmentReportTimeBinding
+    private var _binding: FragmentReportTimeBinding? = null
+    private val binding get() = _binding!!
     private lateinit var viewModel: ReportViewModel
     private lateinit var adapter: TimeEntriesAdapter
     private var reportId: String? = null
@@ -29,7 +30,7 @@ class ReportTimeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentReportTimeBinding.inflate(inflater, container, false)
+        _binding = FragmentReportTimeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -93,6 +94,11 @@ class ReportTimeFragment : Fragment() {
             adapter.updateEntries(entries)
             binding.emptyStateText.visibility = if (entries.isEmpty()) View.VISIBLE else View.GONE
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

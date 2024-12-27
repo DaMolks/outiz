@@ -62,6 +62,7 @@ class ReportsFragment : Fragment() {
     }
 
     private fun observeReports() {
+        viewModel.loadReports()
         viewModel.reports.observe(viewLifecycleOwner) { reports ->
             adapter.submitList(reports)
             binding.emptyStateText.visibility = if (reports.isEmpty()) View.VISIBLE else View.GONE

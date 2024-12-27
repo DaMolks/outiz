@@ -23,7 +23,9 @@
             android:id="@+id/editTextStartTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="datetime"/>
+            android:focusable="false"
+            android:drawableEnd="@drawable/ic_time"
+            android:inputType="none"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -35,19 +37,23 @@
             android:id="@+id/editTextEndTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="datetime"/>
+            android:focusable="false"
+            android:drawableEnd="@drawable/ic_time"
+            android:inputType="none"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Durée (minutes)">
+        android:hint="Durée">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/durationInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"/>
+            android:enabled="false"
+            android:focusable="false"
+            android:inputType="none"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <EditText
@@ -62,6 +68,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Techniciens">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/techniciansChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:chipSpacingHorizontal="4dp"
+            app:chipSpacingVertical="4dp" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/technicianInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/addTechnicianButton"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="Ajouter technicien" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/buttonSaveTimeEntry"

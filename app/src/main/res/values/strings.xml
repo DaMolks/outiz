@@ -22,4 +22,13 @@
     <string name="this_week">Cette semaine</string>
     <string name="this_month">Ce mois</string>
     <string name="no_reports">Aucun rapport</string>
+    <string name="add_report">Ajouter un rapport</string>
+    <string name="add_site">Ajouter un site</string>
+    <string name="module_icon">Icône du module</string>
+    <string name="photo">Photo</string>
+    <string name="delete">Supprimer</string>
+    <string name="more_options">Plus d\'options</string>
+    <string name="signed">Signé</string>
+    <string name="edit">Modifier</string>
+    <string name="search">Rechercher</string>
 </resources>

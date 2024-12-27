@@ -32,7 +32,6 @@ class EditReportFragment : Fragment() {
     private fun setupViewPager() {
         val pagerAdapter = EditReportPagerAdapter(this)
         binding.viewPager.adapter = pagerAdapter
-        binding.viewPager.isUserInputEnabled = false
 
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             tab.text = when (position) {
@@ -41,11 +40,14 @@ class EditReportFragment : Fragment() {
                 2 -> "Photos"
                 else -> ""
             }
-        }.attach()
 
-        binding.tabLayout.getTabAt(0)?.view?.isClickable = true
-        binding.tabLayout.getTabAt(1)?.view?.isClickable = viewModel.hasTimeTracking
-        binding.tabLayout.getTabAt(2)?.view?.isClickable = viewModel.hasPhotos
+            // Mise à jour de la visibilité des tabs
+            if (position == 1 && !viewModel.hasTimeTracking) {
+                tab.view.visibility = View.GONE
+            } else if (position == 2 && !viewModel.hasPhotos) {
+                tab.view.visibility = View.GONE
+            }
+        }.attach()
     }
 
     private fun setupListeners() {

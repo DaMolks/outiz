@@ -8,7 +8,7 @@
 - Toolbar personnalisé dans le layout principal
 - Ajout des fichiers d'icône launcher foreground pour les densités HDPI et MDPI
 - **Nouvelle fonctionnalité de suivi du temps pour les rapports**
-  - Ajout d'une classe TimeEntry pour enregistrer les entrées de temps
+  - Ajout d'une classe TimeEntry avec Parcelable
   - Implémentation de la logique de création et de gestion des entrées de temps
   - Mise à jour du modèle de rapport pour inclure les entrées de temps
 
@@ -17,6 +17,8 @@
 - Correction de la configuration de la barre d'action dans MainActivity
 - Correction des ressources pour l'icône launcher
 - **Correction des problèmes de compilation liés à l'ajout de la fonctionnalité de temps**
+  - Mise à jour du modèle TimeEntry
+  - Correction des références et des imports
 
 ### Changed
 - Mise à jour de la configuration du thème pour utiliser un Toolbar personnalisé

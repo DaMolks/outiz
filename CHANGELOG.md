@@ -11,6 +11,7 @@
   - Ajout d'une classe TimeEntry avec Parcelable
   - Implémentation de la logique de création et de gestion des entrées de temps
   - Mise à jour du modèle de rapport pour inclure les entrées de temps
+- Vue d'ensemble du projet dans PROJECT_OVERVIEW.md
 
 ### Fixed
 - Résolution des erreurs de compilation liées aux ressources de couleurs
@@ -19,6 +20,8 @@
 - **Correction des problèmes de compilation liés à l'ajout de la fonctionnalité de temps**
   - Mise à jour du modèle TimeEntry
   - Correction des références et des imports
+- Résolution du conflit d'adaptateurs sites
+- Correction des références dans l'adaptateur SitesAdapter
 
 ### Changed
 - Mise à jour de la configuration du thème pour utiliser un Toolbar personnalisé
@@ -26,6 +29,11 @@
 - **Refactoring du modèle de rapport pour intégrer le suivi du temps**
 
 ## Modification Log
+
+### 2024-12-27 14:30 UTC
+- Résolution du conflit entre adaptateurs sites
+- Correction des références dans SitesAdapter
+- Ajout du document de synthèse PROJECT_OVERVIEW.md
 
 ### 2024-01-07 18:30 UTC
 - Ajout du fichier `colors.xml` avec les ressources de couleurs Material Design

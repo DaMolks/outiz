@@ -8,6 +8,7 @@ import androidx.room.TypeConverters
 import com.example.outiz.data.dao.ReportDao
 import com.example.outiz.data.dao.SiteDao
 import com.example.outiz.data.dao.TechnicianDao
+import com.example.outiz.data.dao.TimeEntryDao
 import com.example.outiz.models.*
 
 @Database(
@@ -25,6 +26,7 @@ abstract class OutizDatabase : RoomDatabase() {
     abstract fun technicianDao(): TechnicianDao
     abstract fun siteDao(): SiteDao
     abstract fun reportDao(): ReportDao
+    abstract fun timeEntryDao(): TimeEntryDao
 
     companion object {
         @Volatile

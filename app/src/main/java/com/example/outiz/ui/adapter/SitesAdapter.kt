@@ -32,12 +32,12 @@ class SitesAdapter(
         fun bind(site: Site) {
             binding.apply {
                 siteName.text = site.name
-                siteCode.text = "Code S: ${site.code}"
-                clientName.text = "Client: ${site.client}"
+                siteCode.text = "Code S: ${site.codeS}"
+                clientName.text = "Client: ${site.clientName}"
                 siteAddress.text = site.address
 
                 root.setOnClickListener { onSiteClick(site) }
-                moreButton.setOnClickListener { 
+                moreButton.setOnClickListener {
                     onSiteEdit(site)
                     onSiteDelete(site) 
                 }

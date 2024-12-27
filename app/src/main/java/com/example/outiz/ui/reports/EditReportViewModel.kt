@@ -12,6 +12,7 @@ import com.example.outiz.models.Site
 import com.example.outiz.models.TimeEntry
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 import java.util.Date
 import java.util.UUID
 
@@ -103,14 +104,23 @@ class EditReportViewModel(application: Application) : AndroidViewModel(applicati
         }
     }
 
-    fun addTimeEntry(technicianId: String, date: Date, duration: Long) {
+    fun addTimeEntry(
+        startTime: LocalDateTime,
+        endTime: LocalDateTime,
+        description: String,
+        taskType: String
+    ) {
         val currentReport = _report.value?.report ?: return
+        val duration = java.time.Duration.between(startTime, endTime).toMinutes().toInt()
+
         val newEntry = TimeEntry(
-            id = UUID.randomUUID().toString(),
             reportId = currentReport.id,
-            technicianId = technicianId,
-            date = date,
-            duration = duration
+            date = Date(),
+            duration = duration,
+            startTime = startTime,
+            endTime = endTime,
+            description = description,
+            taskType = taskType
         )
 
         val currentEntries = _timeEntries.value.orEmpty().toMutableList()

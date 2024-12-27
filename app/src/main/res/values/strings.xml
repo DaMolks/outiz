@@ -83,4 +83,11 @@
     <string name="site_code_format">Code : %1$s</string>
     <string name="site_client_format">Client : %1$s</string>
 
+    <!-- Ressources pour SitesFragment -->
+    <string name="delete_site">Supprimer le site</string>
+    <string name="delete_site_confirmation">Êtes-vous sûr de vouloir supprimer ce site ?</string>
+
+    <!-- Vue vide -->
+    <string name="no_sites_available">Aucun site disponible</string>
+
 </resources>

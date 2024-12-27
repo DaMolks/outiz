@@ -2,7 +2,6 @@ package com.example.outiz.ui.sites
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.outiz.databinding.ItemSiteBinding
@@ -35,15 +34,5 @@ class SitesAdapter : ListAdapter<Site, SitesAdapter.SiteViewHolder>(SiteDiffCall
                 textViewSiteAddress.text = site.address
             }
         }
-    }
-}
-
-class SiteDiffCallback : DiffUtil.ItemCallback<Site>() {
-    override fun areItemsTheSame(oldItem: Site, newItem: Site): Boolean {
-        return oldItem.id == newItem.id
-    }
-
-    override fun areContentsTheSame(oldItem: Site, newItem: Site): Boolean {
-        return oldItem == newItem
     }
 }

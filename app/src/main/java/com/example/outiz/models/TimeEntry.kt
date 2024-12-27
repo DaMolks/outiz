@@ -17,7 +17,8 @@ import java.util.Date
             childColumns = ["reportId"],
             onDelete = ForeignKey.CASCADE
         )
-    ]
+    ],
+    indices = [androidx.room.Index("reportId")]
 )
 data class TimeEntry(
     @PrimaryKey(autoGenerate = true)

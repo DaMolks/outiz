@@ -79,4 +79,8 @@
     <!-- Ressources pour TimeEntriesAdapter -->
     <string name="time_format_detailed">%1$d h %2$d min (%3$s)</string>
 
+    <!-- Ressources pour SitesAdapter -->
+    <string name="site_code_format">Code : %1$s</string>
+    <string name="site_client_format">Client : %1$s</string>
+
 </resources>

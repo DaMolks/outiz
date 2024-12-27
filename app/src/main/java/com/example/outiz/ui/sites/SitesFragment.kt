@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.outiz.databinding.FragmentSitesBinding
+import com.example.outiz.databinding.FragmentSiteListBinding
 
 class SitesFragment : Fragment() {
-    private var _binding: FragmentSitesBinding? = null
+    private var _binding: FragmentSiteListBinding? = null
     private val binding get() = _binding!!
     private val sitesAdapter = SitesAdapter()
     private val viewModel: SitesViewModel by viewModels()
@@ -20,7 +20,7 @@ class SitesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSitesBinding.inflate(inflater, container, false)
+        _binding = FragmentSiteListBinding.inflate(inflater, container, false)
         return binding.root
     }
 

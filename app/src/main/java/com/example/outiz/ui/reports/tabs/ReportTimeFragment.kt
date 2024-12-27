@@ -19,11 +19,13 @@ import com.example.outiz.models.TimeEntry
 import com.example.outiz.ui.reports.ReportViewModel
 import com.google.android.material.textfield.TextInputEditText
 import java.time.LocalDateTime
+import java.time.Duration
+import java.util.Date
 
 class ReportTimeFragment : Fragment() {
     private var _binding: FragmentReportTimeBinding? = null
     private val binding get() = _binding!!
-    private lateinit var timeEntryAdapter: TimeEntryAdapter
+    private lateinit var timeEntryAdapter: TimeEntriesAdapter
     private val viewModel: ReportViewModel by viewModels(ownerProducer = { requireParentFragment() })
 
     override fun onCreateView(
@@ -43,7 +45,10 @@ class ReportTimeFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        timeEntryAdapter = TimeEntryAdapter()
+        timeEntryAdapter = TimeEntriesAdapter(
+            onEditClick = { /* TODO: Implémenter l'édition */ },
+            onDeleteClick = { viewModel.removeTimeEntry(it) }
+        )
         binding.recyclerViewTime.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = timeEntryAdapter
@@ -70,6 +75,7 @@ class ReportTimeFragment : Fragment() {
         val startTimeEdit = dialog.findViewById<TextInputEditText>(R.id.editTextStartTime)
         val endTimeEdit = dialog.findViewById<TextInputEditText>(R.id.editTextEndTime)
         val descriptionEdit = dialog.findViewById<EditText>(R.id.editTextDescription)
+        val durationInput = dialog.findViewById<EditText>(R.id.editTextDuration)
         val taskTypeSpinner = dialog.findViewById<Spinner>(R.id.spinnerTaskType)
         val btnSave = dialog.findViewById<Button>(R.id.buttonSaveTimeEntry)
 
@@ -83,10 +89,13 @@ class ReportTimeFragment : Fragment() {
             val startTime = LocalDateTime.parse(startTimeEdit.text.toString())
             val endTime = LocalDateTime.parse(endTimeEdit.text.toString())
             val description = descriptionEdit.text.toString()
+            val duration = durationInput.text.toString().toIntOrNull() ?: 0
             val taskType = taskTypeSpinner.selectedItem.toString()
 
             val timeEntry = TimeEntry(
                 reportId = viewModel.currentReport.value?.id ?: "",
+                date = Date(),
+                duration = duration,
                 startTime = startTime,
                 endTime = endTime,
                 description = description,

@@ -66,4 +66,9 @@
     <string name="more_options">Plus d'options</string>
     <string name="edit">Modifier</string>
 
+    <!-- Ressources pour ReportsAdapter -->
+    <string name="caller_format">Appelant : %1$s</string>
+    <string name="time_format">%1$d h %2$d min</string>
+    <string name="photos_count">%1$d photo(s)</string>
+
 </resources>

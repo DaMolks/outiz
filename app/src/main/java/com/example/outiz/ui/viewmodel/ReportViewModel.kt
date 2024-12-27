@@ -60,16 +60,16 @@ class ReportViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-    fun getCurrentTechnicianInfo() = technicianDao.getCurrentTechnician().asLiveData()
+    fun getCurrentTechnicianId(): String {
+        return prefs.getString("technician_id", "1") ?: "1"
+    }
+
+    fun getCurrentTechnician() = technicianDao.getCurrentTechnician().asLiveData()
 
     fun deleteReport(report: Report) {
         viewModelScope.launch {
             reportDao.deleteReport(report)
             loadReports()
         }
-    }
-
-    fun getCurrentTechnicianId(): String {
-        return prefs.getString("technician_id", "1") ?: "1"
     }
 }

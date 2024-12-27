@@ -15,26 +15,19 @@
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/technicianName"
+            android:id="@+id/dateText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textSize="16sp"
-            tools:text="Jean Dupont" />
+            tools:text="01/01/2024 14:30" />
 
         <TextView
-            android:id="@+id/timeInfo"
+            android:id="@+id/durationText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            tools:text="08:00 - 12:00" />
-
-        <TextView
-            android:id="@+id/durations"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            tools:text="Intervention: 180min - Déplacement: 30min" />
+            tools:text="2h30" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -56,8 +49,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Supprimer"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:textColor="@android:color/holo_red_dark" />
+                android:textColor="@android:color/holo_red_dark"
+                style="@style/Widget.MaterialComponents.Button.TextButton" />
         </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

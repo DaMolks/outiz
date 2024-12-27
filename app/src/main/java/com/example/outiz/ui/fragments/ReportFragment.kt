@@ -13,11 +13,11 @@ import com.google.android.material.tabs.TabLayoutMediator
 class ReportFragment : Fragment() {
     private var _binding: FragmentReportBinding? = null
     private val binding get() = _binding!!
-    private var reportId: Long = 0
+    private var reportId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        reportId = arguments?.getLong(REPORT_ID_KEY) ?: 0
+        reportId = arguments?.getString(REPORT_ID_KEY) ?: ""
     }
 
     override fun onCreateView(
@@ -56,9 +56,9 @@ class ReportFragment : Fragment() {
     companion object {
         private const val REPORT_ID_KEY = "reportId"
 
-        fun newInstance(reportId: Long) = ReportFragment().apply {
+        fun newInstance(reportId: String) = ReportFragment().apply {
             arguments = Bundle().apply {
-                putLong(REPORT_ID_KEY, reportId)
+                putString(REPORT_ID_KEY, reportId)
             }
         }
     }

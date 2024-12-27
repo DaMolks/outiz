@@ -12,6 +12,9 @@ interface TechnicianDao {
     @Query("SELECT * FROM technicians WHERE id = :id")
     suspend fun getTechnicianById(id: String): Technician?
 
+    @Query("SELECT * FROM technicians LIMIT 1")
+    fun getCurrentTechnician(): Flow<Technician>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTechnician(technician: Technician)
 

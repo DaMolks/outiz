@@ -76,4 +76,7 @@
     <string name="delete_report_confirmation">Êtes-vous sûr de vouloir supprimer ce rapport ?</string>
     <string name="cancel">Annuler</string>
 
+    <!-- Ressources pour TimeEntriesAdapter -->
+    <string name="time_format_detailed">%1$d h %2$d min (%3$s)</string>
+
 </resources>

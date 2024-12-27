@@ -6,16 +6,16 @@ import java.time.format.DateTimeFormatter
 import java.util.Date
 
 class Converters {
-    private val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
+    private val dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
 
     @TypeConverter
     fun fromLocalDateTime(value: LocalDateTime?): String? {
-        return value?.format(formatter)
+        return value?.format(dateTimeFormatter)
     }
 
     @TypeConverter
     fun toLocalDateTime(value: String?): LocalDateTime? {
-        return value?.let { LocalDateTime.parse(it, formatter) }
+        return value?.let { LocalDateTime.parse(it, dateTimeFormatter) }
     }
 
     @TypeConverter

@@ -36,7 +36,9 @@ abstract class OutizDatabase : RoomDatabase() {
                     context.applicationContext,
                     OutizDatabase::class.java,
                     "outiz_database"
-                ).build()
+                )
+                .fallbackToDestructiveMigration() // Permet des migrations destructives
+                .build()
                 INSTANCE = instance
                 instance
             }

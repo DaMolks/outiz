@@ -11,32 +11,32 @@ object Migrations {
             // Créer une nouvelle table temporaire avec la nouvelle structure
             database.execSQL("""
                 CREATE TABLE time_entries_new (
-                    `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                    `reportId` TEXT NOT NULL,
                     `date` INTEGER NOT NULL,
                     `duration` INTEGER NOT NULL,
-                    `startTime` TEXT NOT NULL,
-                    `endTime` TEXT NOT NULL,
+                    `taskType` TEXT NOT NULL,
+                    `reportId` TEXT NOT NULL,
                     `description` TEXT NOT NULL,
-                    `taskType` TEXT NOT NULL
+                    `startTime` TEXT NOT NULL,
+                    `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                    `endTime` TEXT NOT NULL
                 )
             """)
 
             // Copier les données en convertissant si nécessaire
             database.execSQL("""
                 INSERT INTO time_entries_new (
-                    `id`, `reportId`, `date`, `duration`, 
-                    `startTime`, `endTime`, `description`, `taskType`
+                    `date`, `duration`, `taskType`, `reportId`, 
+                    `description`, `startTime`, `id`, `endTime`
                 ) 
                 SELECT 
-                    IFNULL(id, (ABS(RANDOM()) % 1000000)), 
-                    `reportId`, 
                     `date`, 
                     IFNULL(`interventionDuration`, 0) AS `duration`,
-                    datetime(`arrivalTime` / 1000, 'unixepoch') AS `startTime`,
-                    datetime(`departureTime` / 1000, 'unixepoch') AS `endTime`,
+                    'Intervention' AS `taskType`,
+                    `reportId`, 
                     IFNULL(`technicianFirstName` || ' ' || IFNULL(`technicianLastName`, ''), '') AS `description`,
-                    'Intervention' AS `taskType`
+                    datetime(`arrivalTime` / 1000, 'unixepoch') AS `startTime`,
+                    IFNULL(id, (ABS(RANDOM()) % 1000000)) AS `id`,
+                    datetime(`departureTime` / 1000, 'unixepoch') AS `endTime`
                 FROM time_entries
             """)
 

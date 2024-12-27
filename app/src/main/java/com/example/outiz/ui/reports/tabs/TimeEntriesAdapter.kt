@@ -30,7 +30,7 @@ class TimeEntriesAdapter(
         val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
 
         holder.binding.apply {
-            dateTimeText.text = dateFormat.format(entry.date)
+            dateText.text = dateFormat.format(entry.date)
             durationText.text = String.format("%d min", entry.duration)
 
             editButton.setOnClickListener { onEditClick(entry) }

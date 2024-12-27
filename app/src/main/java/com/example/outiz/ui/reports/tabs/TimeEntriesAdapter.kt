@@ -2,17 +2,18 @@ package com.example.outiz.ui.reports.tabs
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.outiz.databinding.ItemTimeEntryBinding
 import com.example.outiz.models.TimeEntry
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 class TimeEntriesAdapter(
-    private var entries: List<TimeEntry> = emptyList(),
     private val onEditClick: (TimeEntry) -> Unit = {},
     private val onDeleteClick: (TimeEntry) -> Unit = {}
-) : RecyclerView.Adapter<TimeEntriesAdapter.ViewHolder>() {
+) : ListAdapter<TimeEntry, TimeEntriesAdapter.ViewHolder>(TimeEntryDiffCallback()) {
 
     class ViewHolder(val binding: ItemTimeEntryBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -26,7 +27,7 @@ class TimeEntriesAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val entry = entries[position]
+        val entry = getItem(position)
         val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
 
         holder.binding.apply {
@@ -38,10 +39,13 @@ class TimeEntriesAdapter(
         }
     }
 
-    override fun getItemCount() = entries.size
+    class TimeEntryDiffCallback : DiffUtil.ItemCallback<TimeEntry>() {
+        override fun areItemsTheSame(oldItem: TimeEntry, newItem: TimeEntry): Boolean {
+            return oldItem.id == newItem.id
+        }
 
-    fun updateEntries(newEntries: List<TimeEntry>) {
-        entries = newEntries
-        notifyDataSetChanged()
+        override fun areContentsTheSame(oldItem: TimeEntry, newItem: TimeEntry): Boolean {
+            return oldItem == newItem
+        }
     }
 }

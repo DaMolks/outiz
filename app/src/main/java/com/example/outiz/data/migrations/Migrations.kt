@@ -25,10 +25,11 @@ object Migrations {
             // Copier les données en convertissant si nécessaire
             database.execSQL("""
                 INSERT INTO time_entries_new (
-                    `reportId`, `date`, `duration`, 
+                    `id`, `reportId`, `date`, `duration`, 
                     `startTime`, `endTime`, `description`, `taskType`
                 ) 
                 SELECT 
+                    IFNULL(id, (ABS(RANDOM()) % 1000000)), 
                     `reportId`, 
                     `date`, 
                     IFNULL(`interventionDuration`, 0) AS `duration`,

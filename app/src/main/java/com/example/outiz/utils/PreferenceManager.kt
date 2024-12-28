@@ -4,13 +4,9 @@ import android.content.Context
 import androidx.preference.PreferenceManager
 
 class AppPreferenceManager(context: Context) {
-    private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+    private val preferences = PreferenceManager.getDefaultSharedPreferences(context)
 
     var isTechnicianProfileCreated: Boolean
-        get() = sharedPreferences.getBoolean(KEY_TECHNICIAN_PROFILE, false)
-        set(value) = sharedPreferences.edit().putBoolean(KEY_TECHNICIAN_PROFILE, value).apply()
-
-    companion object {
-        private const val KEY_TECHNICIAN_PROFILE = "technician_profile_created"
-    }
+        get() = preferences.getBoolean(Constants.PREF_TECHNICIAN_PROFILE, false)
+        set(value) = preferences.edit().putBoolean(Constants.PREF_TECHNICIAN_PROFILE, value).apply()
 }

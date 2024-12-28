@@ -9,6 +9,7 @@ import androidx.room.Transaction
 import com.example.outiz.models.Report
 import com.example.outiz.models.ReportWithDetails
 import kotlinx.coroutines.flow.Flow
+import java.time.LocalDateTime
 
 @Dao
 interface ReportDao {
@@ -21,6 +22,9 @@ interface ReportDao {
     @Transaction
     @Query("SELECT * FROM reports")
     fun getReportsWithDetails(): Flow<List<ReportWithDetails>>
+
+    @Query("SELECT * FROM reports WHERE date BETWEEN :start AND :end")
+    fun getReportsByDateRange(start: LocalDateTime, end: LocalDateTime): Flow<List<ReportWithDetails>>
 
     @Delete
     suspend fun delete(report: Report)

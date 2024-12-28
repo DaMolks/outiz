@@ -2,7 +2,6 @@ package com.example.outiz.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.Relation
 import java.time.LocalDateTime
 
 @Entity(tableName = "reports")
@@ -22,13 +21,4 @@ data class Report(
     val isTimeTrackingEnabled: Boolean = false,
     val isPhotosEnabled: Boolean = false,
     val hasSignature: Boolean = false
-)
-
-data class ReportWithDetails(
-    val report: Report,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "reportId"
-    )
-    val timeEntries: List<TimeEntry> = listOf()
 )

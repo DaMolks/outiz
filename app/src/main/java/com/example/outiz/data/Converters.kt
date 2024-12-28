@@ -17,16 +17,6 @@ class Converters {
     }
 
     @TypeConverter
-    fun fromStringList(value: String?): List<String>? {
-        return value?.split(",")?.map { it.trim() }
-    }
-
-    @TypeConverter
-    fun toStringList(list: List<String>?): String? {
-        return list?.joinToString(",")
-    }
-
-    @TypeConverter
     fun fromDate(date: Date?): LocalDateTime? {
         return date?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime()
     }
@@ -34,5 +24,15 @@ class Converters {
     @TypeConverter
     fun toDate(localDateTime: LocalDateTime?): Date? {
         return localDateTime?.toInstant(ZoneOffset.UTC)?.let { Date.from(it) }
+    }
+
+    @TypeConverter
+    fun fromStringList(value: String?): List<String>? {
+        return value?.split(",")?.map { it.trim() }
+    }
+
+    @TypeConverter
+    fun toStringList(list: List<String>?): String? {
+        return list?.joinToString(",")
     }
 }

@@ -20,6 +20,20 @@
             android:name="reportId"
             app:argType="string"
             app:nullable="false" />
+        <action
+            android:id="@+id/action_reportDetailsFragment_to_timeEntryFragment"
+            app:destination="@id/timeEntryFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/timeEntryFragment"
+        android:name="com.example.outiz.ui.reports.TimeEntryFragment"
+        android:label="fragment_time_entry"
+        tools:layout="@layout/fragment_time_entry">
+        <argument
+            android:name="reportId"
+            app:argType="string"
+            app:nullable="false" />
     </fragment>
 
     <fragment

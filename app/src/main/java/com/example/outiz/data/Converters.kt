@@ -2,39 +2,26 @@ package com.example.outiz.data
 
 import androidx.room.TypeConverter
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.Date
+import java.time.ZoneOffset
 
 class Converters {
-    private val dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
-
     @TypeConverter
-    fun fromLocalDateTime(value: LocalDateTime?): String? {
-        return value?.format(dateTimeFormatter)
+    fun fromTimestamp(value: Long?): LocalDateTime? {
+        return value?.let { LocalDateTime.ofEpochSecond(it, 0, ZoneOffset.UTC) }
     }
 
     @TypeConverter
-    fun toLocalDateTime(value: String?): LocalDateTime? {
-        return value?.let { LocalDateTime.parse(it, dateTimeFormatter) }
+    fun dateToTimestamp(date: LocalDateTime?): Long? {
+        return date?.toEpochSecond(ZoneOffset.UTC)
     }
 
     @TypeConverter
-    fun fromDate(date: Date?): Long? {
-        return date?.time
+    fun fromList(value: List<String>?): String? {
+        return value?.joinToString(",")
     }
 
     @TypeConverter
-    fun toDate(timestamp: Long?): Date? {
-        return timestamp?.let { Date(it) }
-    }
-
-    @TypeConverter
-    fun fromListToString(list: List<String>?): String? {
-        return list?.joinToString(",")
-    }
-
-    @TypeConverter
-    fun fromStringToList(value: String?): List<String>? {
-        return value?.split(",")?.filter { it.isNotBlank() }
+    fun toList(value: String?): List<String>? {
+        return value?.split(",")?.map { it.trim() }
     }
 }

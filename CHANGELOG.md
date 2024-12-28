@@ -8,15 +8,19 @@
 - Toolbar personnalisé dans le layout principal
 - Ajout des fichiers d'icône launcher foreground pour les densités HDPI et MDPI
 - Ajout de la ressource string 'add_time_entry' pour le bouton d'ajout d'entrée de temps
+- Ajout de toutes les ressources string manquantes
+- Configuration de la navigation avec SafeArgs
 
 ### Fixed
 - Résolution des erreurs de compilation liées aux ressources de couleurs
 - Correction de la configuration de la barre d'action dans MainActivity
 - Correction des ressources pour l'icône launcher
+- Ajout de l'action timeEntryFragment dans la navigation
 
 ### Changed
 - Mise à jour de la configuration du thème pour utiliser un Toolbar personnalisé
 - Ajustement de la structure du layout principal
+- Mise à jour des directives avec les limitations sur les pushs
 
 ## Modification Log
 
@@ -41,6 +45,11 @@
 
 ### 2024-01-08 10:00 UTC
 - Ajout de la ressource string 'add_time_entry' pour les rapports
+
+### 2024-01-08 13:30 UTC
+- Mise à jour complète des ressources string
+- Ajout de la configuration navigation et SafeArgs
+- Mise à jour des directives avec les bonnes pratiques pour les pushs
 
 ## Contributing
 Lors de l'ajout de modifications au changelog, veuillez suivre ces directives :

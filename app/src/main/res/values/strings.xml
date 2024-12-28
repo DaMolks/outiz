@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- App -->
     <string name="app_name">Outiz</string>
-    <string name="add_report">Ajouter un rapport</string>
-    <string name="add_time_entry">Ajouter une entrée de temps</string>
-    <string name="add_site">Ajouter un site</string>
-    <string name="caller_format">Appelé par %1$s</string>
-    <string name="time_format">%1$s - %2$s</string>
-    <string name="photos_count">%1$d photos</string>
-</resources>
+    
+    <!-- Navigation -->
+    <string name="nav_reports">Rapports</string>
+    <string name="nav_sites">Sites</string>
+    <string name="nav_profile">Profil</string>
+    <string name="nav_settings">Paramètres</string>
+    <string name="settings">Paramètres</string>
+    <string name="all">Tous</string>
+    <string name="this_week">Cette semaine</string>
+    <string name="this_month">Ce mois</string></resources>

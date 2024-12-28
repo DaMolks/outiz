@@ -6,6 +6,8 @@ plugins {
     kotlin("kapt")
 }
 
+apply(from = "dependencies.gradle")
+
 android {
     namespace = "com.example.outiz"
     compileSdk = 34
@@ -50,31 +52,30 @@ android {
 }
 
 dependencies {
+    // Récupération des dépendances du fichier dependencies.gradle
+    implementation(project.deps["kotlinStdlib"] as String)
+    implementation(project.deps["coroutines"] as String)
+
+    // Room
+    implementation(project.deps["roomRuntime"] as String)
+    implementation(project.deps["roomKtx"] as String)
+    ksp(project.deps["roomCompiler"] as String)
+
+    // ViewModel & LiveData
+    implementation(project.deps["lifecycleViewModel"] as String)
+    implementation(project.deps["lifecycleLiveData"] as String)
+    implementation(project.deps["lifecycleRuntime"] as String)
+
+    // Navigation
+    implementation(project.deps["navigationFragment"] as String)
+    implementation(project.deps["navigationUI"] as String)
+
+    // Preferences
+    implementation(project.deps["preferenceKtx"] as String)
+
+    // AndroidX
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    
-    // ViewModel and LiveData
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
-    
-    // Navigation
-    implementation("androidx.navigation:navigation-fragment-ktx:2.7.6")
-    implementation("androidx.navigation:navigation-ui-ktx:2.7.6")
-    
-    // Room
-    implementation("androidx.room:room-runtime:2.6.1")
-    implementation("androidx.room:room-ktx:2.6.1")
-    ksp("androidx.room:room-compiler:2.6.1")
-    
-    // Preferences
-    implementation("androidx.preference:preference-ktx:1.2.1")
-    
-    // Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-    
-    // Kotlin Serialization
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
 }

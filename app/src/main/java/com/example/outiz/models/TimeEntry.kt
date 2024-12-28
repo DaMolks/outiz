@@ -20,6 +20,7 @@ data class TimeEntry(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     val reportId: Long,
+    val date: LocalDateTime,
     val startTime: LocalDateTime,
     val endTime: LocalDateTime,
     val duration: Long,

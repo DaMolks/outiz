@@ -1,44 +1,22 @@
 package com.example.outiz.models
 
-import androidx.room.*
-import java.util.Date
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.Relation
+import java.time.LocalDateTime
 
-@Entity(
-    tableName = "reports",
-    foreignKeys = [
-        ForeignKey(
-            entity = Site::class,
-            parentColumns = ["id"],
-            childColumns = ["siteId"],
-            onDelete = ForeignKey.CASCADE
-        )
-    ],
-    indices = [
-        Index(value = ["siteId"])
-    ]
-)
+@Entity(tableName = "reports")
 data class Report(
-    @PrimaryKey val id: String,
-    val callDate: Date,
-    val callReason: String,
-    val caller: String,
-    val siteId: String,
-    val actions: List<String>,
-    val photosPaths: List<String>?,
-    val hasSignature: Boolean = false,
-    val signaturePath: String? = null,
-    val signatureDate: Date? = null,
-    val isTimeTrackingEnabled: Boolean = true,
-    val isPhotosEnabled: Boolean = true
+    @PrimaryKey(autoGenerate = true)
+    val id: Long = 0,
+    val siteId: Long,
+    val date: LocalDateTime,
+    val description: String,
+    val technicians: List<String> = listOf(),
+    val status: String
 )
 
 data class ReportWithDetails(
-    @Embedded val report: Report,
-    @Relation(
-        parentColumn = "siteId",
-        entityColumn = "id"
-    )
-    val site: Site,
     @Relation(
         parentColumn = "id",
         entityColumn = "reportId"

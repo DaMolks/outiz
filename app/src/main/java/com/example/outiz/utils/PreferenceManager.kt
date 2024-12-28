@@ -1,10 +1,10 @@
 package com.example.outiz.utils
 
 import android.content.Context
-import androidx.preference.PreferenceManager as AndroidXPreferenceManager
+import androidx.preference.PreferenceManager
 
-class PreferenceManager(context: Context) {
-    private val sharedPreferences = AndroidXPreferenceManager.getDefaultSharedPreferences(context)
+class AppPreferenceManager(context: Context) {
+    private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
     var isTechnicianProfileCreated: Boolean
         get() = sharedPreferences.getBoolean(KEY_TECHNICIAN_PROFILE, false)

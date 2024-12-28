@@ -22,13 +22,15 @@ class AddTimeEntryDialog : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.btnSave.setOnClickListener {
-            val reportId = arguments?.getLong(ARG_REPORT_ID) ?: return@setOnClickListener
-            val startTime = LocalDateTime.parse(binding.etStartTime.text.toString())
-            val duration = binding.etDuration.text.toString().toLong()
-            val description = binding.etDescription.text.toString()
+        with(binding) {
+            btnSave.setOnClickListener {
+                val reportId = arguments?.getLong(ARG_REPORT_ID) ?: return@setOnClickListener
+                val startTime = LocalDateTime.parse(etStartTime.text.toString())
+                val duration = etDuration.text.toString().toLong()
+                val description = etDescription.text.toString()
 
-            // TODO: Add actual save logic
+                viewModel.insertTimeEntry(/* TODO: Add TimeEntry creation logic */)
+            }
         }
     }
 

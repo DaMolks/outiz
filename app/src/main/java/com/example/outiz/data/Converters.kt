@@ -3,6 +3,7 @@ package com.example.outiz.data
 import androidx.room.TypeConverter
 import java.time.LocalDateTime
 import java.time.ZoneOffset
+import java.util.Date
 
 class Converters {
     @TypeConverter
@@ -16,12 +17,22 @@ class Converters {
     }
 
     @TypeConverter
-    fun fromList(value: List<String>?): String? {
-        return value?.joinToString(",")
+    fun fromStringList(value: String?): List<String>? {
+        return value?.split(",")?.map { it.trim() }
     }
 
     @TypeConverter
-    fun toList(value: String?): List<String>? {
-        return value?.split(",")?.map { it.trim() }
+    fun toStringList(list: List<String>?): String? {
+        return list?.joinToString(",")
+    }
+
+    @TypeConverter
+    fun fromDate(date: Date?): LocalDateTime? {
+        return date?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime()
+    }
+
+    @TypeConverter
+    fun toDate(localDateTime: LocalDateTime?): Date? {
+        return localDateTime?.toInstant(ZoneOffset.UTC)?.let { Date.from(it) }
     }
 }

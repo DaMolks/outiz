@@ -1,5 +1,6 @@
 package com.example.outiz.models
 
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.Relation
@@ -17,6 +18,7 @@ data class Report(
 )
 
 data class ReportWithDetails(
+    @Embedded val report: Report,
     @Relation(
         parentColumn = "id",
         entityColumn = "reportId"

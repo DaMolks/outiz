@@ -1,5 +1,4 @@
 # Directives Claude
-## Repo du projet: https://github.com/DaMolks/outiz
 
 ## Initialisation requise
 1. 📚 Lire TOUS les fichiers du repo au lancement du chat
@@ -16,6 +15,13 @@ antml:invoke name="push_files"
 antml:parameter name="repo">outiz</parameter
 antml:parameter name="files">[{"path": "...", "content": "..."}]
 ```
+
+## Limitations et bonnes pratiques pour les pushs
+- 🚫 Ne pas faire de pushs multiples en cas d'erreur
+- 📏 Limiter la taille du contenu pour éviter les timeouts
+- 🔄 Pour les gros fichiers, les découper en plusieurs pushs successifs
+- ⚠️ Toujours inclure le contenu dans le tableau "files"
+- ✨ Formater correctement les caractères spéciaux et sauts de ligne
 
 ## Communication des corrections
 1. 🔎 Description de l'erreur identifiée

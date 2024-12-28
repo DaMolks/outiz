@@ -2,48 +2,48 @@ package com.example.outiz.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.outiz.databinding.ItemTimeEntryBinding
 import com.example.outiz.models.TimeEntry
-import java.time.format.DateTimeFormatter
 
 class TimeEntryAdapter(
-    private var timeEntries: List<TimeEntry> = emptyList(),
-    private val onEditClick: (TimeEntry) -> Unit,
     private val onDeleteClick: (TimeEntry) -> Unit
-) : RecyclerView.Adapter<TimeEntryAdapter.TimeEntryViewHolder>() {
-
-    class TimeEntryViewHolder(val binding: ItemTimeEntryBinding) : RecyclerView.ViewHolder(binding.root)
+) : ListAdapter<TimeEntry, TimeEntryAdapter.TimeEntryViewHolder>(TimeEntryDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimeEntryViewHolder {
-        val binding = ItemTimeEntryBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
-        return TimeEntryViewHolder(binding)
+        val binding = ItemTimeEntryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return TimeEntryViewHolder(binding, onDeleteClick)
     }
 
     override fun onBindViewHolder(holder: TimeEntryViewHolder, position: Int) {
-        val timeEntry = timeEntries[position]
-        val dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
+        holder.bind(getItem(position))
+    }
 
-        holder.binding.apply {
-            textViewTaskType.text = timeEntry.taskType
-            textViewDescription.text = timeEntry.description
-            textViewStartTime.text = timeEntry.startTime.format(dateFormat)
-            textViewEndTime.text = timeEntry.endTime.format(dateFormat)
-            textViewDuration.text = String.format("%d min", timeEntry.duration)
+    class TimeEntryViewHolder(
+        private val binding: ItemTimeEntryBinding,
+        private val onDeleteClick: (TimeEntry) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
 
-            editButton.setOnClickListener { onEditClick(timeEntry) }
-            deleteButton.setOnClickListener { onDeleteClick(timeEntry) }
+        fun bind(timeEntry: TimeEntry) {
+            binding.apply {
+                tvDescription.text = timeEntry.description
+                tvDuration.text = timeEntry.duration.toString()
+                tvStartTime.text = timeEntry.startTime.toString()
+
+                btnDelete.setOnClickListener { onDeleteClick(timeEntry) }
+            }
         }
     }
 
-    override fun getItemCount() = timeEntries.size
+    private class TimeEntryDiffCallback : DiffUtil.ItemCallback<TimeEntry>() {
+        override fun areItemsTheSame(oldItem: TimeEntry, newItem: TimeEntry): Boolean {
+            return oldItem.id == newItem.id
+        }
 
-    fun updateEntries(newEntries: List<TimeEntry>) {
-        timeEntries = newEntries
-        notifyDataSetChanged()
+        override fun areContentsTheSame(oldItem: TimeEntry, newItem: TimeEntry): Boolean {
+            return oldItem == newItem
+        }
     }
 }

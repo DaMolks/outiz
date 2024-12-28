@@ -24,41 +24,25 @@
         <action
             android:id="@+id/action_homeFragment_to_sitesFragment"
             app:destination="@id/sitesFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/reportsFragment"
         android:name="com.example.outiz.ui.reports.ReportsFragment">
         <action
-            android:id="@+id/action_reportsFragment_to_editReportFragment"
-            app:destination="@id/editReportFragment" />
+            android:id="@+id/action_reportsFragment_to_reportDetailsFragment"
+            app:destination="@id/reportDetailsFragment" />
     </fragment>
 
     <fragment
+        android:id="@+id/reportDetailsFragment"
+        android:name="com.example.outiz.ui.reports.ReportDetailsFragment" />
+
+    <fragment
         android:id="@+id/sitesFragment"
-        android:name="com.example.outiz.ui.sites.SitesFragment">
-        <action
-            android:id="@+id/action_sitesFragment_to_editSiteFragment"
-            app:destination="@id/editSiteFragment" />
-    </fragment>
+        android:name="com.example.outiz.ui.sites.SitesFragment" />
 
     <fragment
         android:id="@+id/technicianProfileFragment"
         android:name="com.example.outiz.ui.profile.TechnicianProfileFragment" />
-
-    <fragment
-        android:id="@+id/editReportFragment"
-        android:name="com.example.outiz.ui.reports.EditReportFragment" />
-
-    <fragment
-        android:id="@+id/editSiteFragment"
-        android:name="com.example.outiz.ui.sites.EditSiteFragment" />
-
-    <fragment
-        android:id="@+id/settingsFragment"
-        android:name="com.example.outiz.ui.settings.SettingsFragment" />
-
 </navigation>

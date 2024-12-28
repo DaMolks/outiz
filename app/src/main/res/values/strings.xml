@@ -3,12 +3,55 @@
     <string name="app_name">Outiz</string>
     
     <!-- Navigation -->
+    <string name="nav_reports">Rapports</string>
+    <string name="nav_sites">Sites</string>
+    <string name="nav_profile">Profil</string>
+    <string name="nav_settings">Paramètres</string>
     
     <!-- Boutons -->
     <string name="add_time_entry">Ajouter une entrée de temps</string>
+    <string name="add_report">Ajouter un rapport</string>
+    <string name="add_site">Ajouter un site</string>
+    <string name="edit">Modifier</string>
+    <string name="delete">Supprimer</string>
+    <string name="search">Rechercher</string>
+    <string name="save">Enregistrer</string>
+    <string name="cancel">Annuler</string>
+    <string name="confirm">Confirmer</string>
+    <string name="more_options">Plus d\'options</string>
+    <string name="take_photo">Prendre une photo</string>
+    <string name="choose_photo">Choisir une photo</string>
     
     <!-- Titres -->
+    <string name="title_reports">Rapports</string>
+    <string name="title_sites">Sites</string>
+    <string name="title_report_details">Détails du rapport</string>
+    <string name="title_site_details">Détails du site</string>
+    <string name="title_time_entries">Entrées de temps</string>
+    <string name="title_photos">Photos</string>
+    
+    <!-- Labels -->
+    <string name="module_icon">Icône du module</string>
+    <string name="photo">Photo</string>
+    <string name="signed">Signé</string>
+    <string name="site_name">Nom du site</string>
+    <string name="site_address">Adresse du site</string>
+    <string name="client_name">Nom du client</string>
+    <string name="intervention_date">Date d\'intervention</string>
+    <string name="start_time">Heure de début</string>
+    <string name="end_time">Heure de fin</string>
+    <string name="duration">Durée</string>
+    <string name="description">Description</string>
     
     <!-- Messages -->
-    
+    <string name="no_reports">Aucun rapport disponible</string>
+    <string name="no_sites">Aucun site disponible</string>
+    <string name="no_time_entries">Aucune entrée de temps</string>
+    <string name="no_photos">Aucune photo</string>
+    <string name="confirm_delete">Êtes-vous sûr de vouloir supprimer cet élément ?</string>
+    <string name="report_saved">Rapport enregistré avec succès</string>
+    <string name="site_saved">Site enregistré avec succès</string>
+    <string name="error_save">Erreur lors de l\'enregistrement</string>
+    <string name="error_delete">Erreur lors de la suppression</string>
+    <string name="error_load">Erreur lors du chargement</string>
 </resources>

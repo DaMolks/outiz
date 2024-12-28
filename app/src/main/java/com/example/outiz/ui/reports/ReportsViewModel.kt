@@ -1,78 +1,31 @@
 package com.example.outiz.ui.reports
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.outiz.data.OutizDatabase
+import com.example.outiz.data.dao.ReportDao
 import com.example.outiz.models.ReportWithDetails
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
-import java.util.Calendar
+import java.time.LocalDateTime
 
-class ReportsViewModel(application: Application) : AndroidViewModel(application) {
+class ReportsViewModel(
+    private val reportDao: ReportDao
+) : ViewModel() {
 
-    private val database = OutizDatabase.getDatabase(application)
-    private val reportDao = database.reportDao()
+    val reportsWithDetails = reportDao.getReportsWithDetails().asLiveData()
 
-    private val _reports = MutableLiveData<List<ReportWithDetails>>()
-    val reports: LiveData<List<ReportWithDetails>> = _reports
+    fun getReportsByDateRange(start: LocalDateTime, end: LocalDateTime) = 
+        reportDao.getReportsByDateRange(start, end)
 
-    private val _error = MutableLiveData<String?>()
-    val error: LiveData<String?> = _error
-
-    init {
-        loadReports()
+    fun deleteReport(report: ReportWithDetails) = viewModelScope.launch {
+        reportDao.delete(report.report)
     }
 
-    fun loadReports() {
-        viewModelScope.launch {
-            reportDao.getAllReports()
-                .catch { e -> _error.value = e.message }
-                .collect { reports -> _reports.value = reports }
+    class Factory(private val reportDao: ReportDao) : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            return ReportsViewModel(reportDao) as T
         }
-    }
-
-    fun loadReportsForWeek() {
-        viewModelScope.launch {
-            val calendar = Calendar.getInstance()
-            val endDate = calendar.time
-
-            calendar.add(Calendar.DAY_OF_WEEK, -7)
-            val startDate = calendar.time
-
-            reportDao.getReportsByDateRange(startDate, endDate)
-                .catch { e -> _error.value = e.message }
-                .collect { reports -> _reports.value = reports }
-        }
-    }
-
-    fun loadReportsForMonth() {
-        viewModelScope.launch {
-            val calendar = Calendar.getInstance()
-            val endDate = calendar.time
-
-            calendar.add(Calendar.MONTH, -1)
-            val startDate = calendar.time
-
-            reportDao.getReportsByDateRange(startDate, endDate)
-                .catch { e -> _error.value = e.message }
-                .collect { reports -> _reports.value = reports }
-        }
-    }
-
-    fun deleteReport(report: ReportWithDetails) {
-        viewModelScope.launch {
-            try {
-                reportDao.deleteReport(report.report)
-            } catch (e: Exception) {
-                _error.value = e.message
-            }
-        }
-    }
-
-    fun clearError() {
-        _error.value = null
     }
 }

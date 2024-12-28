@@ -1,29 +1,28 @@
 package com.example.outiz.models
 
-import android.os.Parcelable
 import androidx.room.Entity
-import androidx.room.Index
 import androidx.room.PrimaryKey
-import kotlinx.parcelize.Parcelize
+import androidx.room.ForeignKey
+import androidx.room.Index
 import java.time.LocalDateTime
-import java.util.Date
 
-@Parcelize
 @Entity(
     tableName = "time_entries",
-    indices = [
-        Index(value = ["reportId"])
-    ]
+    foreignKeys = [ForeignKey(
+        entity = Report::class,
+        parentColumns = ["id"],
+        childColumns = ["reportId"],
+        onDelete = ForeignKey.CASCADE
+    )],
+    indices = [Index(value = ["reportId"])]
 )
 data class TimeEntry(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
-    val reportId: String,
-    val date: Date,
-    val duration: Int,
+    val reportId: Long,
     val startTime: LocalDateTime,
     val endTime: LocalDateTime,
+    val duration: Long,
     val description: String,
-    val taskType: String,
-    val technicians: List<String> = listOf()
-) : Parcelable
+    val taskType: String
+)

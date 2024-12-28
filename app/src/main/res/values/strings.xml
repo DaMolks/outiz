@@ -22,4 +22,14 @@
     <string name="delete">Supprimer</string>
     <string name="search">Rechercher</string>
     <string name="save">Enregistrer</string>
-    <string name="save_report">Enregistrer le rapport</string></resources>
+    <string name="save_report">Enregistrer le rapport</string>
+    <string name="cancel">Annuler</string>
+    <string name="confirm">Confirmer</string>
+    <string name="more_options">Plus d\'options</string>
+    <string name="take_picture">Prendre une photo</string>
+    <string name="choose_picture">Choisir une photo</string>
+    
+    <!-- Formats -->
+    <string name="caller_format">Appelé par %1$s</string>
+    <string name="time_format">%1$s - %2$s</string>
+    <string name="photos_count">%1$d photos</string></resources>

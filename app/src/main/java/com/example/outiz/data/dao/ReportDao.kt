@@ -27,4 +27,7 @@ interface ReportDao {
 
     @Query("DELETE FROM reports")
     suspend fun deleteAll()
+
+    @Query("SELECT * FROM reports WHERE id = :reportId")
+    fun getReportById(reportId: Long): Flow<Report?>
 }

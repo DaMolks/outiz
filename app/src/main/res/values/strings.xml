@@ -32,4 +32,25 @@
     <!-- Formats -->
     <string name="caller_format">Appelé par %1$s</string>
     <string name="time_format">%1$s - %2$s</string>
-    <string name="photos_count">%1$d photos</string></resources>
+    <string name="photos_count">%1$d photos</string>
+    
+    <!-- Labels -->
+    <string name="module_icon">Icône du module</string>
+    <string name="photo">Photo</string>
+    <string name="signed">Signé</string>
+    <string name="site">Site</string>
+    <string name="site_name">Nom du site</string>
+    <string name="site_code">Code site</string>
+    <string name="site_address">Adresse du site</string>
+    <string name="client_name">Nom du client</string>
+    <string name="call_date">Date d\'appel</string>
+    <string name="call_reason">Motif d\'appel</string>
+    <string name="caller">Appelant</string>
+    <string name="enable_time_tracking">Activer le suivi du temps</string>
+    <string name="enable_photos">Activer les photos</string>
+    
+    <!-- Messages -->
+    <string name="no_reports">Aucun rapport disponible</string>
+    <string name="no_sites">Aucun site disponible</string>
+    <string name="no_time_entries">Aucune entrée de temps</string>
+    <string name="no_photos">Aucune photo</string></resources>

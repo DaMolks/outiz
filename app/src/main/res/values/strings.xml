@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Outiz</string>
-    <string name="test">Test</string>
+    <string name="add_report">Ajouter un rapport</string>
+    <string name="add_time_entry">Ajouter une entrée de temps</string>
+    <string name="add_site">Ajouter un site</string>
+    <string name="caller_format">Appelé par %1$s</string>
+    <string name="time_format">%1$s - %2$s</string>
+    <string name="photos_count">%1$d photos</string>
 </resources>

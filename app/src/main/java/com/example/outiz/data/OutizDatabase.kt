@@ -9,6 +9,7 @@ import com.example.outiz.data.dao.ReportDao
 import com.example.outiz.data.dao.TimeEntryDao
 import com.example.outiz.models.Report
 import com.example.outiz.models.TimeEntry
+import com.example.outiz.utils.Constants
 
 @Database(
     entities = [Report::class, TimeEntry::class],
@@ -29,7 +30,7 @@ abstract class OutizDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     OutizDatabase::class.java,
-                    "outiz_database"
+                    Constants.DATABASE_NAME
                 ).fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance

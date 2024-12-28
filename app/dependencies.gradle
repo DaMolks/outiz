@@ -1,0 +1,31 @@
+ext.versions = [
+    kotlin: '1.9.10',
+    coroutines: '1.7.3',
+    room: '2.6.1',
+    lifecycle: '2.6.2',
+    navigation: '2.7.6',
+    preference: '1.2.1'
+]
+
+ext.deps = [
+    // Kotlin
+    kotlinStdlib: "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}",
+    coroutines: "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}",
+    
+    // Room
+    roomRuntime: "androidx.room:room-runtime:${versions.room}",
+    roomKtx: "androidx.room:room-ktx:${versions.room}",
+    roomCompiler: "androidx.room:room-compiler:${versions.room}",
+    
+    // ViewModel & LiveData
+    lifecycleViewModel: "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.lifecycle}",
+    lifecycleLiveData: "androidx.lifecycle:lifecycle-livedata-ktx:${versions.lifecycle}",
+    lifecycleRuntime: "androidx.lifecycle:lifecycle-runtime-ktx:${versions.lifecycle}",
+    
+    // Navigation
+    navigationFragment: "androidx.navigation:navigation-fragment-ktx:${versions.navigation}",
+    navigationUI: "androidx.navigation:navigation-ui-ktx:${versions.navigation}",
+    
+    // Preferences
+    preferenceKtx: "androidx.preference:preference-ktx:${versions.preference}"
+]

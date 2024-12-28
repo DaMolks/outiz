@@ -9,20 +9,16 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.outiz.data.dao.TimeEntryDao
 import com.example.outiz.databinding.FragmentTimeTrackingBinding
+import com.example.outiz.ui.adapter.TimeEntryAdapter
 import com.example.outiz.ui.reports.ReportViewModel
-import com.example.outiz.utils.TimeEntryAdapter
 import kotlinx.coroutines.launch
 
 class TimeTrackingFragment : Fragment() {
     private lateinit var binding: FragmentTimeTrackingBinding
     private val reportViewModel: ReportViewModel by viewModels()
-    private val timeEntryDao: TimeEntryDao by lazy { /* Inject or get from database */ }
-    private val timeEntryAdapter = TimeEntryAdapter { timeEntry ->
-        // Handle time entry deletion
-        lifecycleScope.launch {
-            timeEntryDao.delete(timeEntry)
-        }
-    }
+    private val timeEntryDao: TimeEntryDao by lazy { /* TODO: Inject via Dependency Injection */ }
+
+    private lateinit var timeEntryAdapter: TimeEntryAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentTimeTrackingBinding.inflate(inflater, container, false)
@@ -32,10 +28,20 @@ class TimeTrackingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.rvTimeEntries.adapter = timeEntryAdapter
-
+        // Récupérer l'ID du rapport depuis les arguments
         val reportId = arguments?.getLong(ARG_REPORT_ID) ?: return
 
+        // Initialiser l'adaptateur avec une logique de suppression
+        timeEntryAdapter = TimeEntryAdapter { timeEntry ->
+            lifecycleScope.launch {
+                timeEntryDao.delete(timeEntry)
+            }
+        }
+
+        // Configurer le RecyclerView
+        binding.rvTimeEntries.adapter = timeEntryAdapter
+
+        // Observer les entrées de temps pour ce rapport
         reportViewModel.getTimeEntriesForReport(reportId).observe(viewLifecycleOwner) { timeEntries ->
             timeEntryAdapter.submitList(timeEntries)
         }

@@ -17,8 +17,8 @@ import com.example.outiz.models.TimeEntry
 
 @Database(
     entities = [Technician::class, Site::class, Report::class, TimeEntry::class],
-    version = 2,
-    exportSchema = false
+    version = 3,
+    exportSchema = true
 )
 @TypeConverters(Converters::class)
 abstract class OutizDatabase : RoomDatabase() {
@@ -38,7 +38,7 @@ abstract class OutizDatabase : RoomDatabase() {
                     OutizDatabase::class.java,
                     "outiz_database"
                 )
-                .addMigrations(Migrations.MIGRATION_3_2)
+                .addMigrations(Migrations.MIGRATION_2_3)
                 .build()
                 INSTANCE = instance
                 instance

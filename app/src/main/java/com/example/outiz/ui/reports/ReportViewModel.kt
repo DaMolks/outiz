@@ -1,47 +1,41 @@
 package com.example.outiz.ui.reports
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.outiz.data.OutizDatabase
-import com.example.outiz.models.Report
+import com.example.outiz.data.dao.ReportDao
+import com.example.outiz.data.dao.TimeEntryDao
 import com.example.outiz.models.TimeEntry
+import com.example.outiz.utils.AppPreferenceManager
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-class ReportViewModel(application: Application) : AndroidViewModel(application) {
-    private val reportDao = OutizDatabase.getDatabase(application).reportDao()
-    private val timeEntryDao = OutizDatabase.getDatabase(application).timeEntryDao()
+class ReportViewModel(
+    private val reportDao: ReportDao,
+    private val timeEntryDao: TimeEntryDao,
+    private val preferenceManager: AppPreferenceManager
+) : ViewModel() {
 
-    val currentReport = MutableLiveData<Report?>(null)
-    val timeEntries = MutableLiveData<List<TimeEntry>>(emptyList())
+    fun getTimeEntriesForReport(reportId: Long): Flow<List<TimeEntry>> = 
+        timeEntryDao.getTimeEntriesForReport(reportId)
 
-    var hasTimeTracking = true
-    var hasPhotos = true
-
-    fun addTimeEntry(timeEntry: TimeEntry) {
-        viewModelScope.launch {
-            timeEntryDao.insert(timeEntry)
-            val updatedEntries = timeEntryDao.getTimeEntriesForReport(timeEntry.reportId)
-            timeEntries.postValue(updatedEntries)
-        }
+    fun insertTimeEntry(timeEntry: TimeEntry) = viewModelScope.launch {
+        timeEntryDao.insert(timeEntry)
     }
 
-    fun removeTimeEntry(timeEntry: TimeEntry) {
-        viewModelScope.launch {
-            timeEntryDao.delete(timeEntry)
-            val updatedEntries = timeEntryDao.getTimeEntriesForReport(timeEntry.reportId)
-            timeEntries.postValue(updatedEntries)
-        }
+    fun deleteTimeEntry(timeEntry: TimeEntry) = viewModelScope.launch {
+        timeEntryDao.delete(timeEntry)
     }
 
-    fun loadTimeEntriesForCurrentReport() {
-        currentReport.value?.let { report ->
-            viewModelScope.launch {
-                val entries = timeEntryDao.getTimeEntriesForReport(report.id)
-                timeEntries.postValue(entries)
-            }
+    class Factory(
+        private val reportDao: ReportDao,
+        private val timeEntryDao: TimeEntryDao,
+        private val preferenceManager: AppPreferenceManager
+    ) : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            return ReportViewModel(reportDao, timeEntryDao, preferenceManager) as T
         }
     }
 }

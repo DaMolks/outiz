@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -9,97 +8,59 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Ajouter une entrée de temps"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="16dp"/>
+        android:text="@string/add_time_entry"
+        android:textAppearance="?attr/textAppearanceHeadline6"
+        android:layout_marginBottom="16dp" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Heure de début">
+        android:hint="@string/description">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextStartTime"
+            android:id="@+id/etDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:focusable="false"
-            android:drawableEnd="@drawable/ic_time"
-            android:inputType="none"/>
+            android:inputType="textMultiLine"
+            android:minLines="2" />
+
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Heure de fin">
+        android:layout_marginTop="8dp"
+        android:hint="@string/duration_minutes">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextEndTime"
+            android:id="@+id/etDuration"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:focusable="false"
-            android:drawableEnd="@drawable/ic_time"
-            android:inputType="none"/>
+            android:inputType="number" />
+
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Durée">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/durationInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:focusable="false"
-            android:inputType="none"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <EditText
-        android:id="@+id/editTextDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Description"
-        android:inputType="text"/>
-
-    <Spinner
-        android:id="@+id/spinnerTaskType"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"/>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Techniciens">
-
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/techniciansChipGroup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:chipSpacingHorizontal="4dp"
-            app:chipSpacingVertical="4dp" />
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/technicianInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text" />
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        android:gravity="end">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/addTechnicianButton"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:id="@+id/btnCancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:text="Ajouter technicien" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginEnd="8dp"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:text="@string/cancel" />
 
-    <Button
-        android:id="@+id/buttonSaveTimeEntry"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Enregistrer"
-        android:layout_marginTop="16dp"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/save" />
+
+    </LinearLayout>
+
 </LinearLayout>

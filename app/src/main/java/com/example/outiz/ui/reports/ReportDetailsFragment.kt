@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.outiz.databinding.FragmentReportDetailsBinding
+import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -37,15 +39,14 @@ class ReportDetailsFragment : Fragment() {
         if (reportId != -1L) {
             viewModel.loadReport(reportId)
             viewModel.report.observe(viewLifecycleOwner) { report ->
-                binding.tvSiteName.text = report?.siteName
-                binding.tvDescription.text = report?.description
+                binding.tvSiteName.text = report?.siteName ?: ""
+                binding.tvDescription.text = report?.description ?: ""
             }
         }
     }
 
     private fun setupListeners() {
         binding.btnBack.setOnClickListener {
-            // Navigation back logic
             parentFragmentManager.popBackStack()
         }
     }

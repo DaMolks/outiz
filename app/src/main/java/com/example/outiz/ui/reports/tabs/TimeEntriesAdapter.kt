@@ -2,7 +2,6 @@ package com.example.outiz.ui.reports.tabs
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -10,24 +9,36 @@ import com.example.outiz.databinding.ItemTimeEntryBinding
 import com.example.outiz.models.TimeEntry
 import java.time.format.DateTimeFormatter
 
-class TimeEntriesAdapter : ListAdapter<TimeEntry, TimeEntriesAdapter.TimeEntryViewHolder>(TimeEntryDiffCallback()) {
+class TimeEntriesAdapter(
+    private val onDeleteClick: (TimeEntry) -> Unit = {},
+    private val onEditClick: (TimeEntry) -> Unit = {}
+) : ListAdapter<TimeEntry, TimeEntriesAdapter.TimeEntryViewHolder>(TimeEntryDiffCallback()) {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimeEntryViewHolder {
         val binding = ItemTimeEntryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return TimeEntryViewHolder(binding)
+        return TimeEntryViewHolder(binding, onDeleteClick, onEditClick)
     }
 
     override fun onBindViewHolder(holder: TimeEntryViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    inner class TimeEntryViewHolder(private val binding: ItemTimeEntryBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class TimeEntryViewHolder(
+        private val binding: ItemTimeEntryBinding,
+        private val onDeleteClick: (TimeEntry) -> Unit,
+        private val onEditClick: (TimeEntry) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
         private val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
 
         fun bind(timeEntry: TimeEntry) {
             binding.textViewDescription.text = timeEntry.description
             binding.textViewStartTime.text = timeEntry.startTime.format(formatter)
-            binding.textViewEndTime.text = timeEntry.startTime.plusMinutes(timeEntry.duration.toLong()).format(formatter)
+            val endTime = timeEntry.startTime.plusMinutes(timeEntry.duration.toLong())
+            binding.textViewEndTime.text = endTime.format(formatter)
             binding.textViewDuration.text = "${timeEntry.duration} min"
+
+            binding.deleteButton.setOnClickListener { onDeleteClick(timeEntry) }
+            binding.editButton.setOnClickListener { onEditClick(timeEntry) }
         }
     }
 

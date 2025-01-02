@@ -6,36 +6,40 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.outiz.databinding.ItemPhotoBinding
+import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.button.MaterialButton
+import com.bumptech.glide.Glide
 
-class PhotosAdapter(
+class PhotoAdapter(
     private val onDeleteClick: (String) -> Unit
-) : ListAdapter<String, PhotosAdapter.PhotoViewHolder>(PhotoDiffCallback) {
+) : ListAdapter<String, PhotoAdapter.PhotoViewHolder>(PhotoDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
-        val binding = ItemPhotoBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
-        return PhotoViewHolder(binding)
+        val binding = ItemPhotoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return PhotoViewHolder(binding, onDeleteClick)
     }
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    inner class PhotoViewHolder(private val binding: ItemPhotoBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class PhotoViewHolder(
+        private val binding: ItemPhotoBinding,
+        private val onDeleteClick: (String) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(photoPath: String) {
-            with(binding) {
-                photoImage.setImageURI(android.net.Uri.parse("file://$photoPath"))
-                deleteButton.setOnClickListener { onDeleteClick(photoPath) }
+            Glide.with(binding.root.context)
+                .load(photoPath)
+                .into(binding.imageView)
+
+            binding.deleteButton.setOnClickListener {
+                onDeleteClick(photoPath)
             }
         }
     }
 
-    companion object PhotoDiffCallback : DiffUtil.ItemCallback<String>() {
+    private class PhotoDiffCallback : DiffUtil.ItemCallback<String>() {
         override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
             return oldItem == newItem
         }

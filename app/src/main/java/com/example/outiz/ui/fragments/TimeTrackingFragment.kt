@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.outiz.databinding.FragmentTimeTrackingBinding
 import com.example.outiz.ui.reports.tabs.TimeEntriesAdapter
 import com.example.outiz.ui.viewmodel.TimeTrackingViewModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -38,7 +39,14 @@ class TimeTrackingFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        timeEntriesAdapter = TimeEntriesAdapter()
+        timeEntriesAdapter = TimeEntriesAdapter(
+            onDeleteClick = { timeEntry ->
+                viewModel.deleteTimeEntry(timeEntry)
+            },
+            onEditClick = { timeEntry ->
+                // Implement edit functionality
+            }
+        )
         binding.rvTimeEntries.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = timeEntriesAdapter
@@ -53,7 +61,7 @@ class TimeTrackingFragment : Fragment() {
 
     private fun setupListeners() {
         binding.fabAddTimeEntry.setOnClickListener {
-            // Logic to add time entry
+            // Add time entry logic
         }
     }
 

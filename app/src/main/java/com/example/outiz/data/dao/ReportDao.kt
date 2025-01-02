@@ -23,6 +23,7 @@ interface ReportDao {
     @Query("SELECT * FROM reports")
     fun getReportsWithDetails(): Flow<List<ReportWithDetails>>
 
+    @Transaction
     @Query("SELECT * FROM reports WHERE date BETWEEN :start AND :end")
     fun getReportsByDateRange(start: LocalDateTime, end: LocalDateTime): Flow<List<ReportWithDetails>>
 
@@ -32,6 +33,7 @@ interface ReportDao {
     @Query("DELETE FROM reports")
     suspend fun deleteAll()
 
+    @Transaction
     @Query("SELECT * FROM reports WHERE id = :reportId")
     fun getReportById(reportId: Long): Flow<Report?>
 }

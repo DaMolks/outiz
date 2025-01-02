@@ -157,6 +157,12 @@ class ReportPhotosFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance() = ReportPhotosFragment()
+        fun newInstance(reportId: Long) = ReportPhotosFragment().apply {
+            arguments = Bundle().apply {
+                putLong(ARG_REPORT_ID, reportId)
+            }
+        }
+        
+        private const val ARG_REPORT_ID = "report_id"
     }
 }

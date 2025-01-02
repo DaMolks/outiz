@@ -2,20 +2,20 @@ package com.example.outiz.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.time.LocalDateTime
+import androidx.room.TypeConverters
+import java.util.Date
 
 @Entity(tableName = "reports")
+@TypeConverters(DateConverter::class)
 data class Report(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     val siteName: String,
     val description: String,
-    val date: LocalDateTime,
+    val date: Date,
     val caller: String,
-    val callDate: LocalDateTime,
+    val callDate: Date,
     val callReason: String,
-    val technicians: List<String> = emptyList(),
-    val photosPaths: List<String> = emptyList(),
-    val hasTimeTracking: Boolean = true,
-    val hasPhotos: Boolean = true
+    val hasTimeTracking: Boolean,
+    val hasPhotos: Boolean
 )

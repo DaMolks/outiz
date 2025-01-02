@@ -13,11 +13,15 @@ import com.google.android.material.tabs.TabLayoutMediator
 class ReportFragment : Fragment() {
     private var _binding: FragmentReportBinding? = null
     private val binding get() = _binding!!
-    private var reportId: String = ""
+    private var reportId: Long = 0L
+    private var hasTimeTracking: Boolean = true
+    private var hasPhotos: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        reportId = arguments?.getString(REPORT_ID_KEY) ?: ""
+        reportId = arguments?.getLong(REPORT_ID_KEY) ?: 0L
+        hasTimeTracking = arguments?.getBoolean(TIME_TRACKING_KEY, true) ?: true
+        hasPhotos = arguments?.getBoolean(PHOTOS_KEY, true) ?: true
     }
 
     override fun onCreateView(
@@ -35,14 +39,19 @@ class ReportFragment : Fragment() {
     }
 
     private fun setupViewPager() {
-        val pagerAdapter = ReportPagerAdapter(this, reportId)
+        val pagerAdapter = ReportPagerAdapter(
+            requireActivity(), 
+            reportId, 
+            hasTimeTracking, 
+            hasPhotos
+        )
         binding.viewPager.adapter = pagerAdapter
 
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             tab.text = when (position) {
                 0 -> "Informations"
-                1 -> "Suivi du temps"
-                2 -> "Photos"
+                1 -> if (hasTimeTracking) "Suivi du temps" else "Photos"
+                2 -> if (hasTimeTracking && hasPhotos) "Photos" else null
                 else -> null
             }
         }.attach()
@@ -55,10 +64,18 @@ class ReportFragment : Fragment() {
 
     companion object {
         private const val REPORT_ID_KEY = "reportId"
+        private const val TIME_TRACKING_KEY = "hasTimeTracking"
+        private const val PHOTOS_KEY = "hasPhotos"
 
-        fun newInstance(reportId: String) = ReportFragment().apply {
+        fun newInstance(
+            reportId: Long, 
+            hasTimeTracking: Boolean = true, 
+            hasPhotos: Boolean = true
+        ) = ReportFragment().apply {
             arguments = Bundle().apply {
-                putString(REPORT_ID_KEY, reportId)
+                putLong(REPORT_ID_KEY, reportId)
+                putBoolean(TIME_TRACKING_KEY, hasTimeTracking)
+                putBoolean(PHOTOS_KEY, hasPhotos)
             }
         }
     }

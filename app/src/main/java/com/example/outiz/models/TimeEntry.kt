@@ -1,12 +1,11 @@
 package com.example.outiz.models
 
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import androidx.room.*
 import java.time.LocalDateTime
 
 @Entity(
     tableName = "time_entries",
+    indices = [Index("reportId")],
     foreignKeys = [
         ForeignKey(
             entity = Report::class,

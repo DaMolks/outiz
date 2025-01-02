@@ -4,11 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.outiz.databinding.FragmentReportDetailsBinding
-import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -32,7 +30,6 @@ class ReportDetailsFragment : Fragment() {
 
         val reportId = arguments?.getLong(ARG_REPORT_ID) ?: -1L
         setupObservers(reportId)
-        setupListeners()
     }
 
     private fun setupObservers(reportId: Long) {
@@ -43,9 +40,7 @@ class ReportDetailsFragment : Fragment() {
                 binding.tvDescription.text = report?.description ?: ""
             }
         }
-    }
 
-    private fun setupListeners() {
         binding.btnBack.setOnClickListener {
             parentFragmentManager.popBackStack()
         }

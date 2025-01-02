@@ -6,7 +6,7 @@ import com.example.outiz.ui.fragments.InformationFragment
 import com.example.outiz.ui.fragments.PhotosFragment
 import com.example.outiz.ui.fragments.TimeTrackingFragment
 
-class ReportPagerAdapter(fragment: Fragment, private val reportId: String) : 
+class ReportPagerAdapter(fragment: Fragment, private val reportId: Long) : 
     FragmentStateAdapter(fragment) {
 
     override fun getItemCount(): Int = 3

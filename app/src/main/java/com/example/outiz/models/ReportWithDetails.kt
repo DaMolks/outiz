@@ -4,10 +4,12 @@ import androidx.room.Embedded
 import androidx.room.Relation
 
 data class ReportWithDetails(
-    @Embedded val report: Report,
+    @Embedded
+    val report: Report,
+
     @Relation(
         parentColumn = "id",
         entityColumn = "reportId"
     )
-    val timeEntries: List<TimeEntry> = listOf()
+    val timeEntries: List<TimeEntry> = emptyList()
 )

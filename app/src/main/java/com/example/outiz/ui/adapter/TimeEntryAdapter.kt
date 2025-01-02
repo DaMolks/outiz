@@ -7,8 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.outiz.databinding.ItemTimeEntryBinding
 import com.example.outiz.models.TimeEntry
-import java.text.SimpleDateFormat
-import java.util.*
+import java.time.format.DateTimeFormatter
 
 class TimeEntryAdapter(
     private val onDeleteClick: (TimeEntry) -> Unit
@@ -24,13 +23,15 @@ class TimeEntryAdapter(
     }
 
     inner class TimeEntryViewHolder(private val binding: ItemTimeEntryBinding) : RecyclerView.ViewHolder(binding.root) {
+        private val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+
         fun bind(timeEntry: TimeEntry) {
-            binding.tvDescription.text = timeEntry.description
-            binding.tvDuration.text = "${timeEntry.duration} min"
-            binding.tvStartTime.text = SimpleDateFormat("HH:mm", Locale.getDefault()).format(timeEntry.startTime)
-            
-            binding.btnDelete.setOnClickListener {
-                onDeleteClick(timeEntry)
+            binding.apply {
+                tvDescription.text = timeEntry.description
+                tvStartTime.text = timeEntry.startTime.format(timeFormatter)
+                tvDuration.text = "${timeEntry.duration} min"
+
+                btnDelete.setOnClickListener { onDeleteClick(timeEntry) }
             }
         }
     }

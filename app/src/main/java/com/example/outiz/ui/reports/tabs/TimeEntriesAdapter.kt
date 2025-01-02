@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.outiz.databinding.ItemTimeEntryBinding
 import com.example.outiz.models.TimeEntry
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
 
 class TimeEntriesAdapter(
@@ -30,17 +29,15 @@ class TimeEntriesAdapter(
         private val onDeleteClick: (TimeEntry) -> Unit,
         private val onEditClick: (TimeEntry) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
-        private val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+        private val dateFormatter = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
 
         fun bind(timeEntry: TimeEntry) {
             binding.textViewDescription.text = timeEntry.description
-            binding.textViewStartTime.text = dateFormat.format(timeEntry.startTime)
-
-            // Calculate end time by adding duration to start time
-            val endTime = Date(timeEntry.startTime.time + timeEntry.duration * 60 * 1000L)
-            binding.textViewEndTime.text = dateFormat.format(endTime)
+            binding.textViewStartTime.text = dateFormatter.format(timeEntry.startTime)
             
-            binding.textViewDuration.text = String.format(Locale.getDefault(), "%d min", timeEntry.duration)
+            val endTime = java.util.Date(timeEntry.startTime.time + timeEntry.duration * 60000L)
+            binding.textViewEndTime.text = dateFormatter.format(endTime)
+            binding.textViewDuration.text = "${timeEntry.duration} min"
 
             binding.deleteButton.setOnClickListener { onDeleteClick(timeEntry) }
             binding.editButton.setOnClickListener { onEditClick(timeEntry) }

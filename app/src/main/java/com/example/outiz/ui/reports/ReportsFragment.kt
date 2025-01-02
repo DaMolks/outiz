@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.outiz.databinding.FragmentReportsBinding
-import com.example.outiz.models.Report
 import com.example.outiz.ui.adapter.ReportsAdapter
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -39,7 +39,7 @@ class ReportsFragment : Fragment() {
 
     private fun setupRecyclerView() {
         reportsAdapter = ReportsAdapter { reportId ->
-            // Navigation or details logic
+            // Navigation to report details
         }
         binding.rvReports.apply {
             layoutManager = LinearLayoutManager(context)

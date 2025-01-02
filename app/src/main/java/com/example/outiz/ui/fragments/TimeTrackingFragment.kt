@@ -44,7 +44,7 @@ class TimeTrackingFragment : Fragment() {
             onDeleteClick = { timeEntry ->
                 viewModel.deleteTimeEntry(timeEntry)
             },
-            onEditClick = { timeEntry ->
+            onEditClick = { _ ->
                 // TODO: Implement edit time entry
             }
         )

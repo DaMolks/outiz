@@ -4,24 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.outiz.databinding.FragmentReportTimeBinding
-import com.example.outiz.models.TimeEntry
-import com.example.outiz.ui.dialog.AddTimeEntryDialog
 import com.example.outiz.ui.viewmodel.ReportViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.time.LocalDateTime
 
 @AndroidEntryPoint
 class ReportTimeFragment : Fragment() {
     private var _binding: FragmentReportTimeBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: ReportViewModel by viewModels({ requireParentFragment() })
-    private lateinit var timeEntryAdapter: TimeEntryAdapter
+    private val viewModel: ReportViewModel by viewModels()
+    private lateinit var timeEntriesAdapter: TimeEntriesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,50 +32,26 @@ class ReportTimeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
-        setupListeners()
-        observeViewModel()
+        setupObservers()
+
+        val reportId = arguments?.getLong(ARG_REPORT_ID) ?: -1L
+        if (reportId != -1L) {
+            viewModel.loadReport(reportId)
+        }
     }
 
     private fun setupRecyclerView() {
-        timeEntryAdapter = TimeEntryAdapter { timeEntry ->
-            viewModel.removeTimeEntry(timeEntry)
-        }
-
+        timeEntriesAdapter = TimeEntriesAdapter()
         binding.rvTimeEntries.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = timeEntryAdapter
+            adapter = timeEntriesAdapter
         }
     }
 
-    private fun setupListeners() {
-        binding.fabAddTime.setOnClickListener {
-            showAddTimeEntryDialog()
-        }
-    }
-
-    private fun observeViewModel() {
+    private fun setupObservers() {
         viewModel.timeEntries.observe(viewLifecycleOwner) { entries ->
-            timeEntryAdapter.submitList(entries)
-            updateEmptyState(entries)
+            timeEntriesAdapter.submitList(entries)
         }
-    }
-
-    private fun updateEmptyState(entries: List<TimeEntry>) {
-        binding.tvEmptyList.isVisible = entries.isEmpty()
-        binding.rvTimeEntries.isVisible = entries.isNotEmpty()
-    }
-
-    private fun showAddTimeEntryDialog() {
-        AddTimeEntryDialog(requireContext()) { description, duration ->
-            val timeEntry = TimeEntry(
-                id = 0,
-                reportId = viewModel.currentReport.value?.id ?: return@AddTimeEntryDialog,
-                startTime = LocalDateTime.now(),
-                duration = duration,
-                description = description
-            )
-            viewModel.addTimeEntry(timeEntry)
-        }.show()
     }
 
     override fun onDestroyView() {
@@ -88,12 +60,12 @@ class ReportTimeFragment : Fragment() {
     }
 
     companion object {
+        private const val ARG_REPORT_ID = "report_id"
+
         fun newInstance(reportId: Long) = ReportTimeFragment().apply {
             arguments = Bundle().apply {
                 putLong(ARG_REPORT_ID, reportId)
             }
         }
-        
-        private const val ARG_REPORT_ID = "report_id"
     }
 }

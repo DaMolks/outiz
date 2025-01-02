@@ -10,8 +10,8 @@ import com.example.outiz.ui.reports.tabs.ReportTimeFragment
 class ReportPagerAdapter(
     activity: FragmentActivity,
     private val reportId: Long,
-    private val hasTimeTracking: Boolean,
-    private val hasPhotos: Boolean
+    private val hasTimeTracking: Boolean = true,
+    private val hasPhotos: Boolean = true
 ) : FragmentStateAdapter(activity) {
 
     override fun getItemCount(): Int {

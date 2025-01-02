@@ -88,6 +88,12 @@ class ReportTimeFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance() = ReportTimeFragment()
+        fun newInstance(reportId: Long) = ReportTimeFragment().apply {
+            arguments = Bundle().apply {
+                putLong(ARG_REPORT_ID, reportId)
+            }
+        }
+        
+        private const val ARG_REPORT_ID = "report_id"
     }
 }

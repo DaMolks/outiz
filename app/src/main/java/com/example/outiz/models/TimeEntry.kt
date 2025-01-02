@@ -1,8 +1,9 @@
 package com.example.outiz.models
 
 import androidx.room.*
-import java.time.LocalDateTime
+import java.util.Date
 
+@TypeConverters(DateConverter::class)
 @Entity(
     tableName = "time_entries",
     indices = [Index("reportId")],
@@ -19,7 +20,19 @@ data class TimeEntry(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     val reportId: Long,
-    val startTime: LocalDateTime,
+    val startTime: Date,
     val duration: Int, // in minutes
     val description: String
 )
+
+object DateConverter {
+    @TypeConverter
+    fun fromTimestamp(value: Long?): Date? {
+        return value?.let { Date(it) }
+    }
+
+    @TypeConverter
+    fun dateToTimestamp(date: Date?): Long? {
+        return date?.time
+    }
+}

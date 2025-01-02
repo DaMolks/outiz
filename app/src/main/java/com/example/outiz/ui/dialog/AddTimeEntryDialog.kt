@@ -1,48 +1,58 @@
 package com.example.outiz.ui.dialog
 
+import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.viewModels
+import android.view.Window
+import com.example.outiz.R
 import com.example.outiz.databinding.DialogAddTimeEntryBinding
-import com.example.outiz.ui.reports.EditReportViewModel
-import java.time.LocalDateTime
 
-class AddTimeEntryDialog : DialogFragment() {
+class AddTimeEntryDialog(
+    context: Context,
+    private val onSave: (description: String, duration: Int) -> Unit
+) : Dialog(context) {
+
     private lateinit var binding: DialogAddTimeEntryBinding
-    private val viewModel: EditReportViewModel by viewModels()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = DialogAddTimeEntryBinding.inflate(inflater, container, false)
-        return binding.root
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        
+        binding = DialogAddTimeEntryBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        setupListeners()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        with(binding) {
-            btnSave.setOnClickListener {
-                val reportId = arguments?.getLong(ARG_REPORT_ID) ?: return@setOnClickListener
-                val startTime = LocalDateTime.parse(etStartTime.text.toString())
-                val duration = etDuration.text.toString().toLong()
-                val description = etDescription.text.toString()
-
-                viewModel.insertTimeEntry(/* TODO: Add TimeEntry creation logic */)
+    private fun setupListeners() {
+        binding.btnSave.setOnClickListener {
+            val description = binding.etDescription.text.toString().trim()
+            val duration = binding.etDuration.text.toString().toIntOrNull() ?: 0
+            
+            if (validateInputs(description, duration)) {
+                onSave(description, duration)
+                dismiss()
             }
         }
+
+        binding.btnCancel.setOnClickListener {
+            dismiss()
+        }
     }
 
-    companion object {
-        private const val ARG_REPORT_ID = "report_id"
+    private fun validateInputs(description: String, duration: Int): Boolean {
+        var isValid = true
 
-        fun newInstance(reportId: Long): AddTimeEntryDialog {
-            val fragment = AddTimeEntryDialog()
-            val args = Bundle()
-            args.putLong(ARG_REPORT_ID, reportId)
-            fragment.arguments = args
-            return fragment
+        if (description.isBlank()) {
+            binding.etDescription.error = context.getString(R.string.error_description_required)
+            isValid = false
         }
+
+        if (duration <= 0) {
+            binding.etDuration.error = context.getString(R.string.error_invalid_duration)
+            isValid = false
+        }
+
+        return isValid
     }
 }

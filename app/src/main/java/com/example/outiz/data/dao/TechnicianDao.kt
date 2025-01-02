@@ -6,21 +6,21 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TechnicianDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(technician: Technician): Long
+
     @Query("SELECT * FROM technicians")
     fun getAllTechnicians(): Flow<List<Technician>>
 
     @Query("SELECT * FROM technicians WHERE id = :id")
-    suspend fun getTechnicianById(id: String): Technician?
+    fun getTechnicianById(id: Long): Flow<Technician?>
 
-    @Query("SELECT * FROM technicians LIMIT 1")
-    fun getCurrentTechnician(): Flow<Technician>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertTechnician(technician: Technician)
-
-    @Update
-    suspend fun updateTechnician(technician: Technician)
+    @Query("SELECT * FROM technicians WHERE employeeId = :employeeId")
+    suspend fun getTechnicianByEmployeeId(employeeId: String): Technician?
 
     @Delete
-    suspend fun deleteTechnician(technician: Technician)
+    suspend fun delete(technician: Technician)
+
+    @Query("DELETE FROM technicians")
+    suspend fun deleteAll()
 }

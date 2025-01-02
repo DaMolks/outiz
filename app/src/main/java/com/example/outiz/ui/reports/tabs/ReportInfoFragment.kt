@@ -6,13 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.distinctUntilChanged
 import com.example.outiz.databinding.FragmentReportInfoBinding
-import com.example.outiz.ui.viewmodel.ReportViewModel
+import com.example.outiz.ui.reports.EditReportViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -21,10 +19,10 @@ import java.time.format.DateTimeFormatter
 class ReportInfoFragment : Fragment() {
     private var _binding: FragmentReportInfoBinding? = null
     private val binding get() = _binding!!
-
-    private val viewModel: ReportViewModel by viewModels({ requireParentFragment() })
+    
+    private val viewModel: EditReportViewModel by viewModels({ requireParentFragment() })
     private val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-
+    
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -33,54 +31,33 @@ class ReportInfoFragment : Fragment() {
         _binding = FragmentReportInfoBinding.inflate(inflater, container, false)
         return binding.root
     }
-
+    
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        setupSiteInput()
-        setupDatePicker()
-        setupDescriptionInput()
-        setupSwitches()
+        
+        setupInputListeners()
         observeViewModel()
     }
-
-    private fun setupSiteInput() {
-        (binding.siteInput as? AutoCompleteTextView)?.let { autoComplete ->
-            val sites = listOf("Site A", "Site B", "Site C") // TODO: Get from database
-            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, sites)
-            autoComplete.setAdapter(adapter)
-            
-            autoComplete.doAfterTextChanged { text ->
-                viewModel.updateSiteName(text.toString())
-            }
+    
+    private fun setupInputListeners() {
+        binding.siteInput.doAfterTextChanged { text ->
+            viewModel.updateSiteName(text.toString())
         }
-    }
-
-    private fun setupDatePicker() {
-        binding.dateInput.setOnClickListener {
-            val currentDate = viewModel.date.value ?: LocalDateTime.now()
-            
-            DatePickerDialog(
-                requireContext(),
-                { _, year, month, day ->
-                    val newDate = LocalDateTime.of(year, month + 1, day,
-                        currentDate.hour, currentDate.minute)
-                    viewModel.updateDate(newDate)
-                },
-                currentDate.year,
-                currentDate.monthValue - 1,
-                currentDate.dayOfMonth
-            ).show()
-        }
-    }
-
-    private fun setupDescriptionInput() {
+        
+        binding.callDateInput.setOnClickListener { showDatePicker() }
+        
         binding.descriptionInput.doAfterTextChanged { text ->
             viewModel.updateDescription(text.toString())
         }
-    }
+        
+        binding.callerInput.doAfterTextChanged { text ->
+            viewModel.updateCaller(text.toString())
+        }
+        
+        binding.callReasonInput.doAfterTextChanged { text ->
+            viewModel.updateCallReason(text.toString())
+        }
 
-    private fun setupSwitches() {
         binding.timeTrackingSwitch.setOnCheckedChangeListener { _, isChecked ->
             viewModel.updateHasTimeTracking(isChecked)
         }
@@ -89,39 +66,73 @@ class ReportInfoFragment : Fragment() {
             viewModel.updateHasPhotos(isChecked)
         }
     }
-
+    
+    private fun showDatePicker() {
+        val currentDate = viewModel.callDate.value ?: LocalDateTime.now()
+        
+        DatePickerDialog(
+            requireContext(),
+            { _, year, month, day ->
+                val newDate = LocalDateTime.of(year, month + 1, day,
+                    currentDate.hour, currentDate.minute)
+                viewModel.updateCallDate(newDate)
+            },
+            currentDate.year,
+            currentDate.monthValue - 1,
+            currentDate.dayOfMonth
+        ).show()
+    }
+    
     private fun observeViewModel() {
         viewModel.siteName.observe(viewLifecycleOwner) { name ->
             if (binding.siteInput.text.toString() != name) {
                 binding.siteInput.setText(name)
             }
         }
-
-        viewModel.date.distinctUntilChanged().observe(viewLifecycleOwner) { date ->
-            binding.dateInput.setText(date.format(dateFormatter))
+        
+        viewModel.callDate.observe(viewLifecycleOwner) { date ->
+            binding.callDateInput.setText(date.format(dateFormatter))
         }
-
+        
         viewModel.description.observe(viewLifecycleOwner) { description ->
             if (binding.descriptionInput.text.toString() != description) {
                 binding.descriptionInput.setText(description)
             }
         }
+        
+        viewModel.caller.observe(viewLifecycleOwner) { caller ->
+            if (binding.callerInput.text.toString() != caller) {
+                binding.callerInput.setText(caller)
+            }
+        }
+        
+        viewModel.callReason.observe(viewLifecycleOwner) { reason ->
+            if (binding.callReasonInput.text.toString() != reason) {
+                binding.callReasonInput.setText(reason)
+            }
+        }
 
-        viewModel.hasTimeTracking.observe(viewLifecycleOwner) { hasTimeTracking ->
-            binding.timeTrackingSwitch.isChecked = hasTimeTracking
+        viewModel.hasTimeTracking.observe(viewLifecycleOwner) { hasTracking ->
+            binding.timeTrackingSwitch.isChecked = hasTracking
         }
 
         viewModel.hasPhotos.observe(viewLifecycleOwner) { hasPhotos ->
             binding.photosSwitch.isChecked = hasPhotos
         }
     }
-
+    
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
+    
     companion object {
-        fun newInstance() = ReportInfoFragment()
+        fun newInstance(reportId: Long) = ReportInfoFragment().apply {
+            arguments = Bundle().apply {
+                putLong(ARG_REPORT_ID, reportId)
+            }
+        }
+        
+        private const val ARG_REPORT_ID = "report_id"
     }
 }

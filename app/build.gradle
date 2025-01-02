@@ -64,6 +64,9 @@ dependencies {
 
     // Preferences
     implementation 'androidx.preference:preference-ktx:1.2.1'
+
+    // Gson for JSON serialization
+    implementation 'com.google.code.gson:gson:2.10.1'
     
     // Test dependencies
     testImplementation 'junit:junit:4.13.2'

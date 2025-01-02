@@ -8,17 +8,11 @@ import java.time.LocalDateTime
 data class Report(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
-    val siteId: Long,
-    val date: LocalDateTime,
+    val siteName: String,
     val description: String,
-    val technicians: List<String> = listOf(),
-    val status: String,
-    val caller: String? = null,
-    val callDate: LocalDateTime? = null,
-    val callReason: String? = null,
-    val actions: String? = null,
-    val photosPaths: List<String>? = null,
-    val isTimeTrackingEnabled: Boolean = false,
-    val isPhotosEnabled: Boolean = false,
-    val hasSignature: Boolean = false
+    val date: LocalDateTime,
+    val technicians: List<String> = emptyList(),
+    val photosPaths: List<String> = emptyList(),
+    val hasTimeTracking: Boolean = true,
+    val hasPhotos: Boolean = true
 )

@@ -35,6 +35,11 @@ class ReportInfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         
+        val reportId = arguments?.getLong(ARG_REPORT_ID) ?: -1
+        if (reportId != -1L) {
+            viewModel.loadReport(reportId)
+        }
+        
         setupInputListeners()
         observeViewModel()
     }

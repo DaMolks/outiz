@@ -48,9 +48,14 @@
     <string name="caller">Appelant</string>
     <string name="enable_time_tracking">Activer le suivi du temps</string>
     <string name="enable_photos">Activer les photos</string>
+    <string name="description">Description</string>
+    <string name="duration_minutes">Durée (minutes)</string>
     
     <!-- Messages -->
     <string name="no_reports">Aucun rapport disponible</string>
     <string name="no_sites">Aucun site disponible</string>
     <string name="no_time_entries">Aucune entrée de temps</string>
-    <string name="no_photos">Aucune photo</string></resources>
+    <string name="no_photos">Aucune photo</string>
+    <string name="error_description_required">La description est requise</string>
+    <string name="error_invalid_duration">La durée est invalide</string>
+</resources>

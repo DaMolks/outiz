@@ -28,7 +28,7 @@ class ReportPhotosFragment : Fragment() {
     private var _binding: FragmentReportPhotosBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: ReportViewModel by viewModels({ requireParentFragment() })
+    private val viewModel: ReportViewModel by viewModels()
     private lateinit var photoAdapter: PhotoAdapter
     private var currentPhotoPath: String? = null
 
@@ -76,6 +76,11 @@ class ReportPhotosFragment : Fragment() {
         setupRecyclerView()
         setupButtons()
         observeViewModel()
+
+        val reportId = arguments?.getLong(ARG_REPORT_ID) ?: -1L
+        if (reportId != -1L) {
+            viewModel.loadReport(reportId)
+        }
     }
 
     private fun setupRecyclerView() {
@@ -157,12 +162,12 @@ class ReportPhotosFragment : Fragment() {
     }
 
     companion object {
+        private const val ARG_REPORT_ID = "report_id"
+
         fun newInstance(reportId: Long) = ReportPhotosFragment().apply {
             arguments = Bundle().apply {
                 putLong(ARG_REPORT_ID, reportId)
             }
         }
-        
-        private const val ARG_REPORT_ID = "report_id"
     }
 }

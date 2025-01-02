@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.outiz.databinding.ItemPhotoBinding
 import com.bumptech.glide.Glide
+import com.example.outiz.databinding.ItemPhotoBinding
 
 class PhotoAdapter(
     private val onDeleteClick: (String) -> Unit

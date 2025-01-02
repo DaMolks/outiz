@@ -51,6 +51,9 @@
     <string name="report_time">Temps</string>
     <string name="report_photos">Photos</string>
     <string name="date">Date</string>
+    <string name="caller">Appelant</string>
+    <string name="call_date">Date d\'appel</string>
+    <string name="call_reason">Motif d\'appel</string>
     <string name="description">Description</string>
     <string name="duration_minutes">Durée (minutes)</string>
     <string name="start_time">Heure de début</string>
@@ -58,7 +61,6 @@
     <string name="module_icon">Icône du module</string>
     <string name="enable_time_tracking">Activer le suivi du temps</string>
     <string name="enable_photos">Activer les photos</string>
-    <string name="call_date">Date d\'appel</string>
 
     <!-- Messages -->
     <string name="no_reports">Aucun rapport disponible</string>

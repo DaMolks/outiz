@@ -17,7 +17,7 @@ class EditReportFragment : Fragment() {
     private var _binding: FragmentEditReportBinding? = null
     private val binding get() = _binding!!
     
-    private val viewModel: ReportViewModel by viewModels()
+    private val viewModel: EditReportViewModel by viewModels()
     
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,49 +30,58 @@ class EditReportFragment : Fragment() {
     
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
-        setupPager()
-        setupListeners()
-        
+
         // Load report if editing
         arguments?.getLong(ARG_REPORT_ID, -1L)?.let { reportId ->
             if (reportId != -1L) {
                 viewModel.loadReport(reportId)
             }
         }
+        
+        setupPager()
+        setupListeners()
+        observeViewModel()
     }
     
     private fun setupPager() {
-        val pagerAdapter = ReportPagerAdapter(
-            requireActivity(),
-            reportId = arguments?.getLong(ARG_REPORT_ID, -1L) ?: -1L,
-            hasTimeTracking = true,
-            hasPhotos = true
-        )
-        
-        binding.viewPager.adapter = pagerAdapter
-        
-        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-            tab.text = when (position) {
-                0 -> "Informations"
-                1 -> "Temps"
-                2 -> "Photos"
-                else -> ""
-            }
-        }.attach()
+        viewModel.currentReport.observe(viewLifecycleOwner) { report ->
+            val pagerAdapter = ReportPagerAdapter(
+                requireActivity(),
+                arguments?.getLong(ARG_REPORT_ID, -1L) ?: -1L,
+                viewModel.hasTimeTracking.value ?: true,
+                viewModel.hasPhotos.value ?: true
+            )
+            
+            binding.viewPager.adapter = pagerAdapter
+            
+            TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+                tab.text = when (position) {
+                    0 -> "Informations"
+                    1 -> "Temps"
+                    2 -> "Photos"
+                    else -> ""
+                }
+            }.attach()
+        }
     }
     
     private fun setupListeners() {
         binding.btnSave.setOnClickListener {
-            saveReport()
+            viewModel.saveReport { success ->
+                if (success) {
+                    findNavController().navigateUp()
+                }
+            }
         }
     }
-    
-    private fun saveReport() {
-        viewModel.saveReport { success ->
-            if (success) {
-                findNavController().navigateUp()
-            }
+
+    private fun observeViewModel() {
+        viewModel.hasTimeTracking.observe(viewLifecycleOwner) { hasTracking ->
+            setupPager()
+        }
+
+        viewModel.hasPhotos.observe(viewLifecycleOwner) { hasPhotos ->
+            setupPager()
         }
     }
     
@@ -82,6 +91,6 @@ class EditReportFragment : Fragment() {
     }
     
     companion object {
-        const val ARG_REPORT_ID = "arg_report_id"
+        const val ARG_REPORT_ID = "report_id"
     }
 }

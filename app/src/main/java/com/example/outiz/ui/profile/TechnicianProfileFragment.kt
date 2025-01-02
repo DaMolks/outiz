@@ -4,17 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.outiz.R
 import com.example.outiz.databinding.FragmentTechnicianProfileBinding
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class TechnicianProfileFragment : Fragment() {
     private var _binding: FragmentTechnicianProfileBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: TechnicianProfileViewModel
+
+    private val viewModel: TechnicianProfileViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,63 +31,80 @@ class TechnicianProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[TechnicianProfileViewModel::class.java]
-
-        setupSaveButton()
+        
+        setupInputListeners()
+        setupButtonListeners()
         observeViewModel()
     }
 
-    private fun setupSaveButton() {
-        binding.saveButton.setOnClickListener {
-            val firstName = binding.firstNameInput.text.toString()
-            val lastName = binding.lastNameInput.text.toString()
-            val sector = binding.sectorInput.text.toString()
+    private fun setupInputListeners() {
+        binding.firstNameInput.doAfterTextChanged {
+            viewModel.updateFirstName(it.toString())
+        }
 
-            if (validateInputs(firstName, lastName, sector)) {
-                viewModel.saveTechnician(firstName, lastName, sector)
-            }
+        binding.lastNameInput.doAfterTextChanged {
+            viewModel.updateLastName(it.toString())
+        }
+
+        binding.employeeIdInput.doAfterTextChanged {
+            viewModel.updateEmployeeId(it.toString())
+        }
+
+        binding.sectorInput.doAfterTextChanged {
+            viewModel.updateSector(it.toString())
+        }
+    }
+
+    private fun setupButtonListeners() {
+        binding.btnSave.setOnClickListener {
+            viewModel.saveTechnician()
         }
     }
 
     private fun observeViewModel() {
-        viewModel.saveSuccess.observe(viewLifecycleOwner) { success ->
-            if (success) {
-                findNavController().navigate(R.id.homeFragment)
-            } else {
-                Snackbar.make(
-                    binding.root,
-                    "Erreur lors de la création du profil",
-                    Snackbar.LENGTH_LONG
-                ).show()
+        viewModel.firstName.observe(viewLifecycleOwner) { name ->
+            if (binding.firstNameInput.text.toString() != name) {
+                binding.firstNameInput.setText(name)
             }
         }
-    }
 
-    private fun validateInputs(firstName: String, lastName: String, sector: String): Boolean {
-        var isValid = true
-
-        if (firstName.isBlank()) {
-            binding.firstNameLayout.error = "Le prénom est requis"
-            isValid = false
-        } else {
-            binding.firstNameLayout.error = null
+        viewModel.lastName.observe(viewLifecycleOwner) { name ->
+            if (binding.lastNameInput.text.toString() != name) {
+                binding.lastNameInput.setText(name)
+            }
         }
 
-        if (lastName.isBlank()) {
-            binding.lastNameLayout.error = "Le nom est requis"
-            isValid = false
-        } else {
-            binding.lastNameLayout.error = null
+        viewModel.employeeId.observe(viewLifecycleOwner) { id ->
+            if (binding.employeeIdInput.text.toString() != id) {
+                binding.employeeIdInput.setText(id)
+            }
         }
 
-        if (sector.isBlank()) {
-            binding.sectorLayout.error = "Le secteur est requis"
-            isValid = false
-        } else {
-            binding.sectorLayout.error = null
+        viewModel.sector.observe(viewLifecycleOwner) { sector ->
+            if (binding.sectorInput.text.toString() != sector) {
+                binding.sectorInput.setText(sector)
+            }
         }
 
-        return isValid
+        viewModel.error.observe(viewLifecycleOwner) { error ->
+            error?.let {
+                Snackbar.make(binding.root, it, Snackbar.LENGTH_LONG).show()
+                viewModel.clearError()
+            }
+        }
+
+        viewModel.saved.observe(viewLifecycleOwner) { saved ->
+            if (saved) {
+                Snackbar.make(
+                    binding.root,
+                    R.string.profile_saved,
+                    Snackbar.LENGTH_SHORT
+                ).show()
+                findNavController().navigate(
+                    TechnicianProfileFragmentDirections.actionTechnicianProfileFragmentToHomeFragment()
+                )
+            }
+        }
     }
 
     override fun onDestroyView() {

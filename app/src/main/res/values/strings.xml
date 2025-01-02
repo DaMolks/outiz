@@ -2,26 +2,25 @@
 <resources>
     <!-- App -->
     <string name="app_name">Outiz</string>
+    
+    <!-- Reports -->
+    <string name="report_info">Informations</string>
+    <string name="report_time">Temps</string>
+    <string name="report_photos">Photos</string>
+    <string name="call_date">Date d\'appel</string>
+    <string name="description">Description</string>
+    <string name="duration_minutes">Durée (minutes)</string>
+    <string name="start_time">Heure de début</string>
+    <string name="end_time">Heure de fin</string>
+    <string name="no_reports">Aucun rapport disponible</string>
+    <string name="no_time_entries">Aucune entrée de temps</string>
+    <string name="no_photos">Aucune photo</string>
+    <string name="enable_time_tracking">Activer le suivi du temps</string>
+    <string name="enable_photos">Activer les photos</string>
 
-    <!-- Site Management -->
-    <string name="site_name">Nom du site</string>
-    <string name="site_code">Code site</string>
-    <string name="site_address">Adresse du site</string>
-    <string name="client_name">Nom du client</string>
-    <string name="site">Site</string>
-    <string name="site_info">Informations du site</string>
-    <string name="no_sites">Aucun site disponible</string>
-
-    <!-- Profile -->
-    <string name="technician_profile">Profil technicien</string>
-    <string name="first_name">Prénom</string>
-    <string name="last_name">Nom</string>
-    <string name="employee_id">Matricule</string>
-    <string name="sector">Secteur</string>
-    <string name="profile_saved">Profil enregistré</string>
-    <string name="fill_required_fields">Veuillez remplir tous les champs obligatoires</string>
-
-    <!-- UI Elements -->
-    <string name="module_icon">Icône du module</string>
-    <string name="photo">Photo</string>
+    <!-- Messages -->
+    <string name="error_description_required">La description est requise</string>
+    <string name="error_invalid_duration">La durée est invalide</string>
+    <string name="error_camera_unavailable">Appareil photo non disponible</string>
+    <string name="error_saving_photo">Erreur lors de la sauvegarde de la photo</string>
 </resources>

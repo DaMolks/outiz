@@ -11,9 +11,8 @@ import com.example.outiz.databinding.FragmentTimeTrackingBinding
 import com.example.outiz.models.TimeEntry
 import com.example.outiz.ui.reports.tabs.TimeEntriesAdapter
 import com.example.outiz.ui.viewmodel.TimeTrackingViewModel
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
-import java.time.LocalDateTime
+import java.util.Date
 
 @AndroidEntryPoint
 class TimeTrackingFragment : Fragment() {
@@ -64,7 +63,7 @@ class TimeTrackingFragment : Fragment() {
             val newTimeEntry = TimeEntry(
                 id = 0,
                 reportId = 1, // TODO: Get dynamic report ID
-                startTime = LocalDateTime.now(),
+                startTime = Date(), // Utiliser java.util.Date
                 duration = 30, // Default 30 minutes
                 description = "New Time Entry"
             )

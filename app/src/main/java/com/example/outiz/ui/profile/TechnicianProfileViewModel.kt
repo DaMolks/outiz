@@ -1,36 +1,110 @@
 package com.example.outiz.ui.profile
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.preference.PreferenceManager
-import com.example.outiz.data.OutizDatabase
+import com.example.outiz.data.dao.TechnicianDao
 import com.example.outiz.models.Technician
+import com.example.outiz.utils.AppPreferenceManager
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.util.UUID
+import javax.inject.Inject
 
-class TechnicianProfileViewModel(application: Application) : AndroidViewModel(application) {
-    private val database = OutizDatabase.getDatabase(application)
-    private val technicianDao = database.technicianDao()
-    private val prefs = PreferenceManager.getDefaultSharedPreferences(application)
+@HiltViewModel
+class TechnicianProfileViewModel @Inject constructor(
+    private val technicianDao: TechnicianDao,
+    private val preferenceManager: AppPreferenceManager
+) : ViewModel() {
 
-    private val _saveSuccess = MutableLiveData<Boolean>()
-    val saveSuccess: LiveData<Boolean> = _saveSuccess
+    private val _firstName = MutableLiveData<String>()
+    val firstName: LiveData<String> = _firstName
 
-    fun saveTechnician(firstName: String, lastName: String, sector: String) {
-        viewModelScope.launch {
-            val technician = Technician(
-                id = UUID.randomUUID().toString(),
-                firstName = firstName,
-                lastName = lastName,
-                sector = sector
-            )
-            technicianDao.insertTechnician(technician)
-            // Stocker l'ID du technicien dans les préférences
-            prefs.edit().putString("technician_id", technician.id).apply()
-            _saveSuccess.value = true
+    private val _lastName = MutableLiveData<String>()
+    val lastName: LiveData<String> = _lastName
+
+    private val _employeeId = MutableLiveData<String>()
+    val employeeId: LiveData<String> = _employeeId
+
+    private val _sector = MutableLiveData<String>()
+    val sector: LiveData<String> = _sector
+
+    private val _saved = MutableLiveData<Boolean>()
+    val saved: LiveData<Boolean> = _saved
+
+    private val _error = MutableLiveData<String?>()
+    val error: LiveData<String?> = _error
+
+    init {
+        loadTechnician()
+    }
+
+    private fun loadTechnician() {
+        val technicianId = preferenceManager.technicianId
+        if (technicianId != -1L) {
+            viewModelScope.launch {
+                technicianDao.getTechnicianById(technicianId).collect { technician ->
+                    technician?.let { updateFields(it) }
+                }
+            }
         }
+    }
+
+    private fun updateFields(technician: Technician) {
+        _firstName.value = technician.firstName
+        _lastName.value = technician.lastName
+        _employeeId.value = technician.employeeId
+        _sector.value = technician.sector
+    }
+
+    fun updateFirstName(name: String) {
+        _firstName.value = name
+    }
+
+    fun updateLastName(name: String) {
+        _lastName.value = name
+    }
+
+    fun updateEmployeeId(id: String) {
+        _employeeId.value = id
+    }
+
+    fun updateSector(sector: String) {
+        _sector.value = sector
+    }
+
+    fun saveTechnician() {
+        val firstName = _firstName.value?.trim()
+        val lastName = _lastName.value?.trim()
+        val employeeId = _employeeId.value?.trim()
+        val sector = _sector.value?.trim()
+
+        if (firstName.isNullOrBlank() || lastName.isNullOrBlank() || 
+            employeeId.isNullOrBlank() || sector.isNullOrBlank()) {
+            _error.value = "fill_required_fields"
+            return
+        }
+
+        viewModelScope.launch {
+            try {
+                val technician = Technician(
+                    id = if (preferenceManager.hasTechnician()) preferenceManager.technicianId else 0,
+                    firstName = firstName,
+                    lastName = lastName,
+                    employeeId = employeeId,
+                    sector = sector
+                )
+
+                val techId = technicianDao.insert(technician)
+                preferenceManager.technicianId = techId
+                _saved.value = true
+            } catch (e: Exception) {
+                _error.value = e.message
+            }
+        }
+    }
+
+    fun clearError() {
+        _error.value = null
     }
 }

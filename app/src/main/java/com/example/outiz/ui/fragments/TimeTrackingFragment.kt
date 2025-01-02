@@ -8,10 +8,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.outiz.databinding.FragmentTimeTrackingBinding
+import com.example.outiz.models.TimeEntry
 import com.example.outiz.ui.reports.tabs.TimeEntriesAdapter
 import com.example.outiz.ui.viewmodel.TimeTrackingViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.LocalDateTime
 
 @AndroidEntryPoint
 class TimeTrackingFragment : Fragment() {
@@ -44,13 +46,11 @@ class TimeTrackingFragment : Fragment() {
                 viewModel.deleteTimeEntry(timeEntry)
             },
             onEditClick = { timeEntry ->
-                // Implement edit functionality
+                // TODO: Implement edit time entry
             }
         )
-        binding.rvTimeEntries.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = timeEntriesAdapter
-        }
+        binding.rvTimeEntries.layoutManager = LinearLayoutManager(context)
+        binding.rvTimeEntries.adapter = timeEntriesAdapter
     }
 
     private fun setupObservers() {
@@ -60,13 +60,24 @@ class TimeTrackingFragment : Fragment() {
     }
 
     private fun setupListeners() {
-        binding.fabAddTimeEntry.setOnClickListener {
-            // Add time entry logic
+        binding.fabAddTime.setOnClickListener {
+            val newTimeEntry = TimeEntry(
+                id = 0,
+                reportId = 1, // TODO: Get dynamic report ID
+                startTime = LocalDateTime.now(),
+                duration = 30, // Default 30 minutes
+                description = "New Time Entry"
+            )
+            viewModel.addTimeEntry(newTimeEntry)
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        fun newInstance() = TimeTrackingFragment()
     }
 }

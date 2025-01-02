@@ -9,6 +9,8 @@ import androidx.fragment.app.viewModels
 import com.example.outiz.databinding.FragmentReportInfoBinding
 import com.example.outiz.ui.reports.EditReportViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 @AndroidEntryPoint
 class ReportInfoFragment : Fragment() {
@@ -16,6 +18,7 @@ class ReportInfoFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: EditReportViewModel by viewModels()
+    private val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,11 +32,6 @@ class ReportInfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val reportId = arguments?.getLong(ARG_REPORT_ID) ?: -1L
-        if (reportId != -1L) {
-            viewModel.loadReport(reportId)
-        }
-
         setupObservers()
         setupListeners()
     }
@@ -45,6 +43,18 @@ class ReportInfoFragment : Fragment() {
 
         viewModel.description.observe(viewLifecycleOwner) { description ->
             binding.descriptionInput.setText(description)
+        }
+
+        viewModel.callDate.observe(viewLifecycleOwner) { callDate ->
+            binding.callDateInput.setText(dateFormatter.format(callDate))
+        }
+
+        viewModel.caller.observe(viewLifecycleOwner) { caller ->
+            binding.callerInput.setText(caller)
+        }
+
+        viewModel.callReason.observe(viewLifecycleOwner) { reason ->
+            binding.callReasonInput.setText(reason)
         }
 
         viewModel.hasTimeTracking.observe(viewLifecycleOwner) { hasTimeTracking ->
@@ -65,6 +75,14 @@ class ReportInfoFragment : Fragment() {
             viewModel.updateDescription(binding.descriptionInput.text.toString())
         }
 
+        binding.callerInput.setOnFocusChangeListener { _, _ ->
+            viewModel.updateCaller(binding.callerInput.text.toString())
+        }
+
+        binding.callReasonInput.setOnFocusChangeListener { _, _ ->
+            viewModel.updateCallReason(binding.callReasonInput.text.toString())
+        }
+
         binding.timeTrackingSwitch.setOnCheckedChangeListener { _, isChecked ->
             viewModel.updateHasTimeTracking(isChecked)
         }
@@ -77,15 +95,5 @@ class ReportInfoFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        private const val ARG_REPORT_ID = "report_id"
-
-        fun newInstance(reportId: Long) = ReportInfoFragment().apply {
-            arguments = Bundle().apply {
-                putLong(ARG_REPORT_ID, reportId)
-            }
-        }
     }
 }

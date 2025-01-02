@@ -6,44 +6,61 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import com.example.outiz.R
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.outiz.databinding.FragmentReportsBinding
+import com.example.outiz.models.Report
 import com.example.outiz.ui.adapter.ReportsAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ReportsFragment : Fragment() {
-    private lateinit var binding: FragmentReportsBinding
+    private var _binding: FragmentReportsBinding? = null
+    private val binding get() = _binding!!
+
     private val viewModel: ReportsViewModel by viewModels()
     private lateinit var reportsAdapter: ReportsAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentReportsBinding.inflate(inflater, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentReportsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialiser l'adaptateur
-        reportsAdapter = ReportsAdapter { reportWithDetails ->
-            findNavController().navigate(
-                ReportsFragmentDirections.actionReportsFragmentToReportDetailsFragment(
-                    reportId = reportWithDetails.report.id
-                )
-            )
+        setupRecyclerView()
+        setupObservers()
+        setupListeners()
+    }
+
+    private fun setupRecyclerView() {
+        reportsAdapter = ReportsAdapter { reportId ->
+            // Navigation or details logic
         }
+        binding.rvReports.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = reportsAdapter
+        }
+    }
 
-        // Configurer le RecyclerView
-        binding.rvReports.adapter = reportsAdapter
-
-        // Observer les rapports
-        viewModel.reportsWithDetails.observe(viewLifecycleOwner) { reports ->
+    private fun setupObservers() {
+        viewModel.reports.observe(viewLifecycleOwner) { reports ->
             reportsAdapter.submitList(reports)
         }
+    }
 
-        // Bouton pour ajouter un nouveau rapport
+    private fun setupListeners() {
         binding.fabAddReport.setOnClickListener {
-            findNavController().navigate(R.id.action_reportsFragment_to_editReportFragment)
+            // Navigation to add report
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

@@ -53,11 +53,13 @@ class EditReportViewModel @Inject constructor(
         viewModelScope.launch {
             val report = reportDao.getReportById(reportId)
             _currentReport.value = report
-            report?.let { updateFields(it) }
+            report?.let { loadedReport ->
+                updateFieldsFromReport(loadedReport)
+            }
         }
     }
 
-    private fun updateFields(report: Report) {
+    private fun updateFieldsFromReport(report: Report) {
         _siteName.value = report.siteName
         _description.value = report.description
         _date.value = report.date
@@ -66,5 +68,22 @@ class EditReportViewModel @Inject constructor(
         _callReason.value = report.callReason
         _hasTimeTracking.value = report.hasTimeTracking
         _hasPhotos.value = report.hasPhotos
+    }
+
+    fun saveReport() {
+        viewModelScope.launch {
+            val report = Report(
+                id = currentReport.value?.id ?: 0,
+                siteName = siteName.value ?: "",
+                description = description.value ?: "",
+                date = date.value ?: Date(),
+                caller = caller.value ?: "",
+                callDate = callDate.value ?: Date(),
+                callReason = callReason.value ?: "",
+                hasTimeTracking = hasTimeTracking.value ?: true,
+                hasPhotos = hasPhotos.value ?: true
+            )
+            reportDao.insert(report)
+        }
     }
 }

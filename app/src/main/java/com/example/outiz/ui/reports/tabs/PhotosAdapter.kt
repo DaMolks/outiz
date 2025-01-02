@@ -6,8 +6,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.outiz.databinding.ItemPhotoBinding
-import com.google.android.material.imageview.ShapeableImageView
-import com.google.android.material.button.MaterialButton
 import com.bumptech.glide.Glide
 
 class PhotoAdapter(

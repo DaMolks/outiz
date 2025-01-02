@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.outiz.databinding.ItemTimeEntryBinding
 import com.example.outiz.models.TimeEntry
+import java.text.SimpleDateFormat
 import java.util.Locale
 
 class TimeEntryAdapter : ListAdapter<TimeEntry, TimeEntryAdapter.TimeEntryViewHolder>(TimeEntryDiffCallback()) {
@@ -21,11 +22,14 @@ class TimeEntryAdapter : ListAdapter<TimeEntry, TimeEntryAdapter.TimeEntryViewHo
     }
 
     inner class TimeEntryViewHolder(private val binding: ItemTimeEntryBinding) : RecyclerView.ViewHolder(binding.root) {
+        private val dateFormatter = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+
         fun bind(timeEntry: TimeEntry) {
             binding.textViewDescription.text = timeEntry.description
-            binding.textViewStartTime.text = String.format(Locale.getDefault(), "%tF %tT", timeEntry.startTime, timeEntry.startTime)
+            binding.textViewStartTime.text = dateFormatter.format(timeEntry.startTime)
+            
             val endTime = java.util.Date(timeEntry.startTime.time + timeEntry.duration * 60000L)
-            binding.textViewEndTime.text = String.format(Locale.getDefault(), "%tF %tT", endTime, endTime)
+            binding.textViewEndTime.text = dateFormatter.format(endTime)
             binding.textViewDuration.text = String.format(Locale.getDefault(), "%d min", timeEntry.duration)
         }
     }

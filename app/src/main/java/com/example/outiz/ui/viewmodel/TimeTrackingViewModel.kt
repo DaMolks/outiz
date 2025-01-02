@@ -18,6 +18,10 @@ class TimeTrackingViewModel @Inject constructor(
     private val _timeEntries = MutableLiveData<List<TimeEntry>>()
     val timeEntries: LiveData<List<TimeEntry>> = _timeEntries
 
+    init {
+        loadTimeEntries()
+    }
+
     fun loadTimeEntries() {
         viewModelScope.launch {
             _timeEntries.value = timeEntryDao.getAllTimeEntries()

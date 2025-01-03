@@ -3,6 +3,7 @@ package com.example.outiz.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.outiz.data.dao.TimeEntryDao
 import com.example.outiz.models.TimeEntry
@@ -26,6 +27,10 @@ class TimeTrackingViewModel @Inject constructor(
         viewModelScope.launch {
             _timeEntries.value = timeEntryDao.getAllTimeEntries()
         }
+    }
+
+    fun getAllTimeEntries(): List<TimeEntry> {
+        return _timeEntries.value ?: emptyList()
     }
 
     fun addTimeEntry(timeEntry: TimeEntry) {

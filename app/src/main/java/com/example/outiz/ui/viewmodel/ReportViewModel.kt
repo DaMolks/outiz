@@ -23,10 +23,17 @@ class ReportViewModel @Inject constructor(
     private val _currentReport = MutableLiveData<Report?>()
     val currentReport: LiveData<Report?> = _currentReport
 
+    private val _photosPaths = MutableLiveData<List<String>>(emptyList())
+    val photosPaths: LiveData<List<String>> = _photosPaths
+
     fun loadReport(reportId: Long) {
         viewModelScope.launch {
             reportDao.getReportById(reportId).collect { report ->
                 _currentReport.value = report
+                // Charger les chemins des photos associées au rapport
+                report?.photoPaths?.let { paths ->
+                    _photosPaths.value = paths
+                }
             }
         }
     }
@@ -44,6 +51,28 @@ class ReportViewModel @Inject constructor(
     fun removeTimeEntry(timeEntry: TimeEntry) {
         viewModelScope.launch {
             timeEntryDao.delete(timeEntry)
+        }
+    }
+
+    fun removePhoto(photoPath: String) {
+        viewModelScope.launch {
+            _currentReport.value?.let { report ->
+                val updatedPaths = report.photoPaths.toMutableList().apply { remove(photoPath) }
+                val updatedReport = report.copy(photoPaths = updatedPaths)
+                reportDao.update(updatedReport)
+                _photosPaths.value = updatedPaths
+            }
+        }
+    }
+
+    fun addPhoto(photoPath: String) {
+        viewModelScope.launch {
+            _currentReport.value?.let { report ->
+                val updatedPaths = report.photoPaths.toMutableList().apply { add(photoPath) }
+                val updatedReport = report.copy(photoPaths = updatedPaths)
+                reportDao.update(updatedReport)
+                _photosPaths.value = updatedPaths
+            }
         }
     }
 }

@@ -12,7 +12,22 @@ class PhotosAdapter(
     private val onDeleteClick: (String) -> Unit
 ) : RecyclerView.Adapter<PhotosAdapter.PhotoViewHolder>() {
 
-    inner class PhotoViewHolder(private val binding: ItemPhotoBinding) : RecyclerView.ViewHolder(binding.root) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
+        val binding = ItemPhotoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return PhotoViewHolder(binding, onDeleteClick)
+    }
+
+    override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
+        holder.bind(photos[position])
+    }
+
+    override fun getItemCount(): Int = photos.size
+
+    inner class PhotoViewHolder(
+        private val binding: ItemPhotoBinding,
+        private val onDeleteClick: (String) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
+
         fun bind(photoPath: String) {
             Glide.with(binding.root.context)
                 .load(Uri.parse(photoPath))
@@ -21,15 +36,4 @@ class PhotosAdapter(
             binding.deleteButton.setOnClickListener { onDeleteClick(photoPath) }
         }
     }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
-        val binding = ItemPhotoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PhotoViewHolder(binding)
-    }
-
-    override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
-        holder.bind(photos[position])
-    }
-
-    override fun getItemCount(): Int = photos.size
 }

@@ -32,15 +32,13 @@ class TimeEntryAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(timeEntry: TimeEntry) {
-            with(binding) {
-                tvDescription.text = timeEntry.description
-                tvStartTime.text = dateFormatter.format(timeEntry.startTime)
-                
-                val endTime = Date(timeEntry.startTime.time + timeEntry.duration * 60000L)
-                tvDuration.text = String.format(Locale.getDefault(), "%d min", timeEntry.duration)
+            binding.tvDescription.text = timeEntry.description
+            binding.tvStartTime.text = dateFormatter.format(timeEntry.startTime)
+            
+            val endTime = Date(timeEntry.startTime.time + timeEntry.duration * 60000L)
+            binding.tvDuration.text = String.format(Locale.getDefault(), "%d min", timeEntry.duration)
 
-                btnDelete.setOnClickListener { onDeleteClick(timeEntry) }
-            }
+            binding.btnDelete.setOnClickListener { onDeleteClick(timeEntry) }
         }
     }
 }

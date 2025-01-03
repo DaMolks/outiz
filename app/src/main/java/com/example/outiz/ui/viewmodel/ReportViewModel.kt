@@ -26,20 +26,27 @@ class ReportViewModel @Inject constructor(
     private val _photosPaths = MutableLiveData<List<String>>(emptyList())
     val photosPaths: LiveData<List<String>> = _photosPaths
 
+    private val _timeEntries = MutableLiveData<List<TimeEntry>>(emptyList())
+    val timeEntries: LiveData<List<TimeEntry>> = _timeEntries
+
     fun loadReport(reportId: Long) {
         viewModelScope.launch {
             reportDao.getReportById(reportId).collect { report ->
                 _currentReport.value = report
-                // Charger les chemins des photos associées au rapport
-                report?.photoPaths?.let { paths ->
-                    _photosPaths.value = paths
+                
+                report?.let { 
+                    // Charger les chemins des photos
+                    report.photoPaths?.let { paths ->
+                        _photosPaths.value = paths
+                    }
+
+                    // Charger les entrées de temps
+                    timeEntryDao.getTimeEntriesForReport(reportId).collect { entries ->
+                        _timeEntries.value = entries
+                    }
                 }
             }
         }
-    }
-
-    fun getTimeEntries(reportId: Long): LiveData<List<TimeEntry>> {
-        return timeEntryDao.getTimeEntriesForReport(reportId).asLiveData()
     }
 
     fun addTimeEntry(timeEntry: TimeEntry) {

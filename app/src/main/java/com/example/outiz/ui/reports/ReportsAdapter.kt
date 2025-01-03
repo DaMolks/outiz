@@ -18,7 +18,7 @@ class ReportsAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReportViewHolder {
         val binding = ItemReportBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ReportViewHolder(binding, onReportClick)
+        return ReportViewHolder(binding, onReportClick, dateFormatter)
     }
 
     override fun onBindViewHolder(holder: ReportViewHolder, position: Int) {
@@ -27,14 +27,17 @@ class ReportsAdapter(
 
     inner class ReportViewHolder(
         private val binding: ItemReportBinding,
-        private val onReportClick: (Report) -> Unit
+        private val onReportClick: (Report) -> Unit,
+        private val dateFormatter: SimpleDateFormat
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(report: Report) {
-            binding.tvReportSite.text = report.siteName
-            binding.tvReportDate.text = dateFormatter.format(report.date)
-            binding.tvReportDescription.text = report.description
-            binding.root.setOnClickListener { onReportClick(report) }
+            with(binding) {
+                tvReportSite.text = report.siteName
+                tvReportDate.text = dateFormatter.format(report.date)
+                tvReportDescription.text = report.description
+                root.setOnClickListener { onReportClick(report) }
+            }
         }
     }
 }

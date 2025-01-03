@@ -6,13 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.outiz.databinding.FragmentReportsBinding
-import com.example.outiz.ui.adapter.ReportsAdapter
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class ReportsFragment : Fragment() {
+
     private var _binding: FragmentReportsBinding? = null
     private val binding get() = _binding!!
 
@@ -32,27 +31,34 @@ class ReportsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
-        setupObservers()
-        setupListeners()
+        observeReports()
+        setupFabAddReport()
     }
 
     private fun setupRecyclerView() {
-        reportsAdapter = ReportsAdapter { reportId ->
-            // Navigation or details logic
+        reportsAdapter = ReportsAdapter { report ->
+            // Navigation to report details
+            val action = ReportsFragmentDirections.actionReportsToReportDetails(report.id)
+            findNavController().navigate(action)
         }
-        binding.rvReports.layoutManager = LinearLayoutManager(context)
-        binding.rvReports.adapter = reportsAdapter
+
+        binding.rvReports.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = reportsAdapter
+        }
     }
 
-    private fun setupObservers() {
+    private fun observeReports() {
         viewModel.reports.observe(viewLifecycleOwner) { reports ->
             reportsAdapter.submitList(reports)
         }
     }
 
-    private fun setupListeners() {
+    private fun setupFabAddReport() {
         binding.fabAddReport.setOnClickListener {
             // Navigation to add report
+            val action = ReportsFragmentDirections.actionReportsToAddReport()
+            findNavController().navigate(action)
         }
     }
 

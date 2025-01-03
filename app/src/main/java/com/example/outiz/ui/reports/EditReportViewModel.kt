@@ -7,9 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.outiz.data.repository.ReportRepository
 import com.example.outiz.models.Report
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import javax.inject.Inject
@@ -22,6 +19,21 @@ class EditReportViewModel @Inject constructor(
     private val _report = MutableLiveData<Report?>(null)
     val report: LiveData<Report?> = _report
 
+    private val _siteName = MutableLiveData<String>("")
+    val siteName: LiveData<String> = _siteName
+
+    private val _description = MutableLiveData<String>("")
+    val description: LiveData<String> = _description
+
+    private val _caller = MutableLiveData<String>("")
+    val caller: LiveData<String> = _caller
+
+    private val _callReason = MutableLiveData<String>("")
+    val callReason: LiveData<String> = _callReason
+
+    private val _callDate = MutableLiveData<LocalDateTime>(LocalDateTime.now())
+    val callDate: LiveData<LocalDateTime> = _callDate
+
     private val _hasTimeTracking = MutableLiveData(false)
     val hasTimeTracking: LiveData<Boolean> = _hasTimeTracking
 
@@ -33,9 +45,14 @@ class EditReportViewModel @Inject constructor(
 
     fun loadReport(reportId: Long) {
         viewModelScope.launch {
-            _report.value = reportRepository.getReportById(reportId)
-            _hasTimeTracking.value = _report.value?.hasTimeTracking ?: false
-            _hasPhotos.value = _report.value?.hasPhotos ?: false
+            val loadedReport = reportRepository.getReportById(reportId)
+            _report.value = loadedReport
+            loadedReport?.let {
+                _siteName.value = it.siteName
+                _description.value = it.description
+                _hasTimeTracking.value = it.hasTimeTracking
+                _hasPhotos.value = it.hasPhotos
+            }
         }
     }
 
@@ -56,6 +73,22 @@ class EditReportViewModel @Inject constructor(
             }
             _reportSaved.value = true
         }
+    }
+
+    fun updateSiteName(siteName: String) {
+        _siteName.value = siteName
+    }
+
+    fun updateDescription(description: String) {
+        _description.value = description
+    }
+
+    fun updateCaller(caller: String) {
+        _caller.value = caller
+    }
+
+    fun updateCallReason(reason: String) {
+        _callReason.value = reason
     }
 
     fun updateHasTimeTracking(isEnabled: Boolean) {

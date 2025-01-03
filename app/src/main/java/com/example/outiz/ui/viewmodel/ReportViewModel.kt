@@ -10,7 +10,6 @@ import com.example.outiz.data.dao.TimeEntryDao
 import com.example.outiz.models.Report
 import com.example.outiz.models.TimeEntry
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -33,18 +32,8 @@ class ReportViewModel @Inject constructor(
         viewModelScope.launch {
             reportDao.getReportById(reportId).collect { report ->
                 _currentReport.value = report
-                
-                report?.let { 
-                    // Charger les chemins des photos
-                    report.photoPaths?.let { paths ->
-                        _photosPaths.value = paths
-                    }
-
-                    // Charger les entrées de temps
-                    timeEntryDao.getTimeEntriesForReport(reportId).collect { entries ->
-                        _timeEntries.value = entries
-                    }
-                }
+                _photosPaths.value = report?.photoPaths ?: emptyList()
+                _timeEntries.value = timeEntryDao.getTimeEntriesForReport(reportId)
             }
         }
     }
@@ -52,12 +41,14 @@ class ReportViewModel @Inject constructor(
     fun addTimeEntry(timeEntry: TimeEntry) {
         viewModelScope.launch {
             timeEntryDao.insert(timeEntry)
+            _timeEntries.value = timeEntryDao.getTimeEntriesForReport(timeEntry.reportId)
         }
     }
 
     fun removeTimeEntry(timeEntry: TimeEntry) {
         viewModelScope.launch {
             timeEntryDao.delete(timeEntry)
+            _timeEntries.value = timeEntryDao.getTimeEntriesForReport(timeEntry.reportId)
         }
     }
 

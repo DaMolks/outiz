@@ -4,7 +4,9 @@ ext.versions = [
     room: '2.6.1',
     lifecycle: '2.6.2',
     navigation: '2.7.6',
-    preference: '1.2.1'
+    preference: '1.2.1',
+    glide: '4.16.0',
+    viewBinding: '8.2.1'
 ]
 
 ext.deps = [
@@ -27,5 +29,12 @@ ext.deps = [
     navigationUI: "androidx.navigation:navigation-ui-ktx:${versions.navigation}",
     
     // Preferences
-    preferenceKtx: "androidx.preference:preference-ktx:${versions.preference}"
+    preferenceKtx: "androidx.preference:preference-ktx:${versions.preference}",
+    
+    // Glide
+    glide: "com.github.bumptech.glide:glide:${versions.glide}",
+    glideCompiler: "com.github.bumptech.glide:compiler:${versions.glide}",
+    
+    // ViewBinding
+    viewBinding: "androidx.databinding:databinding-runtime:${versions.viewBinding}"
 ]

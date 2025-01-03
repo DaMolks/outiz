@@ -7,11 +7,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.outiz.databinding.ItemReportBinding
 import com.example.outiz.models.Report
-import java.time.format.DateTimeFormatter
+import java.text.SimpleDateFormat
 import java.util.Locale
 
 class ReportsAdapter(private val onReportClick: (Report) -> Unit) : 
     ListAdapter<Report, ReportsAdapter.ReportViewHolder>(ReportDiffCallback()) {
+
+    private val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReportViewHolder {
         val binding = ItemReportBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -29,15 +31,11 @@ class ReportsAdapter(private val onReportClick: (Report) -> Unit) :
 
         fun bind(report: Report) {
             binding.apply {
-                tvReportSite.text = report.siteName
-                tvReportDate.text = formatDate(report.date)
-                tvReportDescription.text = report.description
+                tvSiteName.text = report.siteName
+                tvDate.text = dateFormatter.format(report.date)
+                tvDescription.text = report.description
                 root.setOnClickListener { onReportClick(report) }
             }
-        }
-
-        private fun formatDate(date: java.time.LocalDateTime): String {
-            return date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.getDefault()))
         }
     }
 }

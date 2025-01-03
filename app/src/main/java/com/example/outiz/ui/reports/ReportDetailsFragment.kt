@@ -54,8 +54,7 @@ class ReportDetailsFragment : Fragment() {
 
         binding.btnEdit.setOnClickListener {
             viewModel.report.value?.id?.let { id ->
-                val action = ReportDetailsFragmentDirections.actionReportDetailsToEditReport(id)
-                findNavController().navigate(action)
+                findNavController().navigate(ReportDetailsFragmentDirections.actionReportDetailsToEditReport(id))
             }
         }
     }

@@ -38,11 +38,9 @@ class TimeEntriesAdapter(
                 tvStartTime.text = dateFormatter.format(timeEntry.startTime)
                 
                 val endTime = Date(timeEntry.startTime.time + timeEntry.duration * 60000L)
-                tvEndTime.text = dateFormatter.format(endTime)
                 tvDuration.text = "${timeEntry.duration} min"
 
                 btnDelete.setOnClickListener { onDeleteClick(timeEntry) }
-                btnEdit.setOnClickListener { onEditClick(timeEntry) }
             }
         }
     }

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.outiz.databinding.FragmentEditReportBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -34,24 +35,33 @@ class EditReportFragment : Fragment() {
 
     private fun setupObservers() {
         viewModel.hasTimeTracking.observe(viewLifecycleOwner) { hasTimeTracking ->
-            binding.timeTrackingSwitch.isChecked = hasTimeTracking
+            binding.switchTimeTracking.isChecked = hasTimeTracking
         }
 
         viewModel.hasPhotos.observe(viewLifecycleOwner) { hasPhotos ->
-            binding.photosSwitch.isChecked = hasPhotos
+            binding.switchPhotos.isChecked = hasPhotos
+        }
+
+        viewModel.reportSaved.observe(viewLifecycleOwner) { isSaved ->
+            if (isSaved) {
+                findNavController().navigateUp()
+            }
         }
     }
 
     private fun setupListeners() {
-        binding.saveButton.setOnClickListener {
-            viewModel.saveReport()
+        binding.btnSave.setOnClickListener {
+            viewModel.saveReport(
+                binding.etSiteName.text.toString(),
+                binding.etDescription.text.toString()
+            )
         }
 
-        binding.timeTrackingSwitch.setOnCheckedChangeListener { _, isChecked ->
+        binding.switchTimeTracking.setOnCheckedChangeListener { _, isChecked ->
             viewModel.updateHasTimeTracking(isChecked)
         }
 
-        binding.photosSwitch.setOnCheckedChangeListener { _, isChecked ->
+        binding.switchPhotos.setOnCheckedChangeListener { _, isChecked ->
             viewModel.updateHasPhotos(isChecked)
         }
     }

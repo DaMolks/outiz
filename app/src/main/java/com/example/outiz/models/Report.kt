@@ -2,9 +2,12 @@ package com.example.outiz.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.example.outiz.data.DateConverter
 import java.util.Date
 
 @Entity(tableName = "reports")
+@TypeConverters(DateConverter::class)
 data class Report(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,

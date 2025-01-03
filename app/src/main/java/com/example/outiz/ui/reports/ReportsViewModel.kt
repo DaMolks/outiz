@@ -6,10 +6,14 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.outiz.data.repository.ReportRepository
 import com.example.outiz.models.Report
-import kotlinx.coroutines.flow.Flow
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ReportsViewModel : ViewModel() {
-    private val repository = ReportRepository() // Assuming this exists
+@HiltViewModel
+class ReportsViewModel @Inject constructor(
+    private val repository: ReportRepository
+) : ViewModel() {
 
     val reports: LiveData<List<Report>> = repository.getAllReports()
         .asLiveData(viewModelScope.coroutineContext)

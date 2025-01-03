@@ -14,21 +14,23 @@ class ReportsAdapter(private val onReportClick: (Report) -> Unit) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReportViewHolder {
         val binding = ItemReportBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ReportViewHolder(binding)
+        return ReportViewHolder(binding, onReportClick)
     }
 
     override fun onBindViewHolder(holder: ReportViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    inner class ReportViewHolder(private val binding: ItemReportBinding) : 
-        RecyclerView.ViewHolder(binding.root) {
+    inner class ReportViewHolder(
+        private val binding: ItemReportBinding, 
+        private val onReportClick: (Report) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(report: Report) {
-            binding.apply {
-                tvReportSite.text = report.siteName
+            with(binding) {
+                tvSiteName.text = report.siteName
                 tvReportDate.text = report.date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
-                tvReportDescription.text = report.description
+                tvDescription.text = report.description
                 root.setOnClickListener { onReportClick(report) }
             }
         }

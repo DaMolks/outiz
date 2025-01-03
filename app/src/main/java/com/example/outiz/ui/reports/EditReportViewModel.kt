@@ -4,86 +4,65 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.outiz.data.dao.ReportDao
-import com.example.outiz.data.dao.TimeEntryDao
+import com.example.outiz.data.repository.ReportRepository
 import com.example.outiz.models.Report
-import com.example.outiz.models.TimeEntry
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.util.Date
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
 class EditReportViewModel @Inject constructor(
-    private val reportDao: ReportDao,
-    private val timeEntryDao: TimeEntryDao
+    private val reportRepository: ReportRepository
 ) : ViewModel() {
 
-    private val _currentReport = MutableLiveData<Report?>(null)
-    val currentReport: LiveData<Report?> = _currentReport
+    private val _report = MutableLiveData<Report?>(null)
+    val report: LiveData<Report?> = _report
 
-    private val _timeEntries = MutableLiveData<List<TimeEntry>>(emptyList())
-    val timeEntries: LiveData<List<TimeEntry>> = _timeEntries
-
-    private val _siteName = MutableLiveData<String>("")
-    val siteName: LiveData<String> = _siteName
-
-    private val _description = MutableLiveData<String>("")
-    val description: LiveData<String> = _description
-
-    private val _date = MutableLiveData(Date())
-    val date: LiveData<Date> = _date
-
-    private val _caller = MutableLiveData<String>("")
-    val caller: LiveData<String> = _caller
-
-    private val _callDate = MutableLiveData(Date())
-    val callDate: LiveData<Date> = _callDate
-
-    private val _callReason = MutableLiveData<String>("")
-    val callReason: LiveData<String> = _callReason
-
-    private val _hasTimeTracking = MutableLiveData(true)
+    private val _hasTimeTracking = MutableLiveData(false)
     val hasTimeTracking: LiveData<Boolean> = _hasTimeTracking
 
-    private val _hasPhotos = MutableLiveData(true)
+    private val _hasPhotos = MutableLiveData(false)
     val hasPhotos: LiveData<Boolean> = _hasPhotos
+
+    private val _reportSaved = MutableLiveData(false)
+    val reportSaved: LiveData<Boolean> = _reportSaved
 
     fun loadReport(reportId: Long) {
         viewModelScope.launch {
-            val report = reportDao.getReportById(reportId)
-            _currentReport.value = report
-            report?.let { loadedReport ->
-                updateFieldsFromReport(loadedReport)
-            }
+            _report.value = reportRepository.getReportById(reportId)
+            _hasTimeTracking.value = _report.value?.hasTimeTracking ?: false
+            _hasPhotos.value = _report.value?.hasPhotos ?: false
         }
     }
 
-    private fun updateFieldsFromReport(report: Report) {
-        _siteName.value = report.siteName
-        _description.value = report.description
-        _date.value = report.date
-        _caller.value = report.caller
-        _callDate.value = report.callDate
-        _callReason.value = report.callReason
-        _hasTimeTracking.value = report.hasTimeTracking
-        _hasPhotos.value = report.hasPhotos
-    }
+    fun saveReport(siteName: String, description: String) {
+        val currentReport = _report.value ?: Report(
+            siteName = siteName,
+            description = description,
+            date = LocalDateTime.now(),
+            hasTimeTracking = _hasTimeTracking.value ?: false,
+            hasPhotos = _hasPhotos.value ?: false
+        )
 
-    fun saveReport() {
         viewModelScope.launch {
-            val report = Report(
-                id = currentReport.value?.id ?: 0,
-                siteName = siteName.value ?: "",
-                description = description.value ?: "",
-                date = date.value ?: Date(),
-                caller = caller.value ?: "",
-                callDate = callDate.value ?: Date(),
-                callReason = callReason.value ?: "",
-                hasTimeTracking = hasTimeTracking.value ?: true,
-                hasPhotos = hasPhotos.value ?: true
-            )
-            reportDao.insert(report)
+            if (currentReport.id == 0L) {
+                reportRepository.insert(currentReport)
+            } else {
+                reportRepository.update(currentReport)
+            }
+            _reportSaved.value = true
         }
+    }
+
+    fun updateHasTimeTracking(isEnabled: Boolean) {
+        _hasTimeTracking.value = isEnabled
+    }
+
+    fun updateHasPhotos(isEnabled: Boolean) {
+        _hasPhotos.value = isEnabled
     }
 }

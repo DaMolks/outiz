@@ -9,6 +9,7 @@ import com.example.outiz.databinding.ItemTimeEntryBinding
 import com.example.outiz.models.TimeEntry
 import java.text.SimpleDateFormat
 import java.util.Locale
+import java.util.Date
 
 class TimeEntriesAdapter(
     private val onDeleteClick: (TimeEntry) -> Unit = {},
@@ -32,15 +33,17 @@ class TimeEntriesAdapter(
         private val dateFormatter = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
 
         fun bind(timeEntry: TimeEntry) {
-            binding.textViewDescription.text = timeEntry.description
-            binding.textViewStartTime.text = dateFormatter.format(timeEntry.startTime)
-            
-            val endTime = java.util.Date(timeEntry.startTime.time + timeEntry.duration * 60000L)
-            binding.textViewEndTime.text = dateFormatter.format(endTime)
-            binding.textViewDuration.text = "${timeEntry.duration} min"
+            with(binding) {
+                tvDescription.text = timeEntry.description
+                tvStartTime.text = dateFormatter.format(timeEntry.startTime)
+                
+                val endTime = Date(timeEntry.startTime.time + timeEntry.duration * 60000L)
+                tvEndTime.text = dateFormatter.format(endTime)
+                tvDuration.text = "${timeEntry.duration} min"
 
-            binding.deleteButton.setOnClickListener { onDeleteClick(timeEntry) }
-            binding.editButton.setOnClickListener { onEditClick(timeEntry) }
+                btnDelete.setOnClickListener { onDeleteClick(timeEntry) }
+                btnEdit.setOnClickListener { onEditClick(timeEntry) }
+            }
         }
     }
 

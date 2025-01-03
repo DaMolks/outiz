@@ -8,7 +8,7 @@ import com.example.outiz.data.repository.ReportRepository
 import com.example.outiz.models.Report
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,20 +19,20 @@ class EditReportViewModel @Inject constructor(
     private val _report = MutableLiveData<Report?>(null)
     val report: LiveData<Report?> = _report
 
-    private val _siteName = MutableLiveData<String>("")
+    private val _siteName = MutableLiveData("")
     val siteName: LiveData<String> = _siteName
 
-    private val _description = MutableLiveData<String>("")
+    private val _description = MutableLiveData("")
     val description: LiveData<String> = _description
 
-    private val _caller = MutableLiveData<String>("")
+    private val _caller = MutableLiveData("")
     val caller: LiveData<String> = _caller
 
-    private val _callReason = MutableLiveData<String>("")
+    private val _callReason = MutableLiveData("")
     val callReason: LiveData<String> = _callReason
 
-    private val _callDate = MutableLiveData<LocalDateTime>(LocalDateTime.now())
-    val callDate: LiveData<LocalDateTime> = _callDate
+    private val _callDate = MutableLiveData(Date())
+    val callDate: LiveData<Date> = _callDate
 
     private val _hasTimeTracking = MutableLiveData(false)
     val hasTimeTracking: LiveData<Boolean> = _hasTimeTracking
@@ -52,15 +52,20 @@ class EditReportViewModel @Inject constructor(
                 _description.value = it.description
                 _hasTimeTracking.value = it.hasTimeTracking
                 _hasPhotos.value = it.hasPhotos
+                _caller.value = it.caller
+                _callReason.value = it.callReason
+                _callDate.value = it.callDate
             }
         }
     }
 
-    fun saveReport(siteName: String, description: String) {
+    fun saveReport() {
         val currentReport = _report.value ?: Report(
-            siteName = siteName,
-            description = description,
-            date = LocalDateTime.now(),
+            siteName = _siteName.value ?: "",
+            description = _description.value ?: "",
+            caller = _caller.value ?: "",
+            callDate = _callDate.value ?: Date(),
+            callReason = _callReason.value ?: "",
             hasTimeTracking = _hasTimeTracking.value ?: false,
             hasPhotos = _hasPhotos.value ?: false
         )

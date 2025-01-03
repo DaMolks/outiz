@@ -31,9 +31,9 @@ class ReportsAdapter(private val onReportClick: (Report) -> Unit) :
 
         fun bind(report: Report) {
             binding.apply {
-                tvSiteName.text = report.siteName
-                tvDate.text = dateFormatter.format(report.date)
-                tvDescription.text = report.description
+                tvReportSite.text = report.siteName
+                tvReportDate.text = dateFormatter.format(report.date)
+                tvReportDescription.text = report.description
                 root.setOnClickListener { onReportClick(report) }
             }
         }

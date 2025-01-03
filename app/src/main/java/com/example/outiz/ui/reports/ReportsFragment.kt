@@ -42,10 +42,8 @@ class ReportsFragment : Fragment() {
             findNavController().navigate(action)
         }
 
-        binding.rvReports.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = reportsAdapter
-        }
+        binding.rvReports.layoutManager = LinearLayoutManager(context)
+        binding.rvReports.adapter = reportsAdapter
     }
 
     private fun observeReports() {

@@ -1,49 +1,35 @@
 package com.example.outiz.ui.reports.tabs
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.outiz.databinding.ItemPhotoBinding
 
-class PhotoAdapter(
+class PhotosAdapter(
+    private val photos: List<String>,
     private val onDeleteClick: (String) -> Unit
-) : ListAdapter<String, PhotoAdapter.PhotoViewHolder>(PhotoDiffCallback()) {
+) : RecyclerView.Adapter<PhotosAdapter.PhotoViewHolder>() {
+
+    inner class PhotoViewHolder(private val binding: ItemPhotoBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(photoPath: String) {
+            Glide.with(binding.root.context)
+                .load(Uri.parse(photoPath))
+                .into(binding.imageView)
+
+            binding.deleteButton.setOnClickListener { onDeleteClick(photoPath) }
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
         val binding = ItemPhotoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PhotoViewHolder(binding, onDeleteClick)
+        return PhotoViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(photos[position])
     }
 
-    inner class PhotoViewHolder(
-        private val binding: ItemPhotoBinding,
-        private val onDeleteClick: (String) -> Unit
-    ) : RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(photoPath: String) {
-            Glide.with(binding.root.context)
-                .load(photoPath)
-                .into(binding.imageView)
-
-            binding.deleteButton.setOnClickListener {
-                onDeleteClick(photoPath)
-            }
-        }
-    }
-
-    private class PhotoDiffCallback : DiffUtil.ItemCallback<String>() {
-        override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
-            return oldItem == newItem
-        }
-
-        override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
-            return oldItem == newItem
-        }
-    }
+    override fun getItemCount(): Int = photos.size
 }

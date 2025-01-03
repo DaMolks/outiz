@@ -7,34 +7,45 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.outiz.databinding.ItemTimeEntryBinding
 import com.example.outiz.models.TimeEntry
-import java.time.format.DateTimeFormatter
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class TimeEntryAdapter(
     private val onDeleteClick: (TimeEntry) -> Unit
 ) : ListAdapter<TimeEntry, TimeEntryAdapter.TimeEntryViewHolder>(TimeEntryDiffCallback()) {
 
-    private val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+    private val timeFormatter = SimpleDateFormat("HH:mm", Locale.getDefault())
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimeEntryViewHolder {
         val binding = ItemTimeEntryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return TimeEntryViewHolder(binding)
+        return TimeEntryViewHolder(binding, onDeleteClick)
     }
 
     override fun onBindViewHolder(holder: TimeEntryViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    inner class TimeEntryViewHolder(private val binding: ItemTimeEntryBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class TimeEntryViewHolder(
+        private val binding: ItemTimeEntryBinding,
+        private val onDeleteClick: (TimeEntry) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(timeEntry: TimeEntry) {
             binding.apply {
                 tvDescription.text = timeEntry.description
-                tvStartTime.text = timeEntry.startTime.format(timeFormatter)
-                tvDuration.text = "${timeEntry.duration} min"
+                tvStartTime.text = formatStartTime(timeEntry)
+                tvDuration.text = formatDuration(timeEntry.duration)
 
                 btnDelete.setOnClickListener { onDeleteClick(timeEntry) }
             }
+        }
+
+        private fun formatStartTime(timeEntry: TimeEntry): String {
+            return timeFormatter.format(timeEntry.startTime)
+        }
+
+        private fun formatDuration(duration: Int): String {
+            return String.format(Locale.getDefault(), "%d min", duration)
         }
     }
 }

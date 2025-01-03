@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.outiz.databinding.FragmentReportDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,19 +31,33 @@ class ReportDetailsFragment : Fragment() {
 
         val reportId = arguments?.getLong(ARG_REPORT_ID) ?: -1L
         setupObservers(reportId)
+        setupListeners()
     }
 
     private fun setupObservers(reportId: Long) {
         if (reportId != -1L) {
             viewModel.loadReport(reportId)
             viewModel.report.observe(viewLifecycleOwner) { report ->
-                binding.tvSiteName.text = report?.siteName ?: ""
-                binding.tvDescription.text = report?.description ?: ""
+                binding.apply {
+                    tvReportSiteName.text = report?.siteName ?: ""
+                    tvReportDescription.text = report?.description ?: ""
+                    // Peut-être ajouter d'autres détails comme la date
+                    tvReportDate.text = report?.date?.toString() ?: ""
+                }
             }
         }
+    }
 
+    private fun setupListeners() {
         binding.btnBack.setOnClickListener {
-            parentFragmentManager.popBackStack()
+            findNavController().navigateUp()
+        }
+
+        binding.btnEdit.setOnClickListener {
+            viewModel.report.value?.id?.let { id ->
+                val action = ReportDetailsFragmentDirections.actionReportDetailsToEditReport(id)
+                findNavController().navigate(action)
+            }
         }
     }
 

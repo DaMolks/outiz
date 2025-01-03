@@ -1,19 +1,16 @@
 package com.example.outiz.models
 
 import androidx.room.TypeConverter
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import java.util.Date
 
 object DateConverter {
-    private val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
-
     @TypeConverter
-    fun fromTimestamp(value: String?): LocalDateTime? {
-        return value?.let { LocalDateTime.parse(it, formatter) }
+    fun fromTimestamp(value: Long?): Date? {
+        return value?.let { Date(it) }
     }
 
     @TypeConverter
-    fun dateToTimestamp(date: LocalDateTime?): String? {
-        return date?.format(formatter)
+    fun dateToTimestamp(date: Date?): Long? {
+        return date?.time
     }
 }

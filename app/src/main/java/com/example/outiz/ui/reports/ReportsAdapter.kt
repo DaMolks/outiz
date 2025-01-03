@@ -27,10 +27,10 @@ class ReportsAdapter(private val onReportClick: (Report) -> Unit) :
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(report: Report) {
-            with(binding) {
-                tvSiteName.text = report.siteName
+            binding.apply {
+                tvReportSite.text = report.siteName
                 tvReportDate.text = report.date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
-                tvDescription.text = report.description
+                tvReportDescription.text = report.description
                 root.setOnClickListener { onReportClick(report) }
             }
         }

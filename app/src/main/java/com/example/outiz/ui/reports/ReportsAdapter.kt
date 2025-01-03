@@ -10,14 +10,15 @@ import com.example.outiz.models.Report
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class ReportsAdapter(private val onReportClick: (Report) -> Unit) : 
-    ListAdapter<Report, ReportsAdapter.ReportViewHolder>(ReportDiffCallback()) {
+class ReportsAdapter(
+    private val onReportClick: (Report) -> Unit
+) : ListAdapter<Report, ReportsAdapter.ReportViewHolder>(ReportDiffCallback()) {
 
     private val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReportViewHolder {
         val binding = ItemReportBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ReportViewHolder(binding, onReportClick, dateFormatter)
+        return ReportViewHolder(binding, onReportClick)
     }
 
     override fun onBindViewHolder(holder: ReportViewHolder, position: Int) {
@@ -25,18 +26,15 @@ class ReportsAdapter(private val onReportClick: (Report) -> Unit) :
     }
 
     inner class ReportViewHolder(
-        private val binding: ItemReportBinding, 
-        private val onReportClick: (Report) -> Unit,
-        private val dateFormatter: SimpleDateFormat
+        private val binding: ItemReportBinding,
+        private val onReportClick: (Report) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(report: Report) {
-            with(binding) {
-                tvReportSite.text = report.siteName
-                tvReportDate.text = dateFormatter.format(report.date)
-                tvReportDescription.text = report.description
-                root.setOnClickListener { onReportClick(report) }
-            }
+            binding.tvReportSite.text = report.siteName
+            binding.tvReportDate.text = dateFormatter.format(report.date)
+            binding.tvReportDescription.text = report.description
+            binding.root.setOnClickListener { onReportClick(report) }
         }
     }
 }

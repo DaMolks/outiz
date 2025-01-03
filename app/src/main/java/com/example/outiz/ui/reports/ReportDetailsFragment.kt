@@ -41,7 +41,6 @@ class ReportDetailsFragment : Fragment() {
                 binding.apply {
                     tvReportSiteName.text = report?.siteName ?: ""
                     tvReportDescription.text = report?.description ?: ""
-                    // Peut-être ajouter d'autres détails comme la date
                     tvReportDate.text = report?.date?.toString() ?: ""
                 }
             }

@@ -1,67 +1,48 @@
 package com.example.outiz.ui.reports
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.outiz.R
+import com.example.outiz.ui.base.NavigationFragment
 import com.example.outiz.databinding.FragmentReportsBinding
+import com.example.outiz.ui.adapter.ReportsAdapter
+import com.example.outiz.ui.viewmodel.ReportViewModel
+dagger.hilt.android.AndroidEntryPoint
 
-class ReportsFragment : Fragment() {
-
-    private var _binding: FragmentReportsBinding? = null
-    private val binding get() = _binding!!
-
-    private val viewModel: ReportsViewModel by viewModels()
-    private lateinit var reportsAdapter: ReportsAdapter
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentReportsBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+@AndroidEntryPoint
+class ReportsFragment : NavigationFragment(R.layout.fragment_reports) {
+    private lateinit var binding: FragmentReportsBinding
+    private val viewModel: ReportViewModel by viewModels()
+    private lateinit var adapter: ReportsAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        binding = FragmentReportsBinding.bind(view)
         setupRecyclerView()
         observeReports()
-        setupFabAddReport()
+        setupListeners()
     }
 
     private fun setupRecyclerView() {
-        reportsAdapter = ReportsAdapter { report ->
-            // Navigation to report details
-            val action = ReportsFragmentDirections.actionReportsToReportDetails(report.id)
-            findNavController().navigate(action)
+        adapter = ReportsAdapter { report ->
+            val action = ReportsFragmentDirections.actionReportsFragmentToReportDetailsFragment(report.id)
+            navigate(action)
         }
-
-        binding.rvReports.layoutManager = LinearLayoutManager(context)
-        binding.rvReports.adapter = reportsAdapter
+        binding.recyclerView.adapter = adapter
     }
 
     private fun observeReports() {
-        viewModel.reports.observe(viewLifecycleOwner) { reports ->
-            reportsAdapter.submitList(reports)
+        viewModel.allReports.observe(viewLifecycleOwner) { reports ->
+            adapter.submitList(reports)
+            binding.emptyView.visibility = if (reports.isEmpty()) View.VISIBLE else View.GONE
         }
     }
 
-    private fun setupFabAddReport() {
+    private fun setupListeners() {
         binding.fabAddReport.setOnClickListener {
-            // Navigation to add report
-            val action = ReportsFragmentDirections.actionReportsToAddReport()
-            findNavController().navigate(action)
+            val action = ReportsFragmentDirections.actionReportsFragmentToEditReportFragment(-1L)
+            navigate(action)
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

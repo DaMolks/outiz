@@ -1,73 +1,48 @@
 package com.example.outiz.ui.sites
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.outiz.R
+import com.example.outiz.ui.base.NavigationFragment
 import com.example.outiz.databinding.FragmentSitesBinding
+import com.example.outiz.ui.adapter.SitesAdapter
+import com.example.outiz.ui.viewmodel.SiteViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-class SitesFragment : Fragment() {
-    private var _binding: FragmentSitesBinding? = null
-    private val binding get() = _binding!!
-    private lateinit var sitesAdapter: SitesAdapter
-    private val viewModel: SitesViewModel by viewModels()
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentSitesBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+@AndroidEntryPoint
+class SitesFragment : NavigationFragment(R.layout.fragment_sites) {
+    private lateinit var binding: FragmentSitesBinding
+    private val viewModel: SiteViewModel by viewModels()
+    private lateinit var adapter: SitesAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding = FragmentSitesBinding.bind(view)
         setupRecyclerView()
-        setupListeners()
         observeSites()
+        setupListeners()
     }
 
     private fun setupRecyclerView() {
-        sitesAdapter = SitesAdapter(
-            onEditClick = { site ->
-                findNavController().navigate(
-                    R.id.action_sitesFragment_to_editSiteFragment,
-                    Bundle().apply {
-                        putString("siteId", site.id)
-                    }
-                )
-            },
-            onDeleteClick = { site ->
-                viewModel.deleteSite(site)
-            }
-        )
+        adapter = SitesAdapter { site ->
+            val action = SitesFragmentDirections.actionSitesFragmentToEditSiteFragment(site.id)
+            navigate(action)
+        }
+        binding.recyclerView.adapter = adapter
+    }
 
-        binding.recyclerViewSites.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = sitesAdapter
+    private fun observeSites() {
+        viewModel.allSites.observe(viewLifecycleOwner) { sites ->
+            adapter.submitList(sites)
+            binding.emptyView.visibility = if (sites.isEmpty()) View.VISIBLE else View.GONE
         }
     }
 
     private fun setupListeners() {
         binding.fabAddSite.setOnClickListener {
-            findNavController().navigate(R.id.action_sitesFragment_to_editSiteFragment)
+            val action = SitesFragmentDirections.actionSitesFragmentToEditSiteFragment(-1L)
+            navigate(action)
         }
-    }
-
-    private fun observeSites() {
-        viewModel.sites.observe(viewLifecycleOwner) { sites ->
-            sitesAdapter.submitList(sites)
-        }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

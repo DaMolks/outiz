@@ -1,23 +1,23 @@
 package com.example.outiz.data.repository
 
+import androidx.lifecycle.LiveData
 import com.example.outiz.data.dao.ReportDao
 import com.example.outiz.models.Report
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class ReportRepository @Inject constructor(
     private val reportDao: ReportDao
 ) {
-    suspend fun insert(report: Report): Long = reportDao.insert(report)
+    val allReports: LiveData<List<Report>> = reportDao.getAllReports()
 
-    suspend fun update(report: Report) = reportDao.insert(report)
+    suspend fun insert(report: Report) = reportDao.insertReport(report)
 
-    suspend fun delete(report: Report) = reportDao.delete(report)
+    suspend fun update(report: Report) = reportDao.updateReport(report)
 
-    fun getAllReports(): Flow<List<Report>> = reportDao.getAllReports()
+    suspend fun delete(report: Report) = reportDao.deleteReport(report)
 
-    suspend fun getReportById(reportId: Long): Report? {
-        return reportDao.getReportById(reportId).first()
-    }
+    suspend fun getReportById(id: Long): Report? = reportDao.getReportById(id)
+
+    fun getReportsForPeriod(startDate: Long, endDate: Long): LiveData<List<Report>> =
+        reportDao.getReportsForPeriod(startDate, endDate)
 }

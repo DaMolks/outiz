@@ -1,14 +1,17 @@
 package com.example.outiz.ui.splash
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
-import androidx.preference.PreferenceManager
+import com.example.outiz.ui.base.BaseViewModel
+import com.example.outiz.utils.Constants
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class SplashViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class SplashViewModel @Inject constructor(
+    private val sharedPreferences: SharedPreferences
+) : BaseViewModel() {
 
     private val _isTechnicianProfileCreated = MutableLiveData<Boolean>()
     val isTechnicianProfileCreated: LiveData<Boolean> = _isTechnicianProfileCreated
@@ -18,10 +21,6 @@ class SplashViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     private fun checkTechnicianProfile() {
-        viewModelScope.launch {
-            val prefs = PreferenceManager.getDefaultSharedPreferences(getApplication())
-            val hasTechnician = prefs.getBoolean("has_technician", false)
-            _isTechnicianProfileCreated.value = hasTechnician
-        }
+        _isTechnicianProfileCreated.value = sharedPreferences.getBoolean(Constants.PREF_TECHNICIAN_PROFILE, false)
     }
 }

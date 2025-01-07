@@ -70,4 +70,11 @@
     <string name="error_invalid_duration">La durée est invalide</string>
     <string name="error_camera_unavailable">Appareil photo non disponible</string>
     <string name="error_saving_photo">Erreur lors de la sauvegarde de la photo</string>
+
+    <!-- New error resources -->
+    <string name="error_invalid_input">Entrée invalide</string>
+    <string name="error_loading_data">Erreur de chargement des données</string>
+    <string name="error_no_network">Pas de connexion réseau</string>
+    <string name="error_required_field">Champ obligatoire</string>
+    <string name="error_saving_data">Erreur lors de l'enregistrement des données</string>
 </resources>

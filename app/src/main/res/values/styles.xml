@@ -1,36 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Widget.Outiz.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginStart">@dimen/margin_medium</item>
-        <item name="android:layout_marginEnd">@dimen/margin_medium</item>
-        <item name="android:layout_marginTop">@dimen/margin_small</item>
-        <item name="errorEnabled">true</item>
+    <style name="TextAppearance.Outiz.Title" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="Widget.Outiz.TextInputLayout.Password" parent="Widget.Outiz.TextInputLayout">
-        <item name="endIconMode">password_toggle</item>
-    </style>
-
-    <style name="Widget.Outiz.TextInputLayout.Dense" parent="Widget.Outiz.TextInputLayout">
-        <item name="android:layout_marginTop">4dp</item>
-        <item name="android:layout_marginBottom">4dp</item>
-    </style>
-
-    <style name="Widget.Outiz.TextInputEditText" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textAppearance">@style/TextAppearance.Outiz.Body</item>
-    </style>
-
-    <style name="TextAppearance.Outiz.Body" parent="TextAppearance.MaterialComponents.Body1">
+    <style name="TextAppearance.Outiz.Subtitle" parent="TextAppearance.MaterialComponents.Subtitle1">
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
 
-    <style name="TextAppearance.Outiz.Caption" parent="TextAppearance.MaterialComponents.Caption">
-        <item name="android:textColor">?attr/colorOnSurface</item>
-        <item name="android:alpha">0.75</item>
+    <style name="Widget.Outiz.Card" parent="Widget.MaterialComponents.CardView">
+        <item name="cardElevation">2dp</item>
+        <item name="cardCornerRadius">8dp</item>
     </style>
 </resources>

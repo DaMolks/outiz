@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TextAppearance.Outiz.Body" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textColor">@color/md_theme_dark_onSurface</item>
+    </style>
+
+    <style name="TextAppearance.Outiz.Caption" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textColor">@color/md_theme_dark_onSurface</item>
+        <item name="android:alpha">0.75</item>
+    </style>
+
+    <style name="Widget.Outiz.TextInputEditText" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
+        <item name="android:textColor">@color/md_theme_dark_onSurface</item>
+        <item name="android:textColorHint">@color/md_theme_dark_onSurfaceVariant</item>
+        <item name="boxStrokeColor">@color/md_theme_dark_primary</item>
+        <item name="hintTextColor">@color/md_theme_dark_primary</item>
+    </style>
+</resources>

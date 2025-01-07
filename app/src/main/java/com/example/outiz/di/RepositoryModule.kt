@@ -1,7 +1,9 @@
 package com.example.outiz.di
 
 import com.example.outiz.data.dao.ReportDao
+import com.example.outiz.data.dao.SiteDao
 import com.example.outiz.data.repository.ReportRepository
+import com.example.outiz.data.repository.SiteRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,5 +18,11 @@ object RepositoryModule {
     @Singleton
     fun provideReportRepository(reportDao: ReportDao): ReportRepository {
         return ReportRepository(reportDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSiteRepository(siteDao: SiteDao): SiteRepository {
+        return SiteRepository(siteDao)
     }
 }

@@ -1,7 +1,12 @@
 package com.example.outiz.utils
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
-import kotlinx.coroutines.flow.Flow
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 
-fun <T> Flow<T>.toLiveData(): LiveData<T> = this.asLiveData()
+fun Fragment.showToast(message: String) {
+    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+}
+
+fun Fragment.showLongToast(message: String) {
+    Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+}

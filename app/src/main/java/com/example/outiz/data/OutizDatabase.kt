@@ -9,15 +9,21 @@ import com.example.outiz.data.dao.ReportDao
 import com.example.outiz.data.dao.SiteDao
 import com.example.outiz.data.dao.TechnicianDao
 import com.example.outiz.data.dao.TimeEntryDao
+import com.example.outiz.data.migrations.MIGRATION_1_2
 import com.example.outiz.models.Report
 import com.example.outiz.models.Site
 import com.example.outiz.models.Technician
 import com.example.outiz.models.TimeEntry
 
 @Database(
-    entities = [Report::class, Site::class, Technician::class, TimeEntry::class],
-    version = 1,
-    exportSchema = false
+    entities = [
+        Report::class,
+        Site::class,
+        Technician::class,
+        TimeEntry::class
+    ],
+    version = 2,
+    exportSchema = true
 )
 @TypeConverters(Converters::class)
 abstract class OutizDatabase : RoomDatabase() {
@@ -36,8 +42,9 @@ abstract class OutizDatabase : RoomDatabase() {
                     context.applicationContext,
                     OutizDatabase::class.java,
                     "outiz_database"
-                ).fallbackToDestructiveMigration()
-                    .build()
+                )
+                .addMigrations(MIGRATION_1_2)
+                .build()
                 INSTANCE = instance
                 instance
             }

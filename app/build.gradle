@@ -29,7 +29,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -43,6 +43,11 @@ android {
     buildFeatures {
         viewBinding true
     }
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -50,6 +55,7 @@ dependencies {
     def room_version = "2.6.1"
     def lifecycle_version = "2.7.0"
     def hilt_version = "2.50"
+    def coroutines_version = "1.7.3"
 
     implementation 'androidx.core:core-ktx:1.12.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
@@ -65,7 +71,7 @@ dependencies {
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
-    // Lifecycle + ViewModel & LiveData
+    // Lifecycle
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
@@ -91,6 +97,12 @@ dependencies {
 
     // Test dependencies
     testImplementation 'junit:junit:4.13.2'
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
+    testImplementation "androidx.arch.core:core-testing:2.2.0"
+    testImplementation 'org.mockito:mockito-core:5.8.0'
+    testImplementation 'org.mockito:mockito-inline:5.2.0'
+    
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation "androidx.room:room-testing:$room_version"
 }

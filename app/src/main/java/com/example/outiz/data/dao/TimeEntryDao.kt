@@ -1,20 +1,15 @@
 package com.example.outiz.data.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Query
 import com.example.outiz.models.TimeEntry
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TimeEntryDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(timeEntry: TimeEntry): Long
-
-    @Delete
-    suspend fun delete(timeEntry: TimeEntry)
-
-    @Query("SELECT * FROM time_entries WHERE reportId = :reportId ORDER BY startTime ASC")
+    @Query("SELECT * FROM time_entries WHERE report_id = :reportId")
     fun getTimeEntriesForReport(reportId: Long): Flow<List<TimeEntry>>
 
-    @Query("DELETE FROM time_entries WHERE reportId = :reportId")
+    @Query("DELETE FROM time_entries WHERE report_id = :reportId")
     suspend fun deleteAllForReport(reportId: Long)
 }

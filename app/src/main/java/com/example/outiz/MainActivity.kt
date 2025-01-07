@@ -2,9 +2,12 @@ package com.example.outiz
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.outiz.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -13,9 +16,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        
-        // Configure le Toolbar sans setSupportActionBar()
-        val toolbar: Toolbar = binding.toolbar
-        setSupportActionBar(null)
+
+        setSupportActionBar(binding.toolbar)
+        setupActionBarWithNavController(findNavController(R.id.nav_host_fragment))
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return findNavController(R.id.nav_host_fragment).navigateUp() || super.onSupportNavigateUp()
     }
 }

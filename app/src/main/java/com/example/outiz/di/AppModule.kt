@@ -1,12 +1,7 @@
 package com.example.outiz.di
 
 import android.content.Context
-import com.example.outiz.data.OutizDatabase
-import com.example.outiz.data.dao.ReportDao
-import com.example.outiz.data.dao.SiteDao
-import com.example.outiz.data.dao.TechnicianDao
-import com.example.outiz.data.dao.TimeEntryDao
-import com.example.outiz.utils.AppPreferenceManager
+import android.content.SharedPreferences
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,27 +13,9 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
+    @Provides
     @Singleton
-    @Provides
-    fun provideDatabase(@ApplicationContext context: Context): OutizDatabase {
-        return OutizDatabase.getDatabase(context)
+    fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
+        return context.getSharedPreferences("outiz_prefs", Context.MODE_PRIVATE)
     }
-
-    @Singleton
-    @Provides
-    fun provideAppPreferenceManager(@ApplicationContext context: Context): AppPreferenceManager {
-        return AppPreferenceManager(context)
-    }
-
-    @Provides
-    fun provideReportDao(database: OutizDatabase): ReportDao = database.reportDao()
-
-    @Provides
-    fun provideSiteDao(database: OutizDatabase): SiteDao = database.siteDao()
-
-    @Provides
-    fun provideTechnicianDao(database: OutizDatabase): TechnicianDao = database.technicianDao()
-
-    @Provides
-    fun provideTimeEntryDao(database: OutizDatabase): TimeEntryDao = database.timeEntryDao()
 }

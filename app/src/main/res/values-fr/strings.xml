@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Messages -->
+    <string name="no_reports">Aucun rapport disponible</string>
+    <string name="no_time_entries">Aucune entrée de temps</string>
+    <string name="no_photos">Aucune photo</string>
+    <string name="error_description_required">La description est requise</string>
+    <string name="error_invalid_duration">La durée est invalide</string>
+    <string name="error_camera_unavailable">Appareil photo non disponible</string>
+    <string name="error_saving_photo">Erreur lors de la sauvegarde de la photo</string>
+    <string name="error_no_network">Pas de connexion réseau</string>
+    <string name="error_loading_data">Erreur lors du chargement des données</string>
+    <string name="error_saving_data">Erreur lors de la sauvegarde</string>
+    <string name="error_invalid_input">Données invalides</string>
+    <string name="error_required_field">Champ requis</string>
+</resources>

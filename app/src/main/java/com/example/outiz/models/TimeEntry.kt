@@ -1,30 +1,15 @@
 package com.example.outiz.models
 
-import androidx.room.*
-import java.util.*
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import java.time.LocalDateTime
 
-@Entity(
-    tableName = "time_entries",
-    indices = [
-        Index(value = ["report_id", "start_time"]),
-        Index(value = ["report_id"])
-    ],
-    foreignKeys = [
-        ForeignKey(
-            entity = Report::class,
-            parentColumns = ["id"],
-            childColumns = ["report_id"],
-            onDelete = ForeignKey.CASCADE
-        )
-    ]
-)
+@Entity(tableName = "time_entries")
 data class TimeEntry(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
-    @ColumnInfo(name = "report_id")
-    val reportId: Long,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    @ColumnInfo(name = "report_id") val reportId: Long,
     val description: String,
-    @ColumnInfo(name = "start_time")
-    val startTime: Date,
-    val duration: Int // in minutes
+    @ColumnInfo(name = "start_time") val startTime: LocalDateTime,
+    val duration: Int
 )

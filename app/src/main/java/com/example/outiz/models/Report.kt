@@ -1,23 +1,45 @@
 package com.example.outiz.models
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
-import com.example.outiz.data.DateConverter
-import java.util.Date
+import androidx.room.*
+import java.util.*
 
-@Entity(tableName = "reports")
-@TypeConverters(DateConverter::class)
+@Entity(
+    tableName = "reports",
+    indices = [
+        Index(value = ["created_at"]),
+        Index(value = ["site_id"]),
+        Index(value = ["technician_id"])
+    ],
+    foreignKeys = [
+        ForeignKey(
+            entity = Site::class,
+            parentColumns = ["id"],
+            childColumns = ["site_id"],
+            onDelete = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = Technician::class,
+            parentColumns = ["id"],
+            childColumns = ["technician_id"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ]
+)
 data class Report(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
-    val siteName: String = "",
-    val description: String = "",
-    val date: Date = Date(),
-    val hasTimeTracking: Boolean = false,
-    val hasPhotos: Boolean = false,
-    val photoPaths: List<String> = emptyList(),
-    val caller: String = "",
-    val callDate: Date = Date(),
-    val callReason: String = ""
+    val siteName: String,
+    @ColumnInfo(name = "site_id")
+    val siteId: Long,
+    @ColumnInfo(name = "technician_id")
+    val technicianId: Long,
+    val description: String,
+    @ColumnInfo(name = "created_at")
+    val createdAt: Date,
+    val status: String = "DRAFT",
+    val caller: String? = null,
+    @ColumnInfo(name = "call_date")
+    val callDate: Date? = null,
+    @ColumnInfo(name = "call_reason")
+    val callReason: String? = null
 )

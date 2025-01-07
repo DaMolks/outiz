@@ -1,17 +1,19 @@
 package com.example.outiz.models
 
 import androidx.room.*
-import java.util.Date
+import java.util.*
 
-@TypeConverters(DateConverter::class)
 @Entity(
     tableName = "time_entries",
-    indices = [Index("reportId")],
+    indices = [
+        Index(value = ["report_id", "start_time"]),
+        Index(value = ["report_id"])
+    ],
     foreignKeys = [
         ForeignKey(
             entity = Report::class,
             parentColumns = ["id"],
-            childColumns = ["reportId"],
+            childColumns = ["report_id"],
             onDelete = ForeignKey.CASCADE
         )
     ]
@@ -19,8 +21,10 @@ import java.util.Date
 data class TimeEntry(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
+    @ColumnInfo(name = "report_id")
     val reportId: Long,
+    val description: String,
+    @ColumnInfo(name = "start_time")
     val startTime: Date,
-    val duration: Int, // in minutes
-    val description: String
+    val duration: Int // in minutes
 )

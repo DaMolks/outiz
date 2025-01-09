@@ -3,41 +3,29 @@ package com.example.outiz.ui.base
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.outiz.utils.State
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import com.example.outiz.utils.UiState
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 
 abstract class BaseViewModel : ViewModel() {
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading
 
-    private val _errorEvent = MutableLiveData<String?>()
-    val errorEvent: LiveData<String?> = _errorEvent
+    private val _error = MutableLiveData<String?>()
+    val error: LiveData<String?> = _error
 
-    protected fun setLoading(loading: Boolean) {
-        _isLoading.value = loading
-    }
-
-    protected fun showError(message: String) {
-        _errorEvent.value = message
+    protected fun setError(message: String?) {
+        _error.value = message
     }
 
     protected fun clearError() {
-        _errorEvent.value = null
+        _error.value = null
     }
 
-    protected suspend fun <T> safeCall(
-        loadingEnabled: Boolean = true,
-        block: suspend () -> T
-    ): State<T> {
-        return try {
-            if (loadingEnabled) setLoading(true)
-            val result = block()
-            State.Success(result)
-        } catch (e: Exception) {
-            State.Error(e.message ?: "An unexpected error occurred")
-        } finally {
-            if (loadingEnabled) setLoading(false)
-        }
+    protected fun <T> Flow<T>.asUiState(): Flow<UiState<T>> {
+        return this
+            .map<T, UiState<T>> { UiState.Success(it) }
+            .onStart { emit(UiState.Loading) }
+            .catch { emit(UiState.Error(it)) }
     }
 }

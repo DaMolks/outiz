@@ -10,17 +10,14 @@ interface SiteDao {
     fun getAllSites(): Flow<List<Site>>
 
     @Query("SELECT * FROM sites WHERE id = :id")
-    suspend fun getSiteById(id: String): Site?
+    fun getSiteById(id: Long): Flow<Site?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertSite(site: Site)
+    suspend fun insertSite(site: Site): Long
 
     @Update
     suspend fun updateSite(site: Site)
 
     @Delete
     suspend fun deleteSite(site: Site)
-
-    @Query("SELECT * FROM sites WHERE name LIKE '%' || :query || '%' OR codeS LIKE '%' || :query || '%'")
-    fun searchSites(query: String): Flow<List<Site>>
 }

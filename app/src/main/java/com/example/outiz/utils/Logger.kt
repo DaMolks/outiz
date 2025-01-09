@@ -1,24 +1,29 @@
 package com.example.outiz.utils
 
-import android.util.Log
-import com.example.outiz.BuildConfig
+import timber.log.Timber
 
 object Logger {
-    private const val TAG = "Outiz"
-
-    fun d(message: String) {
-        if (BuildConfig.DEBUG) Log.d(TAG, message)
+    fun init() {
+        Timber.plant(Timber.DebugTree())
     }
 
-    fun e(message: String, throwable: Throwable? = null) {
-        Log.e(TAG, message, throwable)
+    fun d(message: String, vararg args: Any) {
+        Timber.d(message, *args)
     }
 
-    fun i(message: String) {
-        Log.i(TAG, message)
+    fun i(message: String, vararg args: Any) {
+        Timber.i(message, *args)
     }
 
-    fun w(message: String) {
-        Log.w(TAG, message)
+    fun e(throwable: Throwable, message: String? = null) {
+        if (message != null) {
+            Timber.e(throwable, message)
+        } else {
+            Timber.e(throwable)
+        }
+    }
+
+    fun w(message: String, vararg args: Any) {
+        Timber.w(message, *args)
     }
 }

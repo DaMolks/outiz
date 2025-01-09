@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <full-backup-content>
-    <include domain="sharedpref" path="."/>
-    <include domain="database" path="."/>
+    <!-- Base de données -->
+    <include domain="database" path="outiz.db" />
+    
+    <!-- Préférences -->
+    <include domain="sharedpref" path="com.example.outiz_preferences.xml" />
+    
+    <!-- Photos -->
+    <include domain="external" path="Pictures/Outiz" />
+    
+    <!-- Exclusions -->
+    <exclude domain="sharedpref" path="device_info.xml" />
+    <exclude domain="external" path="temp" />
 </full-backup-content>

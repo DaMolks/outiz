@@ -1,73 +1,64 @@
 package com.example.outiz.ui.reports
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.outiz.databinding.FragmentEditReportBinding
+import com.example.outiz.ui.base.BaseFragment
+import com.example.outiz.utils.showSnackbar
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 
 @AndroidEntryPoint
-class EditReportFragment : Fragment() {
-    private var _binding: FragmentEditReportBinding? = null
-    private val binding get() = _binding!!
+class EditReportFragment : BaseFragment<FragmentEditReportBinding>(
+    FragmentEditReportBinding::inflate
+) {
 
     private val viewModel: EditReportViewModel by viewModels()
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentEditReportBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    private val args: EditReportFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupObservers()
-        setupListeners()
+        setupViews()
+        observeViewModel()
+        loadReport()
     }
 
-    private fun setupObservers() {
-        viewModel.hasTimeTracking.observe(viewLifecycleOwner) { hasTimeTracking ->
-            binding.switchTimeTracking.isChecked = hasTimeTracking
+    private fun setupViews() {
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
         }
 
-        viewModel.hasPhotos.observe(viewLifecycleOwner) { hasPhotos ->
-            binding.switchPhotos.isChecked = hasPhotos
+        binding.btnSave.setOnClickListener {
+            viewModel.saveReport(
+                siteName = binding.etSiteName.text.toString(),
+                description = binding.etDescription.text.toString(),
+                hasTimeTracking = binding.switchTimeTracking.isChecked,
+                hasPhotos = binding.switchPhotos.isChecked
+            )
         }
+    }
 
-        viewModel.reportSaved.observe(viewLifecycleOwner) { isSaved ->
-            if (isSaved) {
+    private fun observeViewModel() {
+        viewModel.saveCompleted.observe(viewLifecycleOwner) { completed ->
+            if (completed) {
                 findNavController().navigateUp()
+            }
+        }
+
+        viewModel.error.observe(viewLifecycleOwner) { error ->
+            error?.let {
+                binding.root.showSnackbar(it)
             }
         }
     }
 
-    private fun setupListeners() {
-        binding.btnSave.setOnClickListener {
-            viewModel.saveReport(
-                binding.etSiteName.text.toString(),
-                binding.etDescription.text.toString()
-            )
+    private fun loadReport() {
+        if (args.reportId != -1L) {
+            viewModel.loadReport(args.reportId)
         }
-
-        binding.switchTimeTracking.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.updateHasTimeTracking(isChecked)
-        }
-
-        binding.switchPhotos.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.updateHasPhotos(isChecked)
-        }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

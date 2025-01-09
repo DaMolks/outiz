@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- App -->
+    <!-- Ajout des nouvelles chaînes -->
+    <string name="reports">Rapports</string>
+    <string name="edit_report">Modifier le rapport</string>
+
+    <!-- Garder le reste du fichier inchangé -->
     <string name="app_name">Outiz</string>
-    
-    <!-- Navigation -->
     <string name="nav_reports">Rapports</string>
     <string name="nav_sites">Sites</string>
     <string name="nav_profile">Profil</string>
@@ -12,8 +14,6 @@
     <string name="all">Tous</string>
     <string name="this_week">Cette semaine</string>
     <string name="this_month">Ce mois</string>
-
-    <!-- Actions -->
     <string name="add_time_entry">Ajouter une entrée de temps</string>
     <string name="add_report">Ajouter un rapport</string>
     <string name="add_site">Ajouter un site</string>
@@ -27,8 +27,6 @@
     <string name="confirm">Confirmer</string>
     <string name="take_picture">Prendre une photo</string>
     <string name="choose_picture">Choisir une photo</string>
-
-    <!-- Profile -->
     <string name="technician_profile">Profil technicien</string>
     <string name="first_name">Prénom</string>
     <string name="last_name">Nom</string>
@@ -36,8 +34,6 @@
     <string name="sector">Secteur</string>
     <string name="profile_saved">Profil enregistré</string>
     <string name="fill_required_fields">Veuillez remplir tous les champs obligatoires</string>
-
-    <!-- Sites -->
     <string name="site">Site</string>
     <string name="site_name">Nom du site</string>
     <string name="site_code">Code site</string>
@@ -45,8 +41,6 @@
     <string name="client_name">Nom du client</string>
     <string name="site_info">Informations du site</string>
     <string name="no_sites">Aucun site disponible</string>
-
-    <!-- Reports -->
     <string name="report_info">Informations</string>
     <string name="report_time">Temps</string>
     <string name="report_photos">Photos</string>
@@ -61,20 +55,7 @@
     <string name="module_icon">Icône du module</string>
     <string name="enable_time_tracking">Activer le suivi du temps</string>
     <string name="enable_photos">Activer les photos</string>
-
-    <!-- Messages -->
     <string name="no_reports">Aucun rapport disponible</string>
     <string name="no_time_entries">Aucune entrée de temps</string>
     <string name="no_photos">Aucune photo</string>
-    <string name="error_description_required">La description est requise</string>
-    <string name="error_invalid_duration">La durée est invalide</string>
-    <string name="error_camera_unavailable">Appareil photo non disponible</string>
-    <string name="error_saving_photo">Erreur lors de la sauvegarde de la photo</string>
-
-    <!-- New error resources -->
-    <string name="error_invalid_input">Entrée invalide</string>
-    <string name="error_loading_data">Erreur de chargement des données</string>
-    <string name="error_no_network">Pas de connexion réseau</string>
-    <string name="error_required_field">Champ obligatoire</string>
-    <string name="error_saving_data">Erreur lors de l\'enregistrement des données</string>
 </resources>

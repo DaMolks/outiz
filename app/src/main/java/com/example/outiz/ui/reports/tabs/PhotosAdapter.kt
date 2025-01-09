@@ -1,39 +1,52 @@
 package com.example.outiz.ui.reports.tabs
 
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.outiz.databinding.ItemPhotoBinding
 
 class PhotosAdapter(
-    private val photos: List<String>,
     private val onDeleteClick: (String) -> Unit
-) : RecyclerView.Adapter<PhotosAdapter.PhotoViewHolder>() {
+) : ListAdapter<String, PhotosAdapter.PhotoViewHolder>(PhotoDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
-        val binding = ItemPhotoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PhotoViewHolder(binding, onDeleteClick)
+        val binding = ItemPhotoBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return PhotoViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
-        holder.bind(photos[position])
+        holder.bind(getItem(position))
     }
 
-    override fun getItemCount(): Int = photos.size
-
-    inner class PhotoViewHolder(
-        private val binding: ItemPhotoBinding,
-        private val onDeleteClick: (String) -> Unit
-    ) : RecyclerView.ViewHolder(binding.root) {
+    inner class PhotoViewHolder(private val binding: ItemPhotoBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(photoPath: String) {
-            Glide.with(binding.root.context)
-                .load(Uri.parse(photoPath))
+            Glide.with(binding.root)
+                .load(photoPath)
+                .centerCrop()
                 .into(binding.imageView)
 
-            binding.deleteButton.setOnClickListener { onDeleteClick(photoPath) }
+            binding.deleteButton.setOnClickListener {
+                onDeleteClick(photoPath)
+            }
         }
+    }
+}
+
+class PhotoDiffCallback : DiffUtil.ItemCallback<String>() {
+    override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
+        return oldItem == newItem
+    }
+
+    override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
+        return oldItem == newItem
     }
 }

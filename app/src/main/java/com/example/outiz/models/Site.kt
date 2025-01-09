@@ -5,9 +5,11 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "sites")
 data class Site(
-    @PrimaryKey val id: String,
+    @PrimaryKey(autoGenerate = true)
+    val id: Long = 0,
     val name: String,
+    val code: String,
     val address: String,
-    val codeS: String,
-    val clientName: String
+    val clientName: String,
+    val notes: String? = null
 )

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Module Names -->
+    <string name="module_reports">Rapports</string>
+    <string name="module_sites">Sites</string>
+    <string name="module_settings">Paramètres</string>
+
+    <!-- Module Descriptions -->
+    <string name="module_reports_desc">Gérer les rapports d\'intervention</string>
+    <string name="module_sites_desc">Gérer les sites clients</string>
+    <string name="module_settings_desc">Configurer l\'application</string>
+</resources>

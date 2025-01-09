@@ -2,121 +2,56 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/splashFragment">
-
-    <fragment
-        android:id="@+id/splashFragment"
-        android:name="com.example.outiz.ui.splash.SplashFragment"
-        android:label="SplashFragment">
-        <action
-            android:id="@+id/action_splashFragment_to_homeFragment"
-            app:destination="@id/homeFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popUpTo="@id/splashFragment"
-            app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_splashFragment_to_technicianProfileFragment"
-            app:destination="@id/technicianProfileFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popUpTo="@id/splashFragment"
-            app:popUpToInclusive="true" />
-    </fragment>
+    app:startDestination="@id/homeFragment">
 
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.outiz.ui.home.HomeFragment"
-        android:label="HomeFragment">
+        android:label="@string/app_name">
         <action
-            android:id="@+id/action_homeFragment_to_reportsFragment"
-            app:destination="@id/reportsFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left" />
+            android:id="@+id/action_home_to_reports"
+            app:destination="@id/reportsFragment" />
         <action
-            android:id="@+id/action_homeFragment_to_sitesFragment"
-            app:destination="@id/sitesFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left" />
-        <action
-            android:id="@+id/action_homeFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left" />
+            android:id="@+id/action_home_to_sites"
+            app:destination="@id/sitesFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/reportsFragment"
         android:name="com.example.outiz.ui.reports.ReportsFragment"
-        android:label="ReportsFragment">
+        android:label="@string/reports">
         <action
-            android:id="@+id/action_reportsFragment_to_editReportFragment"
-            app:destination="@id/editReportFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left" />
+            android:id="@+id/action_reports_to_details"
+            app:destination="@id/reportDetailsFragment" />
         <action
-            android:id="@+id/action_reportsFragment_to_reportDetailsFragment"
-            app:destination="@id/reportDetailsFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/editReportFragment"
-        android:name="com.example.outiz.ui.reports.EditReportFragment"
-        android:label="EditReportFragment">
-        <argument
-            android:name="reportId"
-            app:argType="long"
-            android:defaultValue="-1L" />
+            android:id="@+id/action_reports_to_edit"
+            app:destination="@id/editReportFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/reportDetailsFragment"
         android:name="com.example.outiz.ui.reports.ReportDetailsFragment"
-        android:label="ReportDetailsFragment">
+        android:label="@string/report_info">
         <argument
             android:name="reportId"
             app:argType="long" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/sitesFragment"
-        android:name="com.example.outiz.ui.sites.SitesFragment"
-        android:label="SitesFragment">
         <action
-            android:id="@+id/action_sitesFragment_to_editSiteFragment"
-            app:destination="@id/editSiteFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left" />
+            android:id="@+id/action_details_to_edit"
+            app:destination="@id/editReportFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/editSiteFragment"
-        android:name="com.example.outiz.ui.sites.EditSiteFragment"
-        android:label="EditSiteFragment">
+        android:id="@+id/editReportFragment"
+        android:name="com.example.outiz.ui.reports.EditReportFragment"
+        android:label="@string/edit_report">
         <argument
-            android:name="siteId"
+            android:name="reportId"
             app:argType="long"
             android:defaultValue="-1L" />
     </fragment>
 
     <fragment
-        android:id="@+id/technicianProfileFragment"
-        android:name="com.example.outiz.ui.profile.TechnicianProfileFragment"
-        android:label="TechnicianProfileFragment">
-        <action
-            android:id="@+id/action_technicianProfileFragment_to_homeFragment"
-            app:destination="@id/homeFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popUpTo="@id/technicianProfileFragment"
-            app:popUpToInclusive="true" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/settingsFragment"
-        android:name="com.example.outiz.ui.settings.SettingsFragment"
-        android:label="SettingsFragment" />
-
+        android:id="@+id/sitesFragment"
+        android:name="com.example.outiz.ui.sites.SitesFragment"
+        android:label="@string/sites" />
 </navigation>

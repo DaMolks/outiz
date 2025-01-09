@@ -1,12 +1,13 @@
 package com.example.outiz.data
 
 import androidx.room.TypeConverter
-import java.time.LocalDateTime
-import java.time.Instant
-import java.time.ZoneOffset
-import java.util.Date
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import java.util.*
 
 class Converters {
+    private val gson = Gson()
+
     @TypeConverter
     fun fromTimestamp(value: Long?): Date? {
         return value?.let { Date(it) }
@@ -18,12 +19,14 @@ class Converters {
     }
 
     @TypeConverter
-    fun fromLocalDateTime(value: LocalDateTime?): Long? {
-        return value?.toInstant(ZoneOffset.UTC)?.toEpochMilli()
+    fun fromString(value: String?): List<String> {
+        if (value == null) return emptyList()
+        val listType = object : TypeToken<List<String>>() {}.type
+        return gson.fromJson(value, listType)
     }
 
     @TypeConverter
-    fun toLocalDateTime(value: Long?): LocalDateTime? {
-        return value?.let { LocalDateTime.ofInstant(Instant.ofEpochMilli(it), ZoneOffset.UTC) }
+    fun fromList(list: List<String>): String {
+        return gson.toJson(list)
     }
 }

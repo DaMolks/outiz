@@ -1,11 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <data-extraction-rules>
     <cloud-backup>
-        <include domain="sharedpref" path="."/>
-        <include domain="database" path="."/>
+        <!-- Base de données -->
+        <include domain="database" path="." />
+        
+        <!-- Préférences -->
+        <include domain="sharedpref" path="." />
+        
+        <!-- Photos -->
+        <include domain="external" path="Pictures/Outiz" />
+        
+        <!-- Exclusions -->
+        <exclude domain="sharedpref" path="device_info.xml" />
+        <exclude domain="external" path="temp" />
+        <exclude domain="database" path="temp_db" />
     </cloud-backup>
+    
     <device-transfer>
-        <include domain="sharedpref" path="."/>
-        <include domain="database" path="."/>
+        <include domain="database" path="." />
+        <include domain="sharedpref" path="." />
+        <include domain="external" path="Pictures/Outiz" />
+        
+        <exclude domain="sharedpref" path="device_info.xml" />
+        <exclude domain="external" path="temp" />
     </device-transfer>
 </data-extraction-rules>

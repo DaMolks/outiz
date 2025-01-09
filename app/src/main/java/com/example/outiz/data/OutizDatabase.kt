@@ -1,62 +1,52 @@
 package com.example.outiz.data
 
 import android.content.Context
-import androidx.room.*
-import androidx.sqlite.db.SupportSQLiteDatabase
-import com.example.outiz.data.dao.*
-import com.example.outiz.data.migrations.MIGRATION_1_2
-import com.example.outiz.models.*
-import timber.log.Timber
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import com.example.outiz.data.dao.ReportDao
+import com.example.outiz.data.dao.SiteDao
+import com.example.outiz.data.dao.TimeEntryDao
+import com.example.outiz.models.Report
+import com.example.outiz.models.Site
+import com.example.outiz.models.TimeEntry
 
 @Database(
     entities = [
         Report::class,
         Site::class,
-        Technician::class,
         TimeEntry::class
     ],
-    version = 2,
-    exportSchema = true,
-    autoBackup = true
+    version = 1
 )
 @TypeConverters(Converters::class)
 abstract class OutizDatabase : RoomDatabase() {
+
     abstract fun reportDao(): ReportDao
     abstract fun siteDao(): SiteDao
-    abstract fun technicianDao(): TechnicianDao
     abstract fun timeEntryDao(): TimeEntryDao
 
     companion object {
+        private const val DATABASE_NAME = "outiz.db"
+
         @Volatile
-        private var INSTANCE: OutizDatabase? = null
+        private var instance: OutizDatabase? = null
 
-        fun getDatabase(context: Context): OutizDatabase {
-            return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    OutizDatabase::class.java,
-                    "outiz_database"
-                )
-                .addCallback(object : Callback() {
-                    override fun onCreate(db: SupportSQLiteDatabase) {
-                        super.onCreate(db)
-                        Timber.d("Database created")
-                    }
+        fun getInstance(context: Context): OutizDatabase {
+            return instance ?: synchronized(this) {
+                instance ?: buildDatabase(context).also { instance = it }
+            }
+        }
 
-                    override fun onOpen(db: SupportSQLiteDatabase) {
-                        super.onOpen(db)
-                        Timber.d("Database opened")
-                    }
-                })
-                .addMigrations(MIGRATION_1_2)
-                .setJournalMode(JournalMode.WRITE_AHEAD_LOGGING)
-                .enableMultiInstanceInvalidation()
+        private fun buildDatabase(context: Context): OutizDatabase {
+            return Room.databaseBuilder(
+                context,
+                OutizDatabase::class.java,
+                DATABASE_NAME
+            )
                 .fallbackToDestructiveMigration()
                 .build()
-
-                INSTANCE = instance
-                instance
-            }
         }
     }
 }

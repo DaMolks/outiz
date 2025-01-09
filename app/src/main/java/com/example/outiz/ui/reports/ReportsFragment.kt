@@ -3,92 +3,76 @@ package com.example.outiz.ui.reports
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.outiz.R
 import com.example.outiz.databinding.FragmentReportsBinding
+import com.example.outiz.models.Report
 import com.example.outiz.ui.adapter.ReportsAdapter
 import com.example.outiz.ui.base.BaseFragment
-import com.example.outiz.ui.viewmodel.ReportViewModel
-import com.example.outiz.utils.State
+import com.example.outiz.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ReportsFragment : BaseFragment(R.layout.fragment_reports) {
-    private lateinit var binding: FragmentReportsBinding
-    private val viewModel: ReportViewModel by viewModels()
-    private lateinit var adapter: ReportsAdapter
+class ReportsFragment : BaseFragment<FragmentReportsBinding>(
+    FragmentReportsBinding::inflate
+) {
+
+    private val viewModel: ReportsViewModel by viewModels()
+    private lateinit var reportsAdapter: ReportsAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentReportsBinding.bind(view)
+
         setupRecyclerView()
-        setupSwipeRefresh()
-        observeReports()
         setupListeners()
-    }
-
-    override fun getViewModel() = viewModel
-
-    override fun handleLoading(isLoading: Boolean) {
-        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        setupObservers()
     }
 
     private fun setupRecyclerView() {
-        adapter = ReportsAdapter(onReportClick = { report ->
-            navigate(ReportsFragmentDirections.actionReportsFragmentToReportDetailsFragment(report.id))
-        })
-        binding.reportsRecyclerView.apply {
+        reportsAdapter = ReportsAdapter { report -> navigateToDetails(report) }
+        binding.recyclerView.apply {
+            adapter = reportsAdapter
             layoutManager = LinearLayoutManager(context)
-            adapter = this@ReportsFragment.adapter
-        }
-    }
-
-    private fun setupSwipeRefresh() {
-        binding.swipeRefresh.setOnRefreshListener {
-            viewModel.refreshReports()
-        }
-    }
-
-    private fun observeReports() {
-        viewModel.reportsState.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is State.Success -> {
-                    adapter.submitList(state.data)
-                    binding.emptyView.visibility = if (state.data.isEmpty()) View.VISIBLE else View.GONE
-                    binding.swipeRefresh.isRefreshing = false
-                }
-                is State.Error -> {
-                    errorHandler.handleError(state.message) {
-                        viewModel.refreshReports()
-                    }
-                    binding.swipeRefresh.isRefreshing = false
-                }
-                is State.Loading -> {
-                    // Loading handled by base class
-                }
-            }
-        }
-
-        viewModel.filterState.observe(viewLifecycleOwner) { filter ->
-            when (filter) {
-                ReportFilter.ALL -> binding.filterChipGroup.check(R.id.allChip)
-                ReportFilter.WEEK -> binding.filterChipGroup.check(R.id.weekChip)
-                ReportFilter.MONTH -> binding.filterChipGroup.check(R.id.monthChip)
-            }
         }
     }
 
     private fun setupListeners() {
-        binding.filterChipGroup.setOnCheckedStateChangeListener { group, _ ->
-            when (group.checkedChipId) {
-                R.id.allChip -> viewModel.setFilter(ReportFilter.ALL)
-                R.id.weekChip -> viewModel.setFilter(ReportFilter.WEEK)
-                R.id.monthChip -> viewModel.setFilter(ReportFilter.MONTH)
-            }
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.refreshReports()
         }
 
-        binding.addReportFab.setOnClickListener {
-            navigate(ReportsFragmentDirections.actionReportsFragmentToEditReportFragment())
+        binding.fabAddReport.setOnClickListener {
+            findNavController().navigate(R.id.action_reports_to_edit)
         }
+    }
+
+    private fun setupObservers() {
+        viewModel.reports.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    binding.swipeRefresh.isRefreshing = false
+                    reportsAdapter.submitList(resource.data)
+                    updateEmptyState(resource.data.isEmpty())
+                }
+                is Resource.Error -> {
+                    binding.swipeRefresh.isRefreshing = false
+                    showError(resource.message ?: getString(R.string.error_loading_data))
+                }
+                is Resource.Loading -> {
+                    binding.swipeRefresh.isRefreshing = true
+                }
+            }
+        }
+    }
+
+    private fun navigateToDetails(report: Report) {
+        val action = ReportsFragmentDirections.actionReportsToDetails(report.id)
+        findNavController().navigate(action)
+    }
+
+    private fun updateEmptyState(isEmpty: Boolean) {
+        binding.emptyView.visibility = if (isEmpty) View.VISIBLE else View.GONE
+        binding.recyclerView.visibility = if (isEmpty) View.GONE else View.VISIBLE
     }
 }

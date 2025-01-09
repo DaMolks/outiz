@@ -1,76 +1,64 @@
 package com.example.outiz.ui.reports
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.outiz.databinding.FragmentReportDetailsBinding
+import com.example.outiz.ui.base.BaseFragment
+import com.example.outiz.utils.formatDate
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
+import java.util.*
 
 @AndroidEntryPoint
-class ReportDetailsFragment : Fragment() {
-    private var _binding: FragmentReportDetailsBinding? = null
-    private val binding get() = _binding!!
+class ReportDetailsFragment : BaseFragment<FragmentReportDetailsBinding>(
+    FragmentReportDetailsBinding::inflate
+) {
 
-    private val viewModel: ReportDetailsViewModel by viewModels()
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentReportDetailsBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    private val viewModel: ReportViewModel by viewModels()
+    private val args: ReportDetailsFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val reportId = arguments?.getLong(ARG_REPORT_ID) ?: -1L
-        setupObservers(reportId)
+        setupToolbar()
+        observeReport()
         setupListeners()
+        loadReport()
     }
 
-    private fun setupObservers(reportId: Long) {
-        if (reportId != -1L) {
-            viewModel.loadReport(reportId)
-            viewModel.report.observe(viewLifecycleOwner) { report ->
-                binding.apply {
-                    tvReportSiteName.text = report?.siteName ?: ""
-                    tvReportDescription.text = report?.description ?: ""
-                    tvReportDate.text = report?.date?.toString() ?: ""
+    private fun setupToolbar() {
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
+    }
+
+    private fun observeReport() {
+        viewModel.currentReport.observe(viewLifecycleOwner) { report ->
+            report?.let {
+                with(binding) {
+                    tvReportSiteName.text = it.siteName
+                    tvReportDescription.text = it.description
+                    tvReportDate.text = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                        .format(it.date)
                 }
             }
         }
     }
 
     private fun setupListeners() {
-        binding.btnBack.setOnClickListener {
-            findNavController().navigateUp()
-        }
-
-        binding.btnEdit.setOnClickListener {
-            viewModel.report.value?.id?.let { id ->
-                findNavController().navigate(ReportDetailsFragmentDirections.actionReportDetailsToEditReport(id))
+        binding.fabEdit.setOnClickListener {
+            viewModel.currentReport.value?.let { report ->
+                findNavController().navigate(
+                    ReportDetailsFragmentDirections.actionReportDetailsToEdit(report.id)
+                )
             }
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    companion object {
-        private const val ARG_REPORT_ID = "report_id"
-
-        fun newInstance(reportId: Long) = ReportDetailsFragment().apply {
-            arguments = Bundle().apply {
-                putLong(ARG_REPORT_ID, reportId)
-            }
-        }
+    private fun loadReport() {
+        viewModel.loadReport(args.reportId)
     }
 }

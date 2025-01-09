@@ -2,14 +2,15 @@ package com.example.outiz.ui.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.outiz.databinding.ItemModuleBinding
 import com.example.outiz.models.Module
 
 class ModulesAdapter(
-    private val modules: List<Module>,
     private val onModuleClick: (Module) -> Unit
-) : RecyclerView.Adapter<ModulesAdapter.ModuleViewHolder>() {
+) : ListAdapter<Module, ModulesAdapter.ModuleViewHolder>(ModuleDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ModuleViewHolder {
         val binding = ItemModuleBinding.inflate(
@@ -21,28 +22,39 @@ class ModulesAdapter(
     }
 
     override fun onBindViewHolder(holder: ModuleViewHolder, position: Int) {
-        holder.bind(modules[position])
+        holder.bind(getItem(position))
     }
-
-    override fun getItemCount() = modules.size
 
     inner class ModuleViewHolder(private val binding: ItemModuleBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(module: Module) {
-            with(binding) {
-                moduleIcon.setImageResource(module.iconRes)
-                moduleTitle.text = module.title
-                moduleDescription.text = module.description
-                root.isEnabled = module.isEnabled
-                root.alpha = if (module.isEnabled) 1.0f else 0.5f
-
-                if (module.isEnabled) {
-                    root.setOnClickListener { onModuleClick(module) }
-                } else {
-                    root.setOnClickListener(null)
+        init {
+            itemView.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    onModuleClick(getItem(position))
                 }
             }
         }
+
+        fun bind(module: Module) {
+            with(binding) {
+                root.context.let { context ->
+                    moduleIcon.setImageResource(module.iconRes)
+                    moduleTitle.text = context.getString(module.title)
+                    moduleDescription.text = context.getString(module.description)
+                }
+            }
+        }
+    }
+}
+
+class ModuleDiffCallback : DiffUtil.ItemCallback<Module>() {
+    override fun areItemsTheSame(oldItem: Module, newItem: Module): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: Module, newItem: Module): Boolean {
+        return oldItem == newItem
     }
 }

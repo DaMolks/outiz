@@ -7,14 +7,19 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.outiz.databinding.ItemReportBinding
 import com.example.outiz.models.Report
-import com.example.outiz.utils.DateUtils
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ReportsAdapter(
-    private val onReportClick: (Report) -> Unit
+    private val onItemClick: (Report) -> Unit
 ) : ListAdapter<Report, ReportsAdapter.ReportViewHolder>(ReportDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReportViewHolder {
-        val binding = ItemReportBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemReportBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
         return ReportViewHolder(binding)
     }
 
@@ -22,22 +27,30 @@ class ReportsAdapter(
         holder.bind(getItem(position))
     }
 
-    inner class ReportViewHolder(
-        private val binding: ItemReportBinding
-    ) : RecyclerView.ViewHolder(binding.root) {
+    inner class ReportViewHolder(private val binding: ItemReportBinding) : 
+        RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            itemView.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    onItemClick(getItem(position))
+                }
+            }
+        }
 
         fun bind(report: Report) {
             with(binding) {
-                tvSiteName.text = report.siteName
-                tvDate.text = DateUtils.formatDate(report.date)
-                tvStatus.text = report.status
-                root.setOnClickListener { onReportClick(report) }
+                tvReportSite.text = report.siteName
+                tvReportDate.text = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                    .format(report.date)
+                tvReportDescription.text = report.description
             }
         }
     }
 }
 
-private class ReportDiffCallback : DiffUtil.ItemCallback<Report>() {
+class ReportDiffCallback : DiffUtil.ItemCallback<Report>() {
     override fun areItemsTheSame(oldItem: Report, newItem: Report): Boolean {
         return oldItem.id == newItem.id
     }
